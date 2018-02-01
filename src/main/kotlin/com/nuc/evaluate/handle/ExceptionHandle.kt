@@ -6,23 +6,28 @@ import com.nuc.evaluate.util.ResultUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.web.bind.annotation.ControllerAdvice
+import org.springframework.web.bind.annotation.ExceptionHandler
+import org.springframework.web.bind.annotation.ResponseBody
 
 /**
  * @author 杨晓辉 2018/2/1 14:04
+ * 异常捕获类
  */
 @ControllerAdvice
 class ExceptionHandle {
 
     private final val logger: Logger = LoggerFactory.getLogger(ExceptionHandle::class.java)
 
+    @ResponseBody
+    @ExceptionHandler(value = [(Exception::class)])
     fun handle(e: Exception): Result {
-        if (e is ResultException) {
+        return if (e is ResultException) {
             val resultException: ResultException = e
-            return ResultUtils.error(resultException.code!!, resultException.message!!)
+            ResultUtils.error(resultException.code!!, resultException.message!!)
         } else {
             logger.error("[系统异常]", e)
             //Todo(添加异常邮件发送)
-            return ResultUtils.error(-1, "位置错误")
+            ResultUtils.error(-1, "位置错误")
         }
     }
 
