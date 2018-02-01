@@ -4,5 +4,8 @@ spring:
     url: jdbc:mysql://193.112.6.35:3306/dev
     username: root
     password: 1234
+  jpa:
+    hibernate:
+      ddl-auto: update
 server:
-  port: 8085
+  port: 8080
