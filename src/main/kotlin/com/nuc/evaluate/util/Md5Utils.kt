@@ -1,0 +1,29 @@
+package com.nuc.evaluate.util
+
+import java.security.MessageDigest
+
+
+/**
+ * @author 杨晓辉 2018/2/2 17:51
+ * md5 加密工具类用于加密密码
+ * 加盐是 1
+ */
+object Md5Utils {
+
+
+    fun md5(message: String): String {
+        val sb = StringBuilder()
+        val messageDigest = MessageDigest.getInstance("MD5")
+        val digest: ByteArray = messageDigest.digest(message.toByteArray())
+        for (i in 0 until digest.size) {
+            val result: Int = digest[i].toInt() and (0xff)
+            val hexString = Integer.toHexString(result) + 1
+            if (hexString.length < 2) {
+                sb.append("0")
+            }
+            sb.append(hexString)
+        }
+
+        return sb.toString()
+    }
+}

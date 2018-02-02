@@ -4,6 +4,7 @@ import com.nuc.evaluate.entity.User
 import com.nuc.evaluate.exception.ResultException
 import com.nuc.evaluate.repository.UserRepository
 import com.nuc.evaluate.service.UserService
+import com.nuc.evaluate.util.Md5Utils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -36,8 +37,7 @@ class UserServiceImpl : UserService {
         (0 until userList.size)
                 .filter { userList[it].username == user.username }
                 .forEach { throw ResultException("名字重复", 500) }
-
-        // todo(md5 对密码加密 @author 杨晓辉  预计完成时间 2/3)
+        user.password = Md5Utils.md5(user.password)
         return userRepository.save(user)
     }
 
@@ -49,7 +49,7 @@ class UserServiceImpl : UserService {
      */
     @Throws(ResultException::class)
     override fun login(user: User): User {
-        return userRepository.findByUsernameAndPassword(user.username, user.password)
+        return userRepository.findByUsernameAndPassword(user.username, Md5Utils.md5(user.password))
                 ?: throw ResultException("用户不存在或密码错误", 500)
     }
 
