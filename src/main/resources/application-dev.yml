@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://193.112.6.35:3306/dev
+    username: root
+    password: 1234
+  jpa:
+    hibernate:
+      ddl-auto: update
+  mail:
+    host: smtp.163.com
+    username: youngxhui@163.com
+    password: nwcoiphamivwxhdw
+    default-encoding: UTF-8
+    properties:
+        mail:
+          smtp:
+            auth: true
+            starttls:
+              enable: true
+              required: true
+
+server:
+  port: 8080
+logging:
+  level: info
