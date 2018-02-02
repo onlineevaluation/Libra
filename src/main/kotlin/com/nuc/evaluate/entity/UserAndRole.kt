@@ -15,7 +15,7 @@ class UserAndRole {
     @Column(name = "user_id")
     var userId: Long = 0L
 
-    @Column(name = "roleId_id")
+    @Column(name = "role_id")
     var roleId: Long = 0L
 
 
