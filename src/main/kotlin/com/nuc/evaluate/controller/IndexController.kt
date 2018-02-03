@@ -1,5 +1,7 @@
 package com.nuc.evaluate.controller
 
+import com.nuc.evaluate.result.Result
+import com.nuc.evaluate.util.ResultUtils
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -10,5 +12,5 @@ import org.springframework.web.bind.annotation.RestController
 class IndexController {
 
     @RequestMapping("/")
-    fun index(): String = "Welcome"
+    fun index(): Result = ResultUtils.success()
 }
