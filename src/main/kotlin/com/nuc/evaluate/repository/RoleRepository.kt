@@ -1,6 +1,6 @@
 package com.nuc.evaluate.repository
 
-import com.nuc.evaluate.entity.Role
+import com.nuc.evaluate.po.Role
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 

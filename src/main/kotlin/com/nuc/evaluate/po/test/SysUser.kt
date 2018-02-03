@@ -1,9 +1,8 @@
-package com.nuc.evaluate.entity.test
+package com.nuc.evaluate.po.test
 
 //import org.springframework.security.core.GrantedAuthority
 //import org.springframework.security.core.authority.SimpleGrantedAuthority
 //import org.springframework.security.core.userdetails.UserDetails
-import javax.persistence.*
 
 /**
  * @author 杨晓辉 2018/2/2 10:54

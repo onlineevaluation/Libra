@@ -1,6 +1,6 @@
 package com.nuc.evaluate.controller
 
-import com.nuc.evaluate.entity.User
+import com.nuc.evaluate.po.User
 import com.nuc.evaluate.result.Result
 import com.nuc.evaluate.service.UserService
 import com.nuc.evaluate.util.ResultUtils
@@ -30,6 +30,8 @@ class UserController {
      */
     @PostMapping("/register")
     fun register(@RequestBody user: User): Result {
+
+
         return ResultUtils.success(200, "注册成功", userService.saveUser(user))
     }
 
@@ -38,6 +40,7 @@ class UserController {
      */
     @GetMapping("/login")
     fun login(user: User): Result {
+
         return ResultUtils.success(200, "登录成功", userService.login(user))
     }
 

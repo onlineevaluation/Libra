@@ -1,7 +1,7 @@
 package com.nuc.evaluate.service
 
-import com.nuc.evaluate.entity.User
 import com.nuc.evaluate.exception.ResultException
+import com.nuc.evaluate.po.User
 
 
 /**

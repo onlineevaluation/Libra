@@ -1,4 +1,4 @@
-package com.nuc.evaluate.entity
+package com.nuc.evaluate.po
 
 import javax.persistence.*
 

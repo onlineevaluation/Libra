@@ -1,8 +1,7 @@
-package com.nuc.evaluate.entity
+package com.nuc.evaluate.po
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import io.swagger.annotations.ApiParam
-import springfox.documentation.annotations.ApiIgnore
 import javax.persistence.*
 
 /**
@@ -25,4 +24,5 @@ class User {
 
     @ApiParam(hidden = true)
     var status: Long = 0
+
 }

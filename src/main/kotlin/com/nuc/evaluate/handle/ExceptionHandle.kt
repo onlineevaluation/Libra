@@ -3,7 +3,7 @@ package com.nuc.evaluate.handle
 import com.nuc.evaluate.entity.EmailMessage
 import com.nuc.evaluate.exception.ResultException
 import com.nuc.evaluate.result.Result
-import com.nuc.evaluate.service.impl.MailServiceImpl
+import com.nuc.evaluate.service.MailService
 import com.nuc.evaluate.util.ResultUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -26,7 +26,7 @@ class ExceptionHandle {
     private final val logger: Logger = LoggerFactory.getLogger(ExceptionHandle::class.java)
 
     @Autowired
-    lateinit var mailServiceImpl: MailServiceImpl
+    lateinit var mailService: MailService
 
 
     @ResponseBody
@@ -48,7 +48,7 @@ class ExceptionHandle {
             buf.close()
             emailMessage.exception = expMessage
             emailMessage.time = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date())
-            mailServiceImpl.sendInlineMail(to, subject, emailMessage, "ExceptionMail.ftl")
+            mailService.sendInlineMail(to, subject, emailMessage, "ExceptionMail.ftl")
             ResultUtils.error(-1, "未知错误")
         }
     }

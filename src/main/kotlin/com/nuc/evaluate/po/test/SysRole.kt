@@ -1,4 +1,4 @@
-package com.nuc.evaluate.entity.test
+package com.nuc.evaluate.po.test
 
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue

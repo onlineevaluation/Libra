@@ -6,10 +6,9 @@ import java.security.MessageDigest
 /**
  * @author 杨晓辉 2018/2/2 17:51
  * md5 加密工具类用于加密密码
- * 加盐是 1
+ * 默认没有加盐
  */
 object Md5Utils {
-
 
     fun md5(message: String): String {
         val sb = StringBuilder()
@@ -17,7 +16,7 @@ object Md5Utils {
         val digest: ByteArray = messageDigest.digest(message.toByteArray())
         for (i in 0 until digest.size) {
             val result: Int = digest[i].toInt() and (0xff)
-            val hexString = Integer.toHexString(result) + 1
+            val hexString = Integer.toHexString(result) // 不要问为什么不加盐   因为某个智障外包公司不加盐 + 1
             if (hexString.length < 2) {
                 sb.append("0")
             }
