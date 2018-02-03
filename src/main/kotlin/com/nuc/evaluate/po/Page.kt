@@ -8,7 +8,7 @@ import javax.persistence.*
  */
 @Entity
 @Table(name = "tg_evaluate_pages")
-class Pages {
+class Page {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0L

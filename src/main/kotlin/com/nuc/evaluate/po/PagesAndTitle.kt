@@ -18,5 +18,4 @@ class PagesAndTitle {
     @Column(name = "title_id")
     var titleId: Long = 0L
 
-
 }

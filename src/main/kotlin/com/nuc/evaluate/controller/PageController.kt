@@ -1,10 +1,10 @@
 package com.nuc.evaluate.controller
 
 
-import com.nuc.evaluate.po.Pages
-import com.nuc.evaluate.po.User
 import com.nuc.evaluate.result.Result
+import com.nuc.evaluate.service.PaperService
 import com.nuc.evaluate.util.ResultUtils
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -16,9 +16,16 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/page")
 class PageController {
 
+    @Autowired
+    private lateinit var paperService: PaperService
 
     @GetMapping("/listPages")
-    fun listPages(user: User): Result {
+    fun listPages(classId: Long): Result {
+        return ResultUtils.success(200, "查询成功", paperService.getOneClassPaper(classId))
+    }
+
+    @GetMapping("/onePage")
+    fun getPage(pageId: Long): Result {
 
         return ResultUtils.success()
     }

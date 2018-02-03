@@ -1,6 +1,7 @@
 package com.nuc.evaluate.service
 
 import com.nuc.evaluate.exception.ResultException
+import com.nuc.evaluate.po.Student
 import com.nuc.evaluate.po.User
 
 
@@ -28,5 +29,5 @@ interface UserService {
      * @throws ResultException 当用户名称和密码不一致
      */
     @Throws(ResultException::class)
-    fun login(user: User): User
+    fun login(user: User): Student
 }

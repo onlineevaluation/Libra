@@ -33,7 +33,7 @@ class Swagger2 {
     /**
      * 修复版本号
      */
-    val incrementalVersion = 2
+    val incrementalVersion = 3
 
     @Bean
     fun createRestApi(): Docket {

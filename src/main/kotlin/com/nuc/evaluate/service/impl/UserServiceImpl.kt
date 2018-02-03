@@ -2,7 +2,9 @@ package com.nuc.evaluate.service.impl
 
 import com.nuc.evaluate.po.UserAndRole
 import com.nuc.evaluate.exception.ResultException
+import com.nuc.evaluate.po.Student
 import com.nuc.evaluate.po.User
+import com.nuc.evaluate.repository.StudentRepository
 import com.nuc.evaluate.repository.UserAndRoleRepository
 import com.nuc.evaluate.repository.UserRepository
 import com.nuc.evaluate.service.UserService
@@ -22,6 +24,9 @@ class UserServiceImpl : UserService {
 
     @Autowired
     lateinit var userAndRoleRepository: UserAndRoleRepository
+
+    @Autowired
+    lateinit var studentRepository: StudentRepository
 
     /**
      * 获得所有的用户
@@ -60,10 +65,15 @@ class UserServiceImpl : UserService {
      * @throws ResultException 当用户名称和密码不一致
      */
     @Throws(ResultException::class)
-    override fun login(user: User): User {
+    override fun login(user: User): Student {
 
-        return userRepository.findByUsernameAndPassword(user.username, Md5Utils.md5(user.password))
-                ?: throw ResultException("用户不存在或密码错误", 500)
+        val student = studentRepository.findByStudentNumber(user.username) ?: throw ResultException("该用户不存在", 500)
+        val userInDb = userRepository.findOne(student.userId)
+        if (userInDb.password != Md5Utils.md5(user.password)) {
+            throw ResultException("用户密码错误", 500)
+        }
+        return student
+
     }
 
 }
