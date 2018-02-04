@@ -1,5 +1,6 @@
 package com.nuc.evaluate.po
 
+import java.sql.Timestamp
 import javax.persistence.*
 
 /**
@@ -14,12 +15,13 @@ class ClassAndPages {
     var pagesId: Long = 0
     var classId: Long = 0
     @Column(columnDefinition = "DATETIME")
-    var startTime: String? = null
+    var startTime: Timestamp? = null
     @Column(columnDefinition = "DATETIME")
-    var endTime: String? = null
+    var endTime: Timestamp? = null
     var invigilator: Long? = 0
     var comment: String? = null
     @Column(columnDefinition = "DATETIME")
     var addTime: String? = null
     var employeeId: Long? = 0
+
 }

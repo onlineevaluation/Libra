@@ -1,12 +1,10 @@
 package com.nuc.evaluate.vo
 
 import com.nuc.evaluate.po.Title
-import org.intellij.lang.annotations.Language
 import org.junit.Before
 import org.junit.Test
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.util.regex.Pattern
 
 /**
  * @author 杨晓辉 2018/2/4 10:54
@@ -46,7 +44,7 @@ class TitleVOTest {
 //        logger.info("C: ${titleVO.sectionC}")
 //        logger.info("D: ${titleVO.sectionD}")
         var sb = StringBuffer()
-        for (i in 0 until a.size-1) {
+        for (i in 0 until a.size - 1) {
             sb.append(a[i])
             sb.append("[]")
         }

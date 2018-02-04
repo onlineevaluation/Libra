@@ -10,5 +10,5 @@ import com.nuc.evaluate.po.Title
 interface PaperService {
     fun listClassPage(classId: Long): List<ClassAndPages>
 
-    fun getOnePage(pageId: Long):List<Title>
+    fun getOnePage(pageId: Long,classId: Long):List<Title>
 }

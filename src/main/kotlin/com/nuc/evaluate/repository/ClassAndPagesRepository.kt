@@ -1,6 +1,7 @@
 package com.nuc.evaluate.repository
 
 import com.nuc.evaluate.po.ClassAndPages
+import com.nuc.evaluate.po.Page
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
@@ -10,4 +11,6 @@ import org.springframework.stereotype.Repository
 @Repository
 interface ClassAndPagesRepository : JpaRepository<ClassAndPages, Long> {
     fun findByClassId(classId: Long): List<ClassAndPages>
+
+    fun findByPagesId(pagesId: Long): ClassAndPages
 }

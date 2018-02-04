@@ -25,7 +25,7 @@ class PageController {
 
     /**
      * 通过 `classId` 获取该班级所有的考试
-     * @param classId 班级id
+     * @param classId 班级 `id`
      */
     @GetMapping("/listPagesByClassId")
     fun listPages(classId: Long): Result {
@@ -34,11 +34,11 @@ class PageController {
 
     /**
      * 通过 `pageId` 获取考试试题
-     * @param pageId 试卷id
+     * @param pageId 试卷 `id`
      */
     @GetMapping("/onePage")
-    fun getPage(pageId: Long): Result {
-        val title = paperService.getOnePage(pageId)
+    fun getPage(pageId: Long, classId: Long): Result {
+        val title = paperService.getOnePage(pageId, classId)
         val titleVOList: MutableList<TitleVO> = ArrayList()
         title.map {
             titleVOList.add(po2vo(it))
@@ -63,6 +63,16 @@ class PageController {
         }
         return ResultUtils.success(200, "获取成功", pageVO)
     }
+
+    /**
+     * 获取历史试卷
+     * todo(2/5日之后补充)
+     */
+    @GetMapping("/getHistoryPage")
+    fun getHistoryPage(): Result {
+        return ResultUtils.success()
+    }
+
 
     /**
      * po --> vo
