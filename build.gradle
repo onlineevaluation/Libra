@@ -23,7 +23,7 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'org.jetbrains.dokka'
 
 group = 'com.nuc'
-version = '1.0.3-SNAPSHOT'
+version = '1.0.4-SNAPSHOT'
 sourceCompatibility = 1.8
 compileKotlin {
     kotlinOptions.jvmTarget = "1.8"
@@ -54,7 +54,7 @@ dependencies {
     compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.8.0'
     compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.8.0'
     // spring security
-//    compile('org.springframework.boot:spring-boot-starter-security')
+    // compile('org.springframework.boot:spring-boot-starter-security')
     //jwt
     compile 'io.jsonwebtoken:jjwt:0.9.0'
     // mail

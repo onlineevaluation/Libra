@@ -1,7 +1,0 @@
-language: kotlin
-
-jdk: oraclejdk8
-
-script:
-- gradle assemble
-- gradle build
