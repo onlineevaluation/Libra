@@ -16,6 +16,7 @@ class TitleVO {
     var sectionB: String? = null
     var sectionC: String? = null
     var sectionD: String? = null
+    var blankNum: Int = 0
     private var sectionList: List<String> = ArrayList()
 
 
@@ -33,7 +34,15 @@ class TitleVO {
 
         // 填空题
             "3" -> {
-
+                val sb = StringBuilder()
+                val titleList = title.split("_{1,10}_".toRegex())
+                for (i in 0 until titleList.size - 1) {
+                    sb.append(titleList[i])
+                    sb.append("【 】")
+                }
+                sb.append(titleList.last())
+                title = sb.toString().trim()
+                blankNum = titleList.size - 1
             }
             else -> {
             }

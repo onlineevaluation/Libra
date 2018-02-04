@@ -1,10 +1,12 @@
 package com.nuc.evaluate.vo
 
 import com.nuc.evaluate.po.Title
+import org.intellij.lang.annotations.Language
 import org.junit.Before
 import org.junit.Test
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import java.util.regex.Pattern
 
 /**
  * @author 杨晓辉 2018/2/4 10:54
@@ -21,7 +23,7 @@ class TitleVOTest {
     fun init() {
         titleVO = TitleVO()
         title = Title()
-        title.title ="直通车三种推广方式_____、_____和_____。"
+        title.title = "直通车三种推广方式。"
 
         title.category = "0"
     }
@@ -29,14 +31,26 @@ class TitleVOTest {
 
     @Test
     fun testPo2Vo() {
-        titleVO.title = title.title
-        titleVO.category = title.category
-        titleVO.setSection(titleVO.category)
-        logger.info("title: ${titleVO.title}")
-        logger.info("A: ${titleVO.sectionA}")
-        logger.info("B: ${titleVO.sectionB}")
-        logger.info("C: ${titleVO.sectionC}")
-        logger.info("D: ${titleVO.sectionD}")
-
+//        val a =title.title.replace("_{1,10}_".toRegex(), "[]")
+//        println("a is $a")
+//        val pattern = Pattern.compile("_ __ ___ _____ ____ ______")
+//        @Language("RegExp")
+//        val l = "_{1,3}_"
+        val a = title.title.split("_{1,10}_".toRegex())
+//        titleVO.title = title.title
+//        titleVO.category = title.category
+//        titleVO.setSection(titleVO.category)
+//        logger.info("title: ${titleVO.title}")
+//        logger.info("A: ${titleVO.sectionA}")
+//        logger.info("B: ${titleVO.sectionB}")
+//        logger.info("C: ${titleVO.sectionC}")
+//        logger.info("D: ${titleVO.sectionD}")
+        var sb = StringBuffer()
+        for (i in 0 until a.size-1) {
+            sb.append(a[i])
+            sb.append("[]")
+        }
+        sb.append(a.last())
+        println("sb is ${sb.toString()}")
     }
 }
