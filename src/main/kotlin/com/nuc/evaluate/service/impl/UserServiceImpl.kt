@@ -45,10 +45,10 @@ class UserServiceImpl : UserService {
     @Transactional(rollbackOn = [ResultException::class])
     @Throws(ResultException::class)
     override fun saveUser(user: User): User {
-        val userList = findUser()
+        val userList: List<User> = findUser()
         (0 until userList.size)
                 .filter { userList[it].username == user.username }
-                .forEach { throw ResultException("学号重复", 500) }
+                .forEach({ throw ResultException("学号重复", 500) })
         user.password = Md5Utils.md5(user.password)
         val userInDB = userRepository.save(user) ?: throw ResultException("注册失败", 500)
         val userAndRole = UserAndRole()
@@ -73,7 +73,6 @@ class UserServiceImpl : UserService {
             throw ResultException("用户密码错误", 500)
         }
         return student
-
     }
 
 }

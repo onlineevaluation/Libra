@@ -51,7 +51,7 @@ class PaperServiceImpl : PaperService {
      */
     @Transactional
     override fun getOnePage(pageId: Long, classId: Long): List<Title> {
-        val classAndPages = classAndPagesRepository.findByPaperIdAndClassId(pageId, classId).toList()
+        val classAndPages = classAndPagesRepository.findByPagesIdAndClassId(pageId, classId).toList()
         if (classAndPages.isEmpty()) {
             throw ResultException("没有该考试", 500)
         }

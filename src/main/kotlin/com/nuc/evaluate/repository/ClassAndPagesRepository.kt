@@ -20,5 +20,5 @@ interface ClassAndPagesRepository : JpaRepository<ClassAndPages, Long> {
     /**
      *
      */
-    fun findByPaperIdAndClassId(paperId: Long, classId: Long): Set<ClassAndPages>
+    fun findByPagesIdAndClassId(pagesId: Long, classId: Long): Set<ClassAndPages>
 }

@@ -1,12 +1,17 @@
 package com.nuc.evaluate.controller
 
 
+import com.alibaba.fastjson.JSON
+import com.nuc.evaluate.entity.result.Json
+import com.nuc.evaluate.exception.ResultException
 import com.nuc.evaluate.po.Title
 import com.nuc.evaluate.result.Result
 import com.nuc.evaluate.service.PaperService
 import com.nuc.evaluate.util.ResultUtils
 import com.nuc.evaluate.vo.PageVO
 import com.nuc.evaluate.vo.TitleVO
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 
@@ -17,6 +22,8 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/page")
 class PageController {
+
+    private val logger: Logger = LoggerFactory.getLogger(this.javaClass)
 
     @Autowired
     private lateinit var paperService: PaperService
@@ -72,7 +79,6 @@ class PageController {
      *var result = {
      *   studentId: 1,
      *   pageId: 1,
-     *   classId: 1,
      *   signChoice:[
      *      {id: 1,
      *       answer: A},
@@ -91,6 +97,9 @@ class PageController {
      *   ],
      *   ans:[
      *      {id: 6, answer: "这是问答题答案" }
+     *   ],
+     *   draw:[
+     *      {id:7,answer:"画图题答案"
      *   ]
      *
      * }
@@ -100,7 +109,10 @@ class PageController {
      */
     @PostMapping("/addAns")
     fun addAns(@RequestBody json: String): Result {
-
+        logger.info("json is $json")
+        val result = JSON.parseObject(json, Json::class.java)
+                ?: throw ResultException("解析错误", 500)
+        logger.info("result is  ${result.toString()}")
         return ResultUtils.success()
     }
 

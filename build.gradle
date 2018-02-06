@@ -46,7 +46,6 @@ dependencies {
     // web
     compile('org.springframework.boot:spring-boot-starter-web')
     // kotlin
-    compile("org.jetbrains.kotlin:kotlin-stdlib-jre8:${kotlinVersion}")
     compile("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
     // mysql链接
     runtime('mysql:mysql-connector-java')
