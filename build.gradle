@@ -62,6 +62,8 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-freemarker')
     // fastjson
     compile ('com.alibaba:fastjson:1.2.46')
+    //mq
+    compile('org.springframework.boot:spring-boot-starter-amqp')
     // test
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }

@@ -1,5 +1,7 @@
 package com.nuc.evaluate.service.impl
 
+
+import com.nuc.evaluate.entity.result.Json
 import com.nuc.evaluate.exception.ResultException
 import com.nuc.evaluate.po.ClassAndPages
 import com.nuc.evaluate.po.Title
@@ -10,6 +12,8 @@ import com.nuc.evaluate.repository.TitleRepository
 import com.nuc.evaluate.service.PaperService
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.springframework.amqp.rabbit.annotation.RabbitHandler
+import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.sql.Timestamp
@@ -66,4 +70,11 @@ class PaperServiceImpl : PaperService {
         }
     }
 
+    @RabbitListener(queues = ["page"])
+    @RabbitHandler
+    fun addPages(json: Json) {
+        logger.info("Receiver: ${json.toString()}")
+        Thread.sleep(5000)
+
+    }
 }
