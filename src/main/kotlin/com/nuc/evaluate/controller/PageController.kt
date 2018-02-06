@@ -8,9 +8,7 @@ import com.nuc.evaluate.util.ResultUtils
 import com.nuc.evaluate.vo.PageVO
 import com.nuc.evaluate.vo.TitleVO
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 /**
  * @author 杨晓辉 2018/2/3 11:22
@@ -62,6 +60,48 @@ class PageController {
             }
         }
         return ResultUtils.success(200, "获取成功", pageVO)
+    }
+
+    /**
+     * 上传考试答案
+     *
+     * 按照下面的格式进行试题返回
+     *
+     * ``` javascript
+     *
+     *var result = {
+     *   studentId: 1,
+     *   pageId: 1,
+     *   classId: 1,
+     *   signChoice:[
+     *      {id: 1,
+     *       answer: A},
+     *   ],
+     *   multipleChoice:[
+     *      {id: 2, answer: "A,B"} // 采用逗号分割
+     *   ],
+     *   trueOrFalse:[
+     *      {id: 3, answer: "true"}
+     *   ],
+     *   blank:[
+     *      {id: 4, answer: "【这是第一空答案】【这是第二空答案】"}
+     *   ],
+     *   code:[
+     *      {id: 5, answer: 'println("Hello World")'}
+     *   ],
+     *   ans:[
+     *      {id: 6, answer: "这是问答题答案" }
+     *   ]
+     *
+     * }
+     *
+     *
+     * ```
+     */
+    @PostMapping("/addAns")
+    fun addAns(@RequestBody json: String): Result {
+
+        return ResultUtils.success()
     }
 
     /**

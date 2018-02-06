@@ -10,7 +10,15 @@ import org.springframework.stereotype.Repository
  */
 @Repository
 interface ClassAndPagesRepository : JpaRepository<ClassAndPages, Long> {
+
+    /**
+     *
+     */
     fun findByClassId(classId: Long): List<ClassAndPages>
 
-    fun findByPagesId(pagesId: Long): ClassAndPages
+
+    /**
+     *
+     */
+    fun findByPaperIdAndClassId(paperId: Long, classId: Long): Set<ClassAndPages>
 }

@@ -3,14 +3,16 @@ package com.nuc.evaluate.service.impl
 import com.nuc.evaluate.exception.ResultException
 import com.nuc.evaluate.po.ClassAndPages
 import com.nuc.evaluate.po.Title
-import com.nuc.evaluate.repository.*
+import com.nuc.evaluate.repository.ClassAndPagesRepository
+import com.nuc.evaluate.repository.PageAndTitleRepository
+import com.nuc.evaluate.repository.PagesRepository
+import com.nuc.evaluate.repository.TitleRepository
 import com.nuc.evaluate.service.PaperService
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.sql.Timestamp
-import java.util.*
 import javax.transaction.Transactional
 
 /**
@@ -33,9 +35,9 @@ class PaperServiceImpl : PaperService {
     @Autowired
     private lateinit var titleRepository: TitleRepository
 
-    @Autowired
-    private lateinit var classAndExamRepository: ClassAndExamRepository
-
+    /**
+     *
+     */
     override fun listClassPage(classId: Long): List<ClassAndPages> {
         val pages = classAndPagesRepository.findByClassId(classId)
         if (pages.isEmpty()) {
@@ -44,22 +46,24 @@ class PaperServiceImpl : PaperService {
         return pages
     }
 
+    /**
+     *
+     */
     @Transactional
     override fun getOnePage(pageId: Long, classId: Long): List<Title> {
-//        pagesRepository.findOne(pageId) ?: throw ResultException("没有该考试", 500)
-        //val classAndPages = classAndPagesRepository.findByPagesIdAnd(pageId)
-        val classAndExam = classAndExamRepository.findByPaperIdAndClassId(pageId, classId)
-                ?: throw ResultException("没有该考试", 500)
+        val classAndPages = classAndPagesRepository.findByPaperIdAndClassId(pageId, classId).toList()
+        if (classAndPages.isEmpty()) {
+            throw ResultException("没有该考试", 500)
+        }
+
         val nowTime = Timestamp(System.currentTimeMillis())
-        if (nowTime.after(classAndExam.endTime) || nowTime.before(classAndExam.startTime)) {
+        if (nowTime.after(classAndPages[0].endTime) || nowTime.before(classAndPages[0].startTime)) {
             throw ResultException("该时间段内没有该考试", 500)
         }
-        println("date is $nowTime")
         val pagesAndTitleList = pagesAndTitleRepository.findByPagesId(pageId)
         return pagesAndTitleList.map {
             titleRepository.findOne(it.titleId)
         }
     }
-
 
 }

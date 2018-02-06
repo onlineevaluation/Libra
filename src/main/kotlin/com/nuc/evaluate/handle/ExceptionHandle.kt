@@ -36,19 +36,21 @@ class ExceptionHandle {
             ResultUtils.error(resultException.code!!, resultException.message!!)
         } else {
             logger.error("[系统异常]", e)
-//            val to: Array<String> = arrayOf("youngxhui@163.com")
-//            val subject = "[在线教育平台]-异常通知"
-//            val emailMessage = EmailMessage()
-//            val buf = ByteArrayOutputStream()
-//            e.printStackTrace(PrintWriter(buf, true))
-//            val expMessage = buf.toString()
-//            buf.close()
-//            emailMessage.exception = expMessage
-//            emailMessage.time = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date())
-//            mailService.sendInlineMail(to, subject, emailMessage, "ExceptionMail.ftl")
+            sendEmail(e)
             ResultUtils.error(-1, "未知错误")
         }
     }
 
-
+    private fun sendEmail(e: Exception) {
+        val to: Array<String> = arrayOf("youngxhui@163.com")
+        val subject = "[在线教育平台]-异常通知"
+        val emailMessage = EmailMessage()
+        val buf = ByteArrayOutputStream()
+        e.printStackTrace(PrintWriter(buf, true))
+        val expMessage = buf.toString()
+        buf.close()
+        emailMessage.exception = expMessage
+        emailMessage.time = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date())
+        mailService.sendInlineMail(to, subject, emailMessage, "ExceptionMail.ftl")
+    }
 }

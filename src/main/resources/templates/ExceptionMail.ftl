@@ -29,7 +29,7 @@
 </head>
 
 <body>
-<div class=" page-header ">
+<div class="page-header">
     <h2>异常通知
         <small>在线测评模块</small>
     </h2>
