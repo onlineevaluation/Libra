@@ -73,7 +73,7 @@ class PaperServiceImpl : PaperService {
     @RabbitListener(queues = ["page"])
     @RabbitHandler
     fun addPages(json: Json) {
-        logger.info("Receiver: ${json.toString()}")
+        logger.info("Receiver: $json")
         Thread.sleep(5000)
 
     }

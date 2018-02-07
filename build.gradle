@@ -23,7 +23,7 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'org.jetbrains.dokka'
 
 group = 'com.nuc'
-version = '1.0.5-SNAPSHOT'
+version = '1.0.6-SNAPSHOT'
 sourceCompatibility = 1.8
 compileKotlin {
     kotlinOptions.jvmTarget = "1.8"

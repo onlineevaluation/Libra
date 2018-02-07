@@ -36,7 +36,7 @@ class ExceptionHandle {
             ResultUtils.error(resultException.code!!, resultException.message!!)
         } else {
             logger.error("[系统异常]", e)
-//            sendEmail(e)
+            sendEmail(e)
             ResultUtils.error(-1, "未知错误")
         }
     }
