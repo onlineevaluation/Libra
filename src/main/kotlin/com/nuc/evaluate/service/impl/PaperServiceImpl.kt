@@ -4,11 +4,9 @@ package com.nuc.evaluate.service.impl
 import com.nuc.evaluate.entity.result.Json
 import com.nuc.evaluate.exception.ResultException
 import com.nuc.evaluate.po.ClassAndPages
+import com.nuc.evaluate.po.StudentAnswer
 import com.nuc.evaluate.po.Title
-import com.nuc.evaluate.repository.ClassAndPagesRepository
-import com.nuc.evaluate.repository.PageAndTitleRepository
-import com.nuc.evaluate.repository.PagesRepository
-import com.nuc.evaluate.repository.TitleRepository
+import com.nuc.evaluate.repository.*
 import com.nuc.evaluate.service.PaperService
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -17,6 +15,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.sql.Timestamp
+import java.util.*
 import javax.transaction.Transactional
 
 /**
@@ -38,6 +37,9 @@ class PaperServiceImpl : PaperService {
 
     @Autowired
     private lateinit var titleRepository: TitleRepository
+
+    @Autowired
+    private lateinit var studentAnswerRepository: StudentAnswerRepository
 
     /**
      *
@@ -70,11 +72,45 @@ class PaperServiceImpl : PaperService {
         }
     }
 
-    @RabbitListener(queues = ["page"])
+    /**
+     * 进行判题
+     */
+    @RabbitListener(queues = ["fanout.check"])
     @RabbitHandler
-    fun addPages(json: Json) {
-        logger.info("Receiver: $json")
+    fun addPages(result: Json) {
+        logger.info("Receiver check: $result")
         Thread.sleep(5000)
 
+    }
+
+    /**
+     * 将学生答案写入数据库
+     */
+    @RabbitListener(queues = ["fanout.add"])
+    @RabbitHandler
+    @Transactional
+    fun addAnswer(result: Json) {
+        logger.info("Receiver add: $result")
+        val ansList = ArrayList<StudentAnswer>()
+        for (i in result.result.answer) {
+            val studentAnswer = StudentAnswer()
+            studentAnswer.titleId = i.id
+            studentAnswer.answer = i.ans
+            studentAnswer.time = Timestamp(System.currentTimeMillis())
+            studentAnswer.studentId = result.result.studentId
+            studentAnswer.pagesId = result.result.pageId
+            ansList.add(studentAnswer)
+        }
+        ansList.map {
+            studentAnswerRepository.save(it)
+        }
+    }
+
+    override fun verifyPage(result: Json) {
+        val ansSet = studentAnswerRepository.findByStudentIdAndPagesId(result.result.studentId,
+                result.result.pageId)
+        if (ansSet.isNotEmpty()) {
+            throw ResultException("你已经提交过答案，请勿重复提交", 500)
+        }
     }
 }

@@ -2,7 +2,6 @@ package com.nuc.evaluate.controller
 
 
 import com.alibaba.fastjson.JSON
-import com.nuc.evaluate.entity.EmailMessage
 import com.nuc.evaluate.entity.result.Json
 import com.nuc.evaluate.exception.ResultException
 import com.nuc.evaluate.po.Title
@@ -122,10 +121,12 @@ class PageController {
     @PostMapping("/addAns")
     fun addAns(@RequestBody json: String): Result {
         logger.info("json is $json")
+
         val result = JSON.parseObject(json, Json::class.java)
                 ?: throw ResultException("解析错误", 500)
+        paperService.verifyPage(result)
         logger.info("result is  $result")
-        rabbitTemplate.convertAndSend("page", result)
+        rabbitTemplate.convertAndSend("fanoutExchange", "", result)
 
         return ResultUtils.success()
     }

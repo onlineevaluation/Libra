@@ -1,6 +1,5 @@
 package com.nuc.evaluate.entity.result
 
-import com.alibaba.fastjson.annotation.JSONField
 import java.io.Serializable
 
 /**
@@ -10,21 +9,10 @@ import java.io.Serializable
 class Result : Serializable {
     var studentId: Long = 0L
     var pageId: Long = 0L
-    var signChoice: ArrayList<Answer> = ArrayList()
-    var multipleChoice: ArrayList<Answer> = ArrayList()
-    var blank: ArrayList<Answer> = ArrayList()
-    var trueOrFalse: ArrayList<Answer> = ArrayList()
-    @JSONField(name = "code")
-    var codeQuestion: ArrayList<Answer> = ArrayList()
-    @JSONField(name = "draw")
-    var drawingQuestion: ArrayList<Answer> = ArrayList()
-    @JSONField(name = "ans")
-    var ansQuestion: ArrayList<Answer> = ArrayList()
+    var answer = ArrayList<Answer>()
 
     override fun toString(): String {
-        return "Result(studentId=$studentId, pagesId=$pageId, signChoice=$signChoice, " +
-                "multipleChoice=$multipleChoice, blank=$blank, trueOrFalse=$trueOrFalse, " +
-                "codeQuestion=$codeQuestion, drawingQuestion=$drawingQuestion, ansQuestion=$ansQuestion)"
+        return "Result(studentId=$studentId, pageId=$pageId, ans=$answer)"
     }
 
 
@@ -41,8 +29,8 @@ class Json : Serializable {
 
 class Answer : Serializable {
     var id: Long = 0L
-    var answer: String = ""
+    var ans: String = ""
     override fun toString(): String {
-        return "Answer(id=$id, ans='$answer')"
+        return "Answer(id=$id, ans='$ans')"
     }
 }
