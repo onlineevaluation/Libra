@@ -14,24 +14,7 @@ class RabbitConfig {
 
     @Bean
     fun checkAns(): Queue {
-        return Queue("fanout.check")
+        return Queue("check")
     }
-
-    @Bean
-    fun addAns(): Queue {
-        return Queue("fanout.add")
-    }
-
-    @Bean
-    fun fanoutExchange(): FanoutExchange = FanoutExchange("fanoutExchange")
-
-
-    @Bean
-    fun bindingExchangeCheck(checkAns: Queue, fanoutExchange: FanoutExchange)
-            = BindingBuilder.bind(checkAns).to(fanoutExchange)!!
-
-    @Bean
-    fun bindingExchangeAdd(addAns: Queue, fanoutExchange: FanoutExchange)
-            = BindingBuilder.bind(addAns).to(fanoutExchange)!!
 
 }

@@ -27,7 +27,7 @@ class Title {
     var teacher: Long? = 0
     @Column(columnDefinition = "TIMESTAMP")
     var addTime: java.sql.Timestamp? = null
-    var score: Long = 0
+    var score: Double = 0.0
     var completeTime: Long = 0
     @Column(columnDefinition = "ENUM")
     var status: String? = null

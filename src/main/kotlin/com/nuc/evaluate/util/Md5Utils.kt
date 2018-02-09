@@ -10,19 +10,20 @@ import java.security.MessageDigest
  */
 object Md5Utils {
 
+    private const val salt: Int = 0
+
     fun md5(message: String): String {
         val sb = StringBuilder()
         val messageDigest = MessageDigest.getInstance("MD5")
         val digest: ByteArray = messageDigest.digest(message.toByteArray())
         for (i in 0 until digest.size) {
             val result: Int = digest[i].toInt() and (0xff)
-            val hexString = Integer.toHexString(result) // 不要问为什么不加盐   因为某个智障外包公司不加盐 + 1
+            val hexString = Integer.toHexString(result) + salt
             if (hexString.length < 2) {
                 sb.append("0")
             }
             sb.append(hexString)
         }
-
         return sb.toString()
     }
 }

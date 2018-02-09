@@ -8,12 +8,6 @@ import com.nuc.evaluate.result.Result
  */
 object ResultUtils {
 
-    private lateinit var data: Any
-
-    private var code: Int = 200
-
-    private lateinit var message: String
-
     private var result = Result()
 
     fun success(): Result {
@@ -37,7 +31,6 @@ object ResultUtils {
         result.data = data
         return result
     }
-
 
     fun error(code: Int, message: String): Result {
         result.code = code

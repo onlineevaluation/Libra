@@ -36,8 +36,8 @@ class UserController {
     /**
      * 用户登录
      */
-    @GetMapping("/login")
-    fun login(user: User): Result {
+    @PostMapping("/login")
+    fun login(@RequestBody user: User): Result {
         return ResultUtils.success(200, "登录成功", userService.login(user))
     }
 

@@ -10,7 +10,7 @@ class TitleVO {
     lateinit var title: String
     lateinit var category: String
     var difficulty: String? = null
-    var score: Long = 0
+    var score: Double = 0.0
     var completeTime: Long = 0
     var sectionA: String? = null
     var sectionB: String? = null

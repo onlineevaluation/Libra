@@ -80,55 +80,35 @@ class PageController {
      * 按照下面的格式进行试题返回
      *
      * ``` javascript
-     *
      * let result = {
      *  studentId: 1,
      *  pageId: 1,
-     *  signChoice: [{
-     *      id: 1,
-     *      answer: 'A'
-     *  }],
-     *  multipleChoice: [{
-     *      id: 2,
-     *      answer: "A,B"
-     *  } // 采用逗号分割
-     *  ],
-     *  trueOrFalse: [{
-     *      id: 3,
-     *      answer: "true"
-     *  }],
-     *  blank: [{
-     *      id: 4,
-     *      answer: "【这是第一空答案】【这是第二空答案】"
-     *  }],
-     *  code: [{
-     *      id: 5,
-     *      answer: 'println("Hello World")'
-     *  }],
-     *  ans: [{
-     *      id: 6,
-     *      answer: "这是问答题答案"
-     *  }],
-     *  draw: [{
-     *      id: 7,
-     *      answer: "画图题答案"
-     *  }]
+     *  answer: [{
+     *      id: '1',
+     *      ans: 'A'
+     *  },
+     *  {
+     *      id: '37',
+     *      ans: '&amp;nbsp;'
+     *  },
+     *  {
+     *      id: '1024',
+     *      ans: "（1） Grinder. 是一个开源的JVM负载测试框架，它通过很多负载注射器来为分布式测试提供了便利。支持用于执行测试脚本的Jython脚本引擎.HTTP测试可通过HTTP代理进行管理。根据项目网站的说法，Grinder的主要目标用户是“理解他们所测代码的人——Grinder不仅仅是带有一组相关响应时间的‘黑盒’测试。由于测试过程可以进行编码——而不是简单地脚本化，所以程序员能测试应用中内部的各个层次，而不仅仅是通过用户界面测试响应时间。（2）fwptt。也是一个用来进行Web应用负载测试的工具。它可以记录一般的请求，也可以记录Ajax请求。它可以用来测试ASP.NET，JSP，PHP或是其它的Web应用.（3）LoadRunner   支持多种常用协议多且个别协议支持的版本比较高；可以设置灵活的负载压力测试方案，可视化的图形界面可以监控丰富的资源；报告可以导出到Word、Excel以及HTML格式。"
+     *  },
+     *  ]
      * }
-     *
-     *
      * ```
      */
     @PostMapping("/addAns")
     fun addAns(@RequestBody json: String): Result {
         logger.info("json is $json")
-
         val result = JSON.parseObject(json, Json::class.java)
                 ?: throw ResultException("解析错误", 500)
         paperService.verifyPage(result)
         logger.info("result is  $result")
-        rabbitTemplate.convertAndSend("fanoutExchange", "", result)
+        rabbitTemplate.convertAndSend( "check", result)
 
-        return ResultUtils.success()
+        return ResultUtils.success("提交成功")
     }
 
     /**

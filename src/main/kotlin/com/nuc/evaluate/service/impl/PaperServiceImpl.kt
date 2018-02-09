@@ -8,6 +8,7 @@ import com.nuc.evaluate.po.StudentAnswer
 import com.nuc.evaluate.po.Title
 import com.nuc.evaluate.repository.*
 import com.nuc.evaluate.service.PaperService
+import com.nuc.evaluate.util.WordUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.RabbitHandler
@@ -15,7 +16,6 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.sql.Timestamp
-import java.util.*
 import javax.transaction.Transactional
 
 /**
@@ -42,7 +42,7 @@ class PaperServiceImpl : PaperService {
     private lateinit var studentAnswerRepository: StudentAnswerRepository
 
     /**
-     *
+     * 获取该班级的所有考试
      */
     override fun listClassPage(classId: Long): List<ClassAndPages> {
         val pages = classAndPagesRepository.findByClassId(classId)
@@ -53,7 +53,7 @@ class PaperServiceImpl : PaperService {
     }
 
     /**
-     *
+     * 获取指定考试
      */
     @Transactional
     override fun getOnePage(pageId: Long, classId: Long): List<Title> {
@@ -75,40 +75,102 @@ class PaperServiceImpl : PaperService {
     /**
      * 进行判题
      */
-    @RabbitListener(queues = ["fanout.check"])
+    @Transactional
+    @RabbitListener(queues = ["check"])
     @RabbitHandler
     fun addPages(result: Json) {
-        logger.info("Receiver check: $result")
-        Thread.sleep(5000)
 
+        val ansList = ArrayList<StudentAnswer>()
+
+        result.result.answer.map {
+            val title = titleRepository.findOne(it.id) ?: throw ResultException("该试题不存在", 500)
+            val studentAnswer = StudentAnswer()
+            studentAnswer.pagesId = result.result.pageId
+            studentAnswer.studentId = result.result.studentId
+            studentAnswer.time = Timestamp(System.currentTimeMillis())
+            studentAnswer.score = 0.0
+            studentAnswer.answer = it.ans
+            studentAnswer.titleId = it.id
+            when (title.category) {
+            // 单选题
+                "0" -> {
+                    logger.info("单选题")
+
+                    if (it.ans.toUpperCase() == title.answer?.toUpperCase()) {
+                        studentAnswer.score = title.score
+                    }
+                    ansList.add(studentAnswer)
+                }
+            // 多选题
+                "1" -> {
+
+                }
+            // 判断题
+                "2" -> {
+
+                }
+            // 填空题
+                "3" -> {
+                    logger.info("填空题")
+
+                    val similarScore = WordUtils.blankCheck(it.ans, title.answer!!)
+                    val score = when (similarScore) {
+                        in 0.0..0.75 -> {
+                            0.0
+                        }
+                        in 0.75..1.0 -> {
+                            title.score
+                        }
+                        else -> {
+                            0.0
+                        }
+                    }
+                    studentAnswer.score = score
+                    ansList.add(studentAnswer)
+                }
+            // 简答题
+                "6" -> {
+                    logger.info("解答题")
+                    val similarScore = WordUtils.ansCheck(it.ans, title.answer!!)
+                    val score: Double = when (similarScore) {
+                        in 0.0..0.25 -> {
+                            0.0
+                        }
+                        in 0.25..0.5 -> {
+                            0.0
+                        }
+                        in 0.5..0.75 -> {
+                            0.0
+                        }
+                        in 0.75..1.0 -> {
+                            0.0
+                        }
+                        else -> {
+                            0.0
+                        }
+                    }
+                    studentAnswer.score = score
+                    ansList.add(studentAnswer)
+                }
+
+                else -> {
+                    logger.info("else")
+                    ansList.add(studentAnswer)
+                }
+            }
+
+        }
+        studentAnswerRepository.save(ansList)
     }
 
     /**
-     * 将学生答案写入数据库
+     * 试卷校验
      */
-    @RabbitListener(queues = ["fanout.add"])
-    @RabbitHandler
-    @Transactional
-    fun addAnswer(result: Json) {
-        logger.info("Receiver add: $result")
-        val ansList = ArrayList<StudentAnswer>()
-        for (i in result.result.answer) {
-            val studentAnswer = StudentAnswer()
-            studentAnswer.titleId = i.id
-            studentAnswer.answer = i.ans
-            studentAnswer.time = Timestamp(System.currentTimeMillis())
-            studentAnswer.studentId = result.result.studentId
-            studentAnswer.pagesId = result.result.pageId
-            ansList.add(studentAnswer)
-        }
-        ansList.map {
-            studentAnswerRepository.save(it)
-        }
-    }
-
     override fun verifyPage(result: Json) {
-        val ansSet = studentAnswerRepository.findByStudentIdAndPagesId(result.result.studentId,
-                result.result.pageId)
+        val ansSet = studentAnswerRepository.findByStudentIdAndPagesId(
+            result.result.studentId,
+            result.result.pageId
+        )
         if (ansSet.isNotEmpty()) {
             throw ResultException("你已经提交过答案，请勿重复提交", 500)
         }
