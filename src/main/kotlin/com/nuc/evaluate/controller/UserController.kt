@@ -1,11 +1,16 @@
 package com.nuc.evaluate.controller
 
+import com.nuc.evaluate.exception.ResultException
 import com.nuc.evaluate.po.User
 import com.nuc.evaluate.result.Result
 import com.nuc.evaluate.service.UserService
 import com.nuc.evaluate.util.ResultUtils
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
+import javax.validation.Valid
 
 /**
  * @author 杨晓辉 2018/2/1 15:47
@@ -13,6 +18,9 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/user")
 class UserController {
+
+    private val logger: Logger = LoggerFactory.getLogger(this.javaClass)
+
 
     @Autowired
     lateinit var userService: UserService
@@ -37,7 +45,11 @@ class UserController {
      * 用户登录
      */
     @PostMapping("/login")
-    fun login(@RequestBody user: User): Result {
+    fun login(@Valid @RequestBody user: User, bindingResult: BindingResult): Result {
+        if (bindingResult.hasErrors()) {
+            throw ResultException(bindingResult.fieldError.defaultMessage, 500)
+        }
+        logger.info("user: $user")
         return ResultUtils.success(200, "登录成功", userService.login(user))
     }
 

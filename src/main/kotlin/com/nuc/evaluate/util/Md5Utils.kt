@@ -18,7 +18,7 @@ object Md5Utils {
         val digest: ByteArray = messageDigest.digest(message.toByteArray())
         for (i in 0 until digest.size) {
             val result: Int = digest[i].toInt() and (0xff)
-            val hexString = Integer.toHexString(result) + salt
+            val hexString = Integer.toHexString(result)
             if (hexString.length < 2) {
                 sb.append("0")
             }

@@ -10,12 +10,17 @@ import com.nuc.evaluate.service.PaperService
 import com.nuc.evaluate.util.ResultUtils
 import com.nuc.evaluate.vo.PageVO
 import com.nuc.evaluate.vo.TitleVO
+import org.hibernate.validator.constraints.NotEmpty
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.core.AmqpTemplate
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
 import java.util.*
+import javax.validation.Valid
+import javax.validation.constraints.Min
+import javax.validation.constraints.NotNull
 
 /**
  * @author 杨晓辉 2018/2/3 11:22
@@ -38,7 +43,18 @@ class PageController {
      * @param classId 班级 `id`
      */
     @GetMapping("/listPagesByClassId")
-    fun listPages(classId: Long): Result {
+    fun listPages(
+        @Valid
+        @NotEmpty(message = "班级不能为空")
+        @NotNull(message = "班级不能为空")
+        @Min(value = 0L, message = "班级不能为0")
+        classId: Long,
+        bindingResult: BindingResult
+    ): Result {
+        if (bindingResult.hasErrors()) {
+            throw ResultException(bindingResult.fieldError.defaultMessage, 500)
+        }
+
         return ResultUtils.success(200, "查询成功", paperService.listClassPage(classId))
     }
 
@@ -106,7 +122,7 @@ class PageController {
                 ?: throw ResultException("解析错误", 500)
         paperService.verifyPage(result)
         logger.info("result is  $result")
-        rabbitTemplate.convertAndSend( "check", result)
+        rabbitTemplate.convertAndSend("check", result)
 
         return ResultUtils.success("提交成功")
     }

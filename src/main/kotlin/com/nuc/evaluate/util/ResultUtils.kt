@@ -11,17 +11,20 @@ object ResultUtils {
     private var result = Result()
 
     fun success(): Result {
+        result.data = null
         return result
     }
 
     fun success(message: String): Result {
         result.message = message
+        result.data = null
         return result
     }
 
     fun success(code: Int, message: String): Result {
         result.code = code
         result.message = message
+        result.data = null
         return result
     }
 
@@ -35,6 +38,7 @@ object ResultUtils {
     fun error(code: Int, message: String): Result {
         result.code = code
         result.message = message
+        result.data = null
         return result
     }
 }

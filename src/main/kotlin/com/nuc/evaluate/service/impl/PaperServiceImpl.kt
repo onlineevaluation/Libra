@@ -112,20 +112,25 @@ class PaperServiceImpl : PaperService {
             // 填空题
                 "3" -> {
                     logger.info("填空题")
-
-                    val similarScore = WordUtils.blankCheck(it.ans, title.answer!!)
-                    val score = when (similarScore) {
-                        in 0.0..0.75 -> {
-                            0.0
+                    val blankContentList = it.ans.split("【.*?】".toRegex())
+                    logger.info("blankContentList: ${blankContentList[0]}")
+                    blankContentList.map {
+                        val similarScore = WordUtils.blankCheck(it, title.answer!!)
+                        val score = when (similarScore) {
+                            in 0.0..0.75 -> {
+                                0.0
+                            }
+                            in 0.75..1.0 -> {
+                                title.score
+                            }
+                            else -> {
+                                0.0
+                            }
                         }
-                        in 0.75..1.0 -> {
-                            title.score
-                        }
-                        else -> {
-                            0.0
-                        }
+                        studentAnswer.score += score
                     }
-                    studentAnswer.score = score
+
+
                     ansList.add(studentAnswer)
                 }
             // 简答题

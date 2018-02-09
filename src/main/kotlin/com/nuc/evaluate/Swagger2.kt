@@ -25,15 +25,15 @@ class Swagger2 {
     /**
      * 主版本号
      */
-    val mainVersion = 1
+    val mainVersion = 0
     /**
      * 次版本号
      */
-    val minorVersion = 0
+    val minorVersion = 1
     /**
      * 增量版本号
      */
-    val incrementalVersion = 7
+    val incrementalVersion = 8
 
     @Bean
     fun createRestApi(): Docket {

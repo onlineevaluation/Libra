@@ -9,6 +9,8 @@ import com.nuc.evaluate.repository.UserAndRoleRepository
 import com.nuc.evaluate.repository.UserRepository
 import com.nuc.evaluate.service.UserService
 import com.nuc.evaluate.util.Md5Utils
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import javax.transaction.Transactional
@@ -18,6 +20,9 @@ import javax.transaction.Transactional
  */
 @Service
 class UserServiceImpl : UserService {
+
+    private val logger: Logger = LoggerFactory.getLogger(this.javaClass)
+
 
     @Autowired
     lateinit var userRepository: UserRepository
@@ -69,6 +74,9 @@ class UserServiceImpl : UserService {
 
         val student = studentRepository.findByStudentNumber(user.username) ?: throw ResultException("该用户不存在", 500)
         val userInDb = userRepository.findOne(student.userId)
+        logger.info("userInDb : $userInDb")
+        logger.info("userInDb password : ${userInDb.password}")
+        logger.info("user password : ${Md5Utils.md5(user.password)}")
         if (userInDb.password != Md5Utils.md5(user.password)) {
             throw ResultException("用户密码错误", 500)
         }
