@@ -1,6 +1,7 @@
 package com.nuc.evaluate.repository
 
 import com.nuc.evaluate.po.StudentAnswer
+import com.nuc.evaluate.po.StudentScore
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
@@ -9,5 +10,6 @@ import org.springframework.stereotype.Repository
  */
 @Repository
 interface StudentAnswerRepository : JpaRepository<StudentAnswer, Long> {
-    fun findByStudentIdAndPagesId(studentId: Long, pagesId: Long): Set<StudentAnswer>
+    fun findByStudentIdAndPagesId(studentId: Long, pagesId: Long): List<StudentAnswer>
+
 }

@@ -128,6 +128,23 @@ class PageController {
     }
 
     /**
+     * 获取所有考试分数
+     */
+    @GetMapping("/listScore")
+    fun listScore(studentId: Long): Result {
+        return ResultUtils.success(
+            200, "获取成功", paperService.listScore(studentId)
+        )
+    }
+
+    /**
+     * 获取单项考试分数
+     */
+    fun getOneScore(studentId: Long,pageId: Long) {
+
+    }
+
+    /**
      * 获取历史试卷
      * todo(2/5日之后补充)
      */

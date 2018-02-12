@@ -5,6 +5,7 @@ import com.nuc.evaluate.entity.result.Json
 import com.nuc.evaluate.exception.ResultException
 import com.nuc.evaluate.po.ClassAndPages
 import com.nuc.evaluate.po.StudentAnswer
+import com.nuc.evaluate.po.StudentScore
 import com.nuc.evaluate.po.Title
 import com.nuc.evaluate.repository.*
 import com.nuc.evaluate.service.PaperService
@@ -15,6 +16,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitHandler
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.sql.Date
 import java.sql.Timestamp
 import javax.transaction.Transactional
 
@@ -40,6 +42,9 @@ class PaperServiceImpl : PaperService {
 
     @Autowired
     private lateinit var studentAnswerRepository: StudentAnswerRepository
+
+    @Autowired
+    private lateinit var studentScoreRepository: StudentScoreRepository
 
     /**
      * 获取该班级的所有考试
@@ -112,10 +117,10 @@ class PaperServiceImpl : PaperService {
             // 填空题
                 "3" -> {
                     logger.info("填空题")
-                    val blankContentList = it.ans.split("【.*?】".toRegex())
+                    val blankContentList = it.ans.split("】".toRegex())
                     logger.info("blankContentList: ${blankContentList[0]}")
                     blankContentList.map {
-                        val similarScore = WordUtils.blankCheck(it, title.answer!!)
+                        val similarScore = WordUtils.blankCheck(it.substringAfter("【"), title.answer!!)
                         val score = when (similarScore) {
                             in 0.0..0.75 -> {
                                 0.0
@@ -129,8 +134,6 @@ class PaperServiceImpl : PaperService {
                         }
                         studentAnswer.score += score
                     }
-
-
                     ansList.add(studentAnswer)
                 }
             // 简答题
@@ -166,18 +169,49 @@ class PaperServiceImpl : PaperService {
 
         }
         studentAnswerRepository.save(ansList)
+        val scoreList = studentAnswerRepository.findByStudentIdAndPagesId(result.result.studentId, result.result.pageId)
+        var sumScore = 0.0
+        scoreList.map {
+            sumScore += it.score
+        }
+        val studentScore = StudentScore()
+        studentScore.pagesId = result.result.pageId
+        studentScore.studentId = result.result.studentId
+        studentScore.status = "2"
+        studentScore.score = sumScore
+        studentScore.time = Timestamp(System.currentTimeMillis())
+        studentScore.dotime = Date(System.currentTimeMillis())
+        studentScoreRepository.save(studentScore)
     }
 
     /**
      * 试卷校验
      */
     override fun verifyPage(result: Json) {
-        val ansSet = studentAnswerRepository.findByStudentIdAndPagesId(
+        val ansList = studentAnswerRepository.findByStudentIdAndPagesId(
             result.result.studentId,
             result.result.pageId
         )
-        if (ansSet.isNotEmpty()) {
+        if (ansList.isNotEmpty()) {
             throw ResultException("你已经提交过答案，请勿重复提交", 500)
         }
     }
+
+
+    /**
+     * 获取所有成绩
+     */
+    override fun listScore(studentId: Long): List<StudentScore> {
+        val list = studentScoreRepository.findByStudentId(studentId)
+                ?: throw ResultException("你还没有参加考试", 500)
+        return list
+    }
+
+    /**
+     * 查看单张试卷考试成绩
+     */
+
+
+
+
 }
