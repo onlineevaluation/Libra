@@ -24,7 +24,7 @@ apply plugin: 'org.jetbrains.dokka'
 
 
 group = 'com.nuc'
-version = '0.1.9-SNAPSHOT'
+version = '0.1.10.' + getDate()+'-SNAPSHOT'
 
 
 sourceCompatibility = 1.8
@@ -70,7 +70,6 @@ dependencies {
 
     compile group: 'com.google.code.gson', name: 'gson', version: '2.8.2'
 
-
     // test
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
@@ -78,4 +77,10 @@ dependencies {
 dokka {
     outputFormat = 'html'
     outputDirectory = "$buildDir/javadoc"
+}
+
+def getDate() {
+    def date = new Date()
+    def formattedDate = date.format("yyMMddHH")
+    return formattedDate
 }

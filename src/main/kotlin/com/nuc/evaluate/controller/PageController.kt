@@ -140,8 +140,10 @@ class PageController {
     /**
      * 获取单项考试分数
      */
-    fun getOneScore(studentId: Long,pageId: Long) {
-
+    @GetMapping("/getScore")
+    fun getOneScore(id: Long): Result {
+        paperService.getPageScore(id)
+        return ResultUtils.success()
     }
 
     /**

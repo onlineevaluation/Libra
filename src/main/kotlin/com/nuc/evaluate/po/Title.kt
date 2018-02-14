@@ -40,5 +40,12 @@ class Title {
     var type: String? = null
     var url: String? = null
 
+    override fun toString(): String {
+        return "Title(id=$id, num='$num', title='$title', category='$category', difficulty=$difficulty," +
+                " answer=$answer, analysis=$analysis, teacher=$teacher, addTime=$addTime, score=$score, " +
+                "completeTime=$completeTime, status=$status, directionId=$directionId, stageId=$stageId, " +
+                "courseId=$courseId, daysId=$daysId, gongsiId=$gongsiId, zhiweiId=$zhiweiId, type=$type, url=$url)"
+    }
+
 
 }

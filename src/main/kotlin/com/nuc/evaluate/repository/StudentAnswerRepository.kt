@@ -11,5 +11,4 @@ import org.springframework.stereotype.Repository
 @Repository
 interface StudentAnswerRepository : JpaRepository<StudentAnswer, Long> {
     fun findByStudentIdAndPagesId(studentId: Long, pagesId: Long): List<StudentAnswer>
-
 }

@@ -202,16 +202,35 @@ class PaperServiceImpl : PaperService {
      * 获取所有成绩
      */
     override fun listScore(studentId: Long): List<StudentScore> {
-        val list = studentScoreRepository.findByStudentId(studentId)
+        return studentScoreRepository.findByStudentId(studentId)
                 ?: throw ResultException("你还没有参加考试", 500)
-        return list
     }
 
     /**
      * 查看单张试卷考试成绩
      */
+    @Transactional
+    override fun getPageScore(id: Long) {
+        val studentScore = studentScoreRepository.findOne(id) ?: throw ResultException("没有该考试", 500)
+        val studentId = studentScore.studentId
+        val pageId = studentScore.pagesId
+        val studentAnswerList =
+            studentAnswerRepository.findByStudentIdAndPagesId(studentId, pageId)
+        if (studentAnswerList.isEmpty()) {
+            throw ResultException("没有该考试详情", 500)
+        }
+        val titleList = ArrayList<Title>()
+        studentAnswerList.map {
+            val title = titleRepository.findOne(it.titleId)
+            titleList.add(title)
+        }
+        for (i in 0 until titleList.size) {
+
+        }
 
 
+        logger.info("list is $titleList")
+    }
 
 
 }

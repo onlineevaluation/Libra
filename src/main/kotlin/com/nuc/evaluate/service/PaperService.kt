@@ -17,4 +17,6 @@ interface PaperService {
     fun verifyPage(result: Json)
 
     fun listScore(studentId: Long): List<StudentScore>
+
+    fun getPageScore(id: Long)
 }
