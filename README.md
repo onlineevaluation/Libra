@@ -5,6 +5,7 @@
 用于中北大学软件学院的考试模块系统
 
 ![LICENSE]()
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/785a46140de94c00aee0a05a59e76086)](https://app.codacy.com/app/youngxhui/evaluate?utm_source=github.com&utm_medium=referral&utm_content=youngxhui/evaluate&utm_campaign=badger)
 [![Build status](https://ci.appveyor.com/api/projects/status/ohh6mcfiumv4sxno?svg=true)](https://ci.appveyor.com/project/youngxhui/evaluate)
 ![Build Status](https://travis-ci.com/youngxhui/evaluate.svg?token=njtvkNwPTgPqZDxjvXks&branch=master)
 ![Gradle](https://img.shields.io/badge/gradle-4.4-green.svg)
