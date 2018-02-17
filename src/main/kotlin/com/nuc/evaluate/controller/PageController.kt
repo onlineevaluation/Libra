@@ -146,16 +146,6 @@ class PageController {
     }
 
     /**
-     * 获取历史试卷
-     * todo(2/5日之后补充)
-     */
-    @GetMapping("/getHistoryPage")
-    fun getHistoryPage(): Result {
-        return ResultUtils.success()
-    }
-
-
-    /**
      * po --> vo
      */
     private fun po2vo(title: Title): TitleVO {
