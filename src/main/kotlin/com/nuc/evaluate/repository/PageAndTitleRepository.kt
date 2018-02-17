@@ -9,5 +9,10 @@ import org.springframework.stereotype.Repository
  */
 @Repository
 interface PageAndTitleRepository : JpaRepository<PagesAndTitle, Long> {
+    /**
+     * 通过 pageId 查找
+     * @param pageId 考卷id
+     * @return 查询的list集合
+     */
     fun findByPagesId(pageId: Long): List<PagesAndTitle>
 }

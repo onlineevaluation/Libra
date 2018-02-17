@@ -8,6 +8,10 @@ import org.springframework.data.jpa.repository.JpaRepository
  */
 interface StudentScoreRepository : JpaRepository<StudentScore, Long> {
 
+    /**
+     * 通过学生id查找学生分数
+     * @param studentId 学生id
+     */
     fun findByStudentId(studentId: Long): List<StudentScore>?
 
     fun findByPagesIdAndStudentId(pagesId: Long, studentId: Long): StudentScore?

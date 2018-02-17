@@ -10,5 +10,9 @@ import org.springframework.stereotype.Repository
  */
 @Repository
 interface StudentAnswerRepository : JpaRepository<StudentAnswer, Long> {
+
+    /**
+     * 通过 studentId 和 pagesId 查找
+     */
     fun findByStudentIdAndPagesId(studentId: Long, pagesId: Long): List<StudentAnswer>
 }

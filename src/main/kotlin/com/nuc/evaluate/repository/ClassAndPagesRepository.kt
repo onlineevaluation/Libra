@@ -12,13 +12,18 @@ import org.springframework.stereotype.Repository
 interface ClassAndPagesRepository : JpaRepository<ClassAndPages, Long> {
 
     /**
-     *
+     * 根据班级 `id` 查找
+     * @param classId 班级id
+     * @return 返回list
      */
     fun findByClassId(classId: Long): List<ClassAndPages>
 
 
     /**
-     *
+     * 根据试卷 id 和班级 id 进行查找
+     * @param pagesId 试卷id
+     * @param classId 班级id
+     * @return ClassAndPages 的 set 集合
      */
     fun findByPagesIdAndClassId(pagesId: Long, classId: Long): Set<ClassAndPages>
 }

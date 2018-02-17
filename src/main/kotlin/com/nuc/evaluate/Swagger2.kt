@@ -24,6 +24,9 @@ import java.util.*
 @EnableSwagger2
 class Swagger2 {
 
+    /**
+     * swagger2 的配置
+     */
     @Bean
     fun createRestApi(): Docket {
         return Docket(DocumentationType.SWAGGER_2)
