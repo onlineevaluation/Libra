@@ -5,6 +5,7 @@
 用于中北大学软件学院的考试模块系统
 
 ![LICENSE]()
+[![Build status](https://ci.appveyor.com/api/projects/status/ohh6mcfiumv4sxno?svg=true)](https://ci.appveyor.com/project/youngxhui/evaluate)
 ![Build Status](https://travis-ci.com/youngxhui/evaluate.svg?token=njtvkNwPTgPqZDxjvXks&branch=master)
 ![Gradle](https://img.shields.io/badge/gradle-4.4-green.svg)
 ![kotlin](https://img.shields.io/badge/kotlin-1.2.21-orange.svg)

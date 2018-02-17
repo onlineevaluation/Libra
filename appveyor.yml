@@ -10,9 +10,6 @@ branches:
   only:
     - master
 
-cache:
-  - C:\Users\appveyor\.gradle
-
 environment:
   matrix:
   # don't let this fool you, we still build to target java7
