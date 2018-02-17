@@ -4,9 +4,10 @@
 
 用于中北大学软件学院的考试模块系统
 
-![LICENSE]()
-[![Build status](https://ci.appveyor.com/api/projects/status/ohh6mcfiumv4sxno?svg=true)](https://ci.appveyor.com/project/youngxhui/evaluate)
-![Build Status](https://travis-ci.com/youngxhui/evaluate.svg?token=njtvkNwPTgPqZDxjvXks&branch=master)
+![LICENSE](https://img.shields.io/github/license/mashape/apistatus.svg)
+![Build status](https://ci.appveyor.com/api/projects/status/ohh6mcfiumv4sxno?svg=true)
+[![Build Status](https://travis-ci.org/youngxhui/evaluate.svg?branch=master)](https://travis-ci.org/youngxhui/evaluate)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/d78fd339c610402f867eb437fca47e82)](https://www.codacy.com/app/youngxhui/evaluate?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=youngxhui/evaluate&amp;utm_campaign=Badge_Grade)
 ![Gradle](https://img.shields.io/badge/gradle-4.4-green.svg)
 ![kotlin](https://img.shields.io/badge/kotlin-1.2.21-orange.svg)
 
