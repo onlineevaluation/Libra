@@ -7,6 +7,7 @@
 - 语言： Kotlin
 - 框架： SpringBoot
 - 消息队列: RabbitMQ
+- 构建工具：Gradle
 
 # 主要功能
 
