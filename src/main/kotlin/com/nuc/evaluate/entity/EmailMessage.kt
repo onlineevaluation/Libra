@@ -17,5 +17,4 @@ class EmailMessage : Serializable {
         return "EmailMessage(exception='$exception', time='$time')"
     }
 
-
 }
