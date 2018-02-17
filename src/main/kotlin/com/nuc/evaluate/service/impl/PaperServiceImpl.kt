@@ -10,6 +10,7 @@ import com.nuc.evaluate.po.Title
 import com.nuc.evaluate.repository.*
 import com.nuc.evaluate.service.PaperService
 import com.nuc.evaluate.util.WordUtils
+import com.nuc.evaluate.vo.AnsVO
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.RabbitHandler
@@ -208,28 +209,18 @@ class PaperServiceImpl : PaperService {
 
     /**
      * 查看单张试卷考试成绩
+     *
+     * 今天是戊戌年大年初二
      */
     @Transactional
-    override fun getPageScore(id: Long) {
-        val studentScore = studentScoreRepository.findOne(id) ?: throw ResultException("没有该考试", 500)
-        val studentId = studentScore.studentId
-        val pageId = studentScore.pagesId
-        val studentAnswerList =
-            studentAnswerRepository.findByStudentIdAndPagesId(studentId, pageId)
-        if (studentAnswerList.isEmpty()) {
-            throw ResultException("没有该考试详情", 500)
-        }
-        val titleList = ArrayList<Title>()
-        studentAnswerList.map {
-            val title = titleRepository.findOne(it.titleId)
-            titleList.add(title)
-        }
-        for (i in 0 until titleList.size) {
-
-        }
-
-
-        logger.info("list is $titleList")
+    override fun getPageScore(pageId: Long, studentId: Long): AnsVO {
+        val ansVO = AnsVO()
+        val studentScore = studentScoreRepository.findByPagesIdAndStudentId(pageId, studentId)
+                ?: throw ResultException("没有该成绩", 500)
+        ansVO.ansList = studentAnswerRepository.findByStudentIdAndPagesId(studentId, pageId) as ArrayList<StudentAnswer>
+        ansVO.pageId = pageId
+        ansVO.score = studentScore.score
+        return ansVO
     }
 
 

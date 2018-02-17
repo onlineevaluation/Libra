@@ -9,4 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository
 interface StudentScoreRepository : JpaRepository<StudentScore, Long> {
 
     fun findByStudentId(studentId: Long): List<StudentScore>?
+
+    fun findByPagesIdAndStudentId(pagesId: Long, studentId: Long): StudentScore?
 }

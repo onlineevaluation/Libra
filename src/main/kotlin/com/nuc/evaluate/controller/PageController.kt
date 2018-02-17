@@ -141,9 +141,8 @@ class PageController {
      * 获取单项考试分数
      */
     @GetMapping("/getScore")
-    fun getOneScore(id: Long): Result {
-        paperService.getPageScore(id)
-        return ResultUtils.success()
+    fun getOneScore(pageId: Long, studentId: Long): Result {
+        return ResultUtils.success(200, "获取成功", paperService.getPageScore(pageId, studentId))
     }
 
     /**
