@@ -13,10 +13,9 @@ spring:
     database: mysql
     properties:
       hibernate:
-        dialect : org.hibernate.dialect.MySQL5Dialect
-  jpa:
-    hibernate:
-      ddl-auto: update
+        ddl-auto: update
+        dialect: org.hibernate.dialect.MySQL5Dialect
+
   mail:
     host: smtp.163.com
     username: youngxhui@163.com

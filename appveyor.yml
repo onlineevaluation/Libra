@@ -4,7 +4,7 @@ build:
   verbosity: detailed
 
 build_script:
-  - gradlew.bat build -x test --info
+  - gradlew.bat build --info
 
 branches:
   only:
