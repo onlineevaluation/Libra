@@ -4,8 +4,7 @@ build:
   verbosity: detailed
 
 build_script:
-  - gradle assemble
-  - gradle build
+  - gradle.bat build
 
 branches:
   only:
