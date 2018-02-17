@@ -1,10 +1,13 @@
-
-- master:  ![Build Status](https://travis-ci.com/youngxhui/evaluate.svg?token=njtvkNwPTgPqZDxjvXks&branch=master)
-
-
 # evaluate
 
+![](./icon.png)
+
 用于中北大学软件学院的考试模块系统
+
+
+![Build Status](https://travis-ci.com/youngxhui/evaluate.svg?token=njtvkNwPTgPqZDxjvXks&branch=master)
+![Gradle](https://img.shields.io/badge/gradle-4.4-green.svg)
+![kotlin](https://img.shields.io/badge/kotlin-1.2.21-orange.svg)
 
 # 所用技术
 

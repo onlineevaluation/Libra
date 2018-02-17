@@ -5,3 +5,6 @@ jdk: oraclejdk8
 script:
 - gradle assemble
 - gradle build
+
+notifications:
+  webhooks: https://hook.bearychat.com/=bwAy5/travis/4ab56d4590c667a0997966ff17c08570
