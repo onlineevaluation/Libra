@@ -1,3 +1,7 @@
+
+- master:  ![Build Status](https://travis-ci.com/youngxhui/evaluate.svg?token=njtvkNwPTgPqZDxjvXks&branch=master)
+
+
 # evaluate
 
 用于中北大学软件学院的考试模块系统
