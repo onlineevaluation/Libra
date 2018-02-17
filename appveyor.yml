@@ -1,5 +1,5 @@
 version: "{branch} {build}"
-
+service: mysql
 build:
   verbosity: detailed
 
