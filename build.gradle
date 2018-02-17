@@ -72,6 +72,8 @@ dependencies {
     compile 'io.sentry:sentry-spring:1.6.8'
     compile group: 'com.getsentry.raven', name: 'raven-logback', version: '8.0.3'
 
+//    compile group: 'com.codacy', name: 'codacy-coverage-reporter', version: '2.0.2'
+
     // test
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
