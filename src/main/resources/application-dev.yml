@@ -10,6 +10,11 @@ spring:
     username: root
     password: 1234
   jpa:
+    database: mysql
+    properties:
+      hibernate:
+        dialect : org.hibernate.dialect.MySQL5Dialect
+  jpa:
     hibernate:
       ddl-auto: update
   mail:
