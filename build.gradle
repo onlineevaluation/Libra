@@ -24,7 +24,7 @@ apply plugin: 'org.jetbrains.dokka'
 apply plugin: 'jacoco'
 
 group = 'com.nuc'
-version = '0.1.10.' + getDate() + '-SNAPSHOT'
+version = '1.0.0.' + getDate() + '-SNAPSHOT'
 
 
 sourceCompatibility = 1.8
