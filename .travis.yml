@@ -6,9 +6,8 @@ before_script:
   - chmod +x gradlew
 
 script:
-  - gradle assemble
-  - gradle build
+  - ./gradlew check
   - ./gradlew codeCoverageReport
 after_success:
   - codecov
-  - bash <(curl -s https://codecov.io/bash) -t 4b21226c-50e2-4566-b862-c3bc408f469a
+  - bash <(curl -s https://codecov.io/bash)

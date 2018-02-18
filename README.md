@@ -9,6 +9,7 @@ CI | status
 Travis CI | [![Build Status](https://travis-ci.org/youngxhui/evaluate.svg?branch=master)](https://travis-ci.org/youngxhui/evaluate)
 Appveyor CI | ![Build status](https://ci.appveyor.com/api/projects/status/ohh6mcfiumv4sxno?svg=true)
  
+[![codecov](https://codecov.io/gh/youngxhui/evaluate/branch/master/graph/badge.svg)](https://codecov.io/gh/youngxhui/evaluate)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/d78fd339c610402f867eb437fca47e82)](https://www.codacy.com/app/youngxhui/evaluate?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=youngxhui/evaluate&amp;utm_campaign=Badge_Grade)
 ![Gradle](https://img.shields.io/badge/gradle-4.4-brightgreen.svg)
 ![kotlin](https://img.shields.io/badge/kotlin-1.2.21-orange.svg)
@@ -31,7 +32,7 @@ Appveyor CI | ![Build status](https://ci.appveyor.com/api/projects/status/ohh6mc
 - [x] 提交考试
 - [x] 试卷评分
 - [ ] 试题查看 
-- [ ] 
+
 
 # License
 
