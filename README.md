@@ -4,15 +4,19 @@
 
 用于中北大学软件学院的考试模块系统
 
-CI | status  
+服务 | 状态  
 :---|:---:  
 Travis CI | [![Build Status](https://travis-ci.org/youngxhui/evaluate.svg?branch=master)](https://travis-ci.org/youngxhui/evaluate)
 Appveyor CI | ![Build status](https://ci.appveyor.com/api/projects/status/ohh6mcfiumv4sxno?svg=true)
+ codecov | [![codecov](https://codecov.io/gh/youngxhui/evaluate/branch/master/graph/badge.svg)](https://codecov.io/gh/youngxhui/evaluate)
+ codacy |[![Codacy Badge](https://api.codacy.com/project/badge/Grade/d78fd339c610402f867eb437fca47e82)](https://www.codacy.com/app/youngxhui/evaluate?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=youngxhui/evaluate&amp;utm_campaign=Badge_Grade)
  
-[![codecov](https://codecov.io/gh/youngxhui/evaluate/branch/master/graph/badge.svg)](https://codecov.io/gh/youngxhui/evaluate)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/d78fd339c610402f867eb437fca47e82)](https://www.codacy.com/app/youngxhui/evaluate?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=youngxhui/evaluate&amp;utm_campaign=Badge_Grade)
+[![GitHub count languages](https://img.shields.io/github/languages/count/youngxhui/evaluate.svg)]()
+[![GitHub top language](https://img.shields.io/github/languages/top/youngxhui/evaluate.svg)]()
+[![](https://img.shields.io/github/repo-size/badges/shields.svg)]()
+
 ![Gradle](https://img.shields.io/badge/gradle-4.4-brightgreen.svg)
-![kotlin](https://img.shields.io/badge/kotlin-1.2.21-orange.svg)
+
 [![LICENSE](https://img.shields.io/github/license/mashape/apistatus.svg)](./LICENSE)
 
 # 所用技术
