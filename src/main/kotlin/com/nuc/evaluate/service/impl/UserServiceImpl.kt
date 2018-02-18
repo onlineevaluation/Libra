@@ -25,13 +25,13 @@ class UserServiceImpl : UserService {
 
 
     @Autowired
-    lateinit var userRepository: UserRepository
+    private lateinit var userRepository: UserRepository
 
     @Autowired
-    lateinit var userAndRoleRepository: UserAndRoleRepository
+    private lateinit var userAndRoleRepository: UserAndRoleRepository
 
     @Autowired
-    lateinit var studentRepository: StudentRepository
+    private lateinit var studentRepository: StudentRepository
 
     /**
      * 获得所有的用户
