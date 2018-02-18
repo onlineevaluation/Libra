@@ -10,4 +10,5 @@ script:
   - gradle build
   - ./gradlew codeCoverageReport
 after_success:
-  - bash <(curl -s https://codecov.io/bash)
+  - codecov
+  - bash <(curl -s https://codecov.io/bash) -t 4b21226c-50e2-4566-b862-c3bc408f469a

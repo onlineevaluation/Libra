@@ -90,6 +90,9 @@ def getDate() {
 }
 
 task codeCoverageReport(type: JacocoReport) {
+    classDirectories = files('build/classes')
+    sourceDirectories = files('src/main/kotlin')
+
     executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
 
     subprojects.each {
@@ -107,3 +110,5 @@ task codeCoverageReport(type: JacocoReport) {
 codeCoverageReport.dependsOn {
     subprojects*.test
 }
+
+check.dependsOn codeCoverageReport
