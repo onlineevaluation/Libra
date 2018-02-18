@@ -24,7 +24,7 @@ class UserServiceImplTest {
     @Before
     fun tearDown() {
         user = User()
-        user.username = "1514010631"
+        user.username = "1514010632"
         user.password = "111111"
     }
 
