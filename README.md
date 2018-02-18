@@ -10,7 +10,7 @@ Travis CI | [![Build Status](https://travis-ci.org/youngxhui/evaluate.svg?branch
 Appveyor CI | ![Build status](https://ci.appveyor.com/api/projects/status/ohh6mcfiumv4sxno?svg=true)
  
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/d78fd339c610402f867eb437fca47e82)](https://www.codacy.com/app/youngxhui/evaluate?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=youngxhui/evaluate&amp;utm_campaign=Badge_Grade)
-![Gradle](https://img.shields.io/badge/gradle-4.4-green.svg)
+![Gradle](https://img.shields.io/badge/gradle-4.4-brightgreen.svg)
 ![kotlin](https://img.shields.io/badge/kotlin-1.2.21-orange.svg)
 [![LICENSE](https://img.shields.io/github/license/mashape/apistatus.svg)](./LICENSE)
 
