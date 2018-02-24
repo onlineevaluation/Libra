@@ -9,6 +9,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 @SpringBootApplication
 class EvaluateApplication
 
+/**
+ * 主函数
+ */
 fun main(args: Array<String>) {
     SpringApplication.run(EvaluateApplication::class.java, *args)
 }

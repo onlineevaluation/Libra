@@ -50,8 +50,6 @@ class MailServiceImpl : MailService {
         mailHelper.setText(text, true)
         mailSender.send(mimeMessage)
         logger.info("邮件发送成功")
-
     }
-
 
 }

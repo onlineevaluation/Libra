@@ -48,12 +48,12 @@ class PageController {
         @NotEmpty(message = "班级不能为空")
         @NotNull(message = "班级不能为空")
         @Min(value = 0L, message = "班级不能为0")
-        classId: Long,
-        bindingResult: BindingResult
+        classId: Long
+        //bindingResult: BindingResult
     ): Result {
-        if (bindingResult.hasErrors()) {
-            throw ResultException(bindingResult.fieldError.defaultMessage, 500)
-        }
+//        if (bindingResult.hasErrors()) {
+//            throw ResultException(bindingResult.fieldError.defaultMessage, 500)
+//        }
 
         return ResultUtils.success(200, "查询成功", paperService.listClassPage(classId))
     }

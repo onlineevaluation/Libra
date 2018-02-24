@@ -49,6 +49,8 @@ class PaperServiceImpl : PaperService {
 
     /**
      * 获取该班级的所有考试
+     * @param classId 班级id
+     * @return list 班级考试试卷
      */
     override fun listClassPage(classId: Long): List<ClassAndPages> {
         val pages = classAndPagesRepository.findByClassId(classId)
@@ -79,7 +81,9 @@ class PaperServiceImpl : PaperService {
     }
 
     /**
-     * 进行判题
+     *
+     * 通过 监听rabbitMQ， 进行判题
+     * @param json 前端字符串
      */
     @Transactional
     @RabbitListener(queues = ["check"])
@@ -143,16 +147,16 @@ class PaperServiceImpl : PaperService {
                     val similarScore = WordUtils.ansCheck(it.ans, title.answer!!)
                     val score: Double = when (similarScore) {
                         in 0.0..0.25 -> {
-                            0.0
+                            0.20 * title.score
                         }
                         in 0.25..0.5 -> {
-                            0.0
+                            0.50 * title.score
                         }
                         in 0.5..0.75 -> {
-                            0.0
+                            0.80  * title.score
                         }
                         in 0.75..1.0 -> {
-                            0.0
+                            1.0 * title.score
                         }
                         else -> {
                             0.0
@@ -211,6 +215,10 @@ class PaperServiceImpl : PaperService {
      * 查看单张试卷考试成绩
      *
      * 今天是戊戌年大年初二
+     * @param pageId 试卷id
+     * @param studentId 学生id
+     *
+     * @return ansVO 返回 ansVo 对象
      */
     @Transactional
     override fun getPageScore(pageId: Long, studentId: Long): AnsVO {
@@ -222,6 +230,10 @@ class PaperServiceImpl : PaperService {
         ansVO.score = studentScore.score
         return ansVO
     }
+
+    /**
+     * 进行试题收藏
+     */
 
 
 }
