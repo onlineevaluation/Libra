@@ -7,7 +7,7 @@ import javax.persistence.*
  * @author 杨晓辉 2018/2/3 11:10
  */
 @Entity
-@Table(name = "tg_evaluate_pages")
+@Table(name = "uek_evaluate_pages")
 class Page {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

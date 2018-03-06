@@ -9,7 +9,7 @@ import javax.persistence.*
  */
 
 @Entity
-@Table(name = "tg_evaluate_student_score")
+@Table(name = "uek_evaluate_student_score")
 class StudentScore {
 
     @Id

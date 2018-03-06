@@ -27,8 +27,6 @@ class PaperServiceImplTest {
 
     @Test
     fun getOnePageTest() {
-//        val pageList1 = pageServiceImpl.getOnePage(1, 1)
-//        Assert.assertNull(pageList1)
         val pageList2 = pageServiceImpl.getOnePage(1,9)
         Assert.assertNotNull(pageList2)
     }

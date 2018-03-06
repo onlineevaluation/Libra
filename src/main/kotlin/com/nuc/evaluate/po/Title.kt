@@ -6,7 +6,7 @@ import javax.persistence.*
  * @author 杨晓辉 2018/2/4 10:08
  */
 @Entity
-@Table(name = "tg_evaluate_recruit_titles")
+@Table(name = "uek_evaluate_recruit_titles")
 class Title {
 
     @Id

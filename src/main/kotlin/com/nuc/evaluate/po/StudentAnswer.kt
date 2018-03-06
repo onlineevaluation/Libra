@@ -6,7 +6,7 @@ import javax.persistence.*
  * @author 杨晓辉 2018/2/7 11:03
  */
 @Entity
-@Table(name = "tg_evaluate_answer")
+@Table(name = "uek_evaluate_answer")
 class StudentAnswer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +23,4 @@ class StudentAnswer {
     override fun toString(): String {
         return "StudentAnswer(id=$id, studentId=$studentId, pagesId=$pagesId, titleId=$titleId, answer='$answer', score=$score, time=$time, employeeId=$employeeId, url='$url')"
     }
-
-
 }

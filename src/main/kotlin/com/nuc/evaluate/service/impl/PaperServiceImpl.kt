@@ -153,7 +153,7 @@ class PaperServiceImpl : PaperService {
                             0.50 * title.score
                         }
                         in 0.5..0.75 -> {
-                            0.80  * title.score
+                            0.80 * title.score
                         }
                         in 0.75..1.0 -> {
                             1.0 * title.score
@@ -214,7 +214,7 @@ class PaperServiceImpl : PaperService {
     /**
      * 查看单张试卷考试成绩
      *
-     * 今天是戊戌年大年初二
+     * 戊戌年大年初二
      * @param pageId 试卷id
      * @param studentId 学生id
      *
@@ -225,7 +225,25 @@ class PaperServiceImpl : PaperService {
         val ansVO = AnsVO()
         val studentScore = studentScoreRepository.findByPagesIdAndStudentId(pageId, studentId)
                 ?: throw ResultException("没有该成绩", 500)
-        ansVO.ansList = studentAnswerRepository.findByStudentIdAndPagesId(studentId, pageId) as ArrayList<StudentAnswer>
+        // 学生提交答案
+        val studentAnswer = studentAnswerRepository.findByStudentIdAndPagesId(
+            studentId,
+            pageId
+        )
+        if (studentAnswer.isEmpty()) {
+            throw ResultException("该学生没有参加该考试", 500)
+        }
+
+        println("studentAnswer is ${studentAnswer.size}")
+        // 标准答案
+        for (i in 0 until studentAnswer.size) {
+            val sa = com.nuc.evaluate.vo.StudentAnswer()
+            sa.id = studentAnswer[i].id
+            sa.answer = studentAnswer[i].answer
+            sa.score = studentAnswer[i].score
+            sa.standardAnswer = titleRepository.findOne(studentAnswer[i].titleId).answer!!
+            ansVO.ansList.add(sa)
+        }
         ansVO.pageId = pageId
         ansVO.score = studentScore.score
         return ansVO
