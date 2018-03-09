@@ -20,6 +20,7 @@ import javax.transaction.Transactional
 
 /**
  * @author 杨晓辉 2018/2/3 16:04
+ * @Version 1.0
  */
 @Service
 class PaperServiceImpl : PaperService {
@@ -85,7 +86,7 @@ class PaperServiceImpl : PaperService {
     /**
      *
      * 通过 监听rabbitMQ， 进行判题
-     * @param json 前端字符串
+     * @param `json` 前端字符串
      */
     @Transactional
     @RabbitListener(queues = ["check"])
@@ -130,7 +131,7 @@ class PaperServiceImpl : PaperService {
                         val similarScore = WordUtils.blankCheck(it.substringAfter("【"), title.answer!!)
                         val score = when (similarScore) {
                             in 0.0..0.75 -> {
-                                0.0
+                                title.score * 0.5
                             }
                             in 0.75..1.0 -> {
                                 title.score
@@ -206,7 +207,9 @@ class PaperServiceImpl : PaperService {
 
 
     /**
-     * 获取所有成绩
+     * 通过id 获取该学生的所有成绩
+     * @param studentId 学生id
+     * @return list 返回该学生所有的分数
      */
     override fun listScore(studentId: Long): List<StudentScore> {
         return studentScoreRepository.findByStudentId(studentId)
@@ -243,7 +246,10 @@ class PaperServiceImpl : PaperService {
             sa.id = studentAnswer[i].id
             sa.answer = studentAnswer[i].answer
             sa.score = studentAnswer[i].score
-            sa.standardAnswer = titleRepository.findOne(studentAnswer[i].titleId).answer!!
+
+            val t = titleRepository.findOne(studentAnswer[i].titleId)
+            sa.title = t.title
+            sa.standardAnswer = t.answer!!
             ansVO.ansList.add(sa)
         }
         ansVO.pageId = pageId
