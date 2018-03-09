@@ -58,7 +58,7 @@ class PageController {
      */
     @GetMapping("/onePage")
     fun getPage(pageId: Long, classId: Long): Result {
-        val title = paperService.getOnePage(pageId, classId)
+        val title = paperService.getOnePage(classId, pageId)
         val titleVOList: MutableList<TitleVO> = ArrayList()
         title.map {
             titleVOList.add(po2vo(it))
