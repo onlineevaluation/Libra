@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
 /**
- * @author 杨晓辉 2018/2/4 10:12
+ * @author 杨晓辉 2018-03-09 9:22
  */
 @Repository
 interface TitleRepository : JpaRepository<Title, Long> {

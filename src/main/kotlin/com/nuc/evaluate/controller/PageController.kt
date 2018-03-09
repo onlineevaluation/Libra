@@ -15,7 +15,6 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.core.AmqpTemplate
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
 import java.util.*
 import javax.validation.Valid
@@ -49,12 +48,7 @@ class PageController {
         @NotNull(message = "班级不能为空")
         @Min(value = 0L, message = "班级不能为0")
         classId: Long
-        //bindingResult: BindingResult
     ): Result {
-//        if (bindingResult.hasErrors()) {
-//            throw ResultException(bindingResult.fieldError.defaultMessage, 500)
-//        }
-
         return ResultUtils.success(200, "查询成功", paperService.listClassPage(classId))
     }
 
@@ -109,7 +103,7 @@ class PageController {
      *  },
      *  {
      *      id: '1024',
-     *      ans: "（1） Grinder. 是一个开源的JVM负载测试框架，它通过很多负载注射器来为分布式测试提供了便利。支持用于执行测试脚本的Jython脚本引擎.HTTP测试可通过HTTP代理进行管理。根据项目网站的说法，Grinder的主要目标用户是“理解他们所测代码的人——Grinder不仅仅是带有一组相关响应时间的‘黑盒’测试。由于测试过程可以进行编码——而不是简单地脚本化，所以程序员能测试应用中内部的各个层次，而不仅仅是通过用户界面测试响应时间。（2）fwptt。也是一个用来进行Web应用负载测试的工具。它可以记录一般的请求，也可以记录Ajax请求。它可以用来测试ASP.NET，JSP，PHP或是其它的Web应用.（3）LoadRunner   支持多种常用协议多且个别协议支持的版本比较高；可以设置灵活的负载压力测试方案，可视化的图形界面可以监控丰富的资源；报告可以导出到Word、Excel以及HTML格式。"
+     *      ans: "（1） Grinder. 可视化的图形界面可以监控丰富的资源；报告可以导出到Word、Excel以及HTML格式。"
      *  },
      *  ]
      * }
@@ -157,8 +151,34 @@ class PageController {
         titleVO.num = title.num
         titleVO.score = title.score
         titleVO.completeTime = title.completeTime
-        titleVO.setSection(titleVO.category)
+
+        when (title.category) {
+        // 单选题和多选题
+            "0", "1" -> {
+                titleVO.sectionA = title.sectiona
+                titleVO.sectionB = title.sectionb
+                titleVO.sectionC = title.sectionc
+                titleVO.sectionD = title.sectiond
+            }
+        // 填空题
+            "3" -> {
+                val sb = StringBuilder()
+                val titleList = title.title.split("_{0,15}_".toRegex())
+                for (i in 0 until titleList.size - 1) {
+                    sb.append(titleList[i])
+                    sb.append("【 】")
+                }
+                sb.append(titleList.last())
+                titleVO.title = sb.toString().trim()
+
+                titleVO.blankNum = titleList.size - 1
+            }
+
+            else -> {
+            }
+        }
         return titleVO
     }
+
 
 }

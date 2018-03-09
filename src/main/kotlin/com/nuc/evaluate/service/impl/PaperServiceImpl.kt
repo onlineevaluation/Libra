@@ -3,10 +3,7 @@ package com.nuc.evaluate.service.impl
 
 import com.nuc.evaluate.entity.result.Json
 import com.nuc.evaluate.exception.ResultException
-import com.nuc.evaluate.po.ClassAndPages
-import com.nuc.evaluate.po.StudentAnswer
-import com.nuc.evaluate.po.StudentScore
-import com.nuc.evaluate.po.Title
+import com.nuc.evaluate.po.*
 import com.nuc.evaluate.repository.*
 import com.nuc.evaluate.service.PaperService
 import com.nuc.evaluate.util.WordUtils
@@ -38,14 +35,16 @@ class PaperServiceImpl : PaperService {
     @Autowired
     private lateinit var pagesAndTitleRepository: PageAndTitleRepository
 
-    @Autowired
-    private lateinit var titleRepository: TitleRepository
 
     @Autowired
     private lateinit var studentAnswerRepository: StudentAnswerRepository
 
     @Autowired
     private lateinit var studentScoreRepository: StudentScoreRepository
+
+    @Autowired
+    private lateinit var titleRepository: TitleRepository
+
 
     /**
      * 获取该班级的所有考试
@@ -61,10 +60,13 @@ class PaperServiceImpl : PaperService {
     }
 
     /**
-     * 获取指定考试
+     * 获取指定考试的试题
+     * @param pageId 试卷id
+     * @param classId 班级id
+     * @return 返回试卷试题
      */
     @Transactional
-    override fun getOnePage(pageId: Long, classId: Long): List<Title> {
+    override fun getOnePage(classId: Long, pageId: Long): List<Title> {
         val classAndPages = classAndPagesRepository.findByPagesIdAndClassId(pageId, classId).toList()
         if (classAndPages.isEmpty()) {
             throw ResultException("没有该考试", 500)

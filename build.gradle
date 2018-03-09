@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        kotlinVersion = '1.2.21'
+        kotlinVersion = '1.2.30'
         springBootVersion = '1.5.10.RELEASE'
         dokka_version = '0.9.15'
     }
@@ -24,7 +24,7 @@ apply plugin: 'org.jetbrains.dokka'
 apply plugin: 'jacoco'
 
 group = 'com.nuc'
-version = '1.0.1.' + getDate() + '-SNAPSHOT'
+version = '1.0.3.' + getDate() + '-α'
 
 
 sourceCompatibility = 1.8

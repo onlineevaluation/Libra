@@ -35,7 +35,14 @@ Appveyor CI | ![Build status](https://ci.appveyor.com/api/projects/status/ohh6mc
 - [x] 当前考试试题
 - [x] 提交考试
 - [x] 试卷评分
-- [ ] 试题查看 
+- [x] 试题查看 
+
+# 更新日志
+
+2018年3月9日  
+1.0.3  
+更新 `kotlin` 版本到 1.2.30  
+启用新的数据库
 
 
 # License

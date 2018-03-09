@@ -1,5 +1,7 @@
 package com.nuc.evaluate.vo
 
+import com.nuc.evaluate.po.Title
+
 /**
  * @author 杨晓辉 2018/2/4 10:26
  * 返回到页面的试题视图
@@ -17,35 +19,44 @@ class TitleVO {
     var sectionC: String? = null
     var sectionD: String? = null
     var blankNum: Int = 0
-    private var sectionList: List<String> = ArrayList()
 
 
-    fun setSection(category: String) {
+    fun setSection(category: String, title: Title) {
         when (category) {
         // 单选题和多选题
             "0", "1" -> {
-                sectionList = title.split("\n")
-                sectionA = sectionList[1].substring(1).trim()
-                sectionB = sectionList[2].substring(1).trim()
-                sectionC = sectionList[3].substring(1).trim()
-                sectionD = sectionList[4].substring(1).trim()
-                title = sectionList[0].trim()
+//                sectionList = title.split("\n")
+//                sectionA = sectionList[1].substring(1).trim()
+//                sectionB = sectionList[2].substring(1).trim()
+//                sectionC = sectionList[3].substring(1).trim()
+//                sectionD = sectionList[4].substring(1).trim()
+                sectionA = title.sectiona
+                sectionB = title.sectionb
+                sectionC = title.sectionc
+                sectionD = title.sectiond
+//                title = sectionList[0].trim()
             }
 
         // 填空题
             "3" -> {
                 val sb = StringBuilder()
-                val titleList = title.split("_{1,10}_".toRegex())
+                val titleList = this.title.split("_{1,10}_".toRegex())
                 for (i in 0 until titleList.size - 1) {
                     sb.append(titleList[i])
                     sb.append("【 】")
                 }
                 sb.append(titleList.last())
-                title = sb.toString().trim()
+                this.title = sb.toString().trim()
                 blankNum = titleList.size - 1
             }
             else -> {
             }
         }
     }
+
+    override fun toString(): String {
+        return "TitleVO(id=$id, num='$num', title='$title', category='$category', difficulty=$difficulty, score=$score, completeTime=$completeTime, sectionA=$sectionA, sectionB=$sectionB, sectionC=$sectionC, sectionD=$sectionD, blankNum=$blankNum)"
+    }
+
+
 }

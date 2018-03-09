@@ -12,7 +12,14 @@ import com.nuc.evaluate.vo.AnsVO
 interface PaperService {
     fun listClassPage(classId: Long): List<ClassAndPages>
 
-    fun getOnePage(pageId: Long, classId: Long): List<Title>
+    /**
+     *
+     * 通过 pageId 和 classId 获取 title list
+     * @param pageId pageId
+     * @param classId 班级id
+     * @return titleList
+     */
+    fun getOnePage(classId: Long, pageId: Long): List<Title>
 
     fun verifyPage(result: Json)
 
