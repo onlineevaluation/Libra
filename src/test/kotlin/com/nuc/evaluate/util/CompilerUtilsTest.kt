@@ -61,8 +61,8 @@ class CompilerUtilsTest {
     }
 
     @Test
-    fun testConsoleText() {
-        //val l = CompilerUtils.getSoutInfo()
-        //println(l)
+    fun getConsoleInfo() {
+        val l = CompilerUtils.getConsoleInfo()
+        println(l)
     }
 }

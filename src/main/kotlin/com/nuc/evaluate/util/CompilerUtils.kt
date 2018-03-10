@@ -123,7 +123,7 @@ object CompilerUtils {
     }
 
 
-    fun getSoutInfo(): String? {
+    fun getConsoleInfo(): String? {
         val text = "test"
         println(text)
         val console: Console? = System.console() ?: throw IllegalStateException("la")
