@@ -7,6 +7,7 @@ import com.nuc.evaluate.exception.ResultException
 import com.nuc.evaluate.po.Title
 import com.nuc.evaluate.result.Result
 import com.nuc.evaluate.service.PaperService
+import com.nuc.evaluate.util.CompilerUtils
 import com.nuc.evaluate.util.ResultUtils
 import com.nuc.evaluate.vo.PageVO
 import com.nuc.evaluate.vo.TitleVO
@@ -138,6 +139,17 @@ class PageController {
     fun getOneScore(pageId: Long, studentId: Long): Result {
         return ResultUtils.success(200, "获取成功", paperService.getPageScore(pageId, studentId))
     }
+
+
+    /**
+     * 编译代码测试
+     */
+    @PostMapping("/testCode")
+    fun runCode(@RequestBody code: String): Result {
+        println("code is $code")
+        return ResultUtils.success(200, "编译完成", CompilerUtils.buildTargetSource(code, "Hello"))
+    }
+
 
     /**
      * po --> vo

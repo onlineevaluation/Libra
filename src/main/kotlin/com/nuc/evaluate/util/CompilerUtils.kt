@@ -1,9 +1,11 @@
 package com.nuc.evaluate.util
 
+import com.nuc.evaluate.vo.CompilerMessage
 import wu.seal.jvm.kotlinreflecttools.changePropertyValue
 import wu.seal.jvm.kotlinreflecttools.getPropertyValue
 import java.io.Console
 import java.io.File
+import java.io.PrintStream
 import java.net.URI
 import java.net.URLClassLoader
 import java.util.*
@@ -17,7 +19,7 @@ import javax.tools.ToolProvider
  */
 object CompilerUtils {
 
-    fun buildTargetSource(targetSource: String, targetClassName: String): String {
+    fun buildTargetSource(targetSource: String, targetClassName: String): CompilerMessage {
         // 1.获得JavaCompiler
         val compiler = ToolProvider.getSystemJavaCompiler()
 
@@ -38,29 +40,28 @@ object CompilerUtils {
         // 7.获得编译任务
         val task = compiler.getTask(null, fileManager, diagnosticCollector, options, null, fileObjects)
 
+        val compilerMessage = CompilerMessage()
         // 8.编译
         val result = task.call()
-        var message = "编译成功"
+        compilerMessage.message = "编译成功"
         if (!result) {
             // 编译失败，打印错误信息
             for (diagnostic in diagnosticCollector.diagnostics) {
-                message = " 编译错误。\n" +
-                        "Code: ${diagnostic.code}\n" +
-                        "Kind:  ${diagnostic.kind}\n" +
-                        "StartPosition: ${diagnostic.startPosition}\n" +
-                        "EndPosition: ${diagnostic.endPosition}\n" +
-                        "Position: ${diagnostic.position}\n" +
-                        "Source:${diagnostic.source}\n" +
-                        "Message: ${diagnostic.getMessage(null)}\n" +
-                        "ColumnNumber: ${diagnostic.columnNumber}\n" +
-                        "LineNumber: ${diagnostic.lineNumber}"
-
+                compilerMessage.code = diagnostic.code
+                compilerMessage.kind = diagnostic.kind.toString()
+                compilerMessage.startPosition = diagnostic.startPosition
+                compilerMessage.endPosition = diagnostic.endPosition
+                compilerMessage.position = diagnostic.position
+                compilerMessage.source = diagnostic.source
+                compilerMessage.message = diagnostic.getMessage(null)
+                compilerMessage.columnNumber = diagnostic.columnNumber
+                compilerMessage.lineNumber = diagnostic.lineNumber
             }
         }
 
         // 9.关闭JavaFileManager
         fileManager.close()
-        return message
+        return compilerMessage
     }
 
 
@@ -122,13 +123,19 @@ object CompilerUtils {
         return testFlag
     }
 
-
+    /**
+     * 获取控制台输出
+     */
     fun getConsoleInfo(): String? {
         val text = "test"
         println(text)
-        val console: Console? = System.console() ?: throw IllegalStateException("la")
+
+        val console: Console? = System.console() ?: throw IllegalStateException("错误")
+
         return console?.readLine("test-")
     }
+
+
 }
 
 
