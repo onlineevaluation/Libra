@@ -7,9 +7,11 @@ import com.nuc.evaluate.exception.ResultException
 import com.nuc.evaluate.po.Title
 import com.nuc.evaluate.result.Result
 import com.nuc.evaluate.service.PaperService
+import com.nuc.evaluate.util.CompilerUtils
 import com.nuc.evaluate.util.ResultUtils
 import com.nuc.evaluate.vo.PageVO
 import com.nuc.evaluate.vo.TitleVO
+import io.swagger.annotations.ApiOperation
 import org.hibernate.validator.constraints.NotEmpty
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -58,7 +60,7 @@ class PageController {
      */
     @GetMapping("/onePage")
     fun getPage(pageId: Long, classId: Long): Result {
-        val title = paperService.getOnePage(pageId, classId)
+        val title = paperService.getOnePage(classId, pageId)
         val titleVOList: MutableList<TitleVO> = ArrayList()
         title.map {
             titleVOList.add(po2vo(it))
@@ -138,6 +140,33 @@ class PageController {
     fun getOneScore(pageId: Long, studentId: Long): Result {
         return ResultUtils.success(200, "获取成功", paperService.getPageScore(pageId, studentId))
     }
+
+
+    /**
+     * 编译代码测试
+     * @Test 测试接口
+     */
+    @ApiOperation(
+        value = "用户运行编写代码", notes = "public class Hello {\n" +
+                "    private int age;\n" +
+                "\n" +
+                "    public void setAge(int var1) {\n" +
+                "        this.age = var1;\n" +
+                "    }\n" +
+                "\n" +
+                "    public int getAge() {\n" +
+                "        return this.age;\n" +
+                "    }\n" +
+                "}"
+    )
+    @PostMapping("/runCode")
+    fun runCode(@RequestBody code: String): Result {
+        println("code is $code")
+        val className = code.substringAfter("public class").substringBefore("{").trim()
+
+        return ResultUtils.success(200, "编译完成", CompilerUtils.buildTargetSource(code, className))
+    }
+
 
     /**
      * po --> vo

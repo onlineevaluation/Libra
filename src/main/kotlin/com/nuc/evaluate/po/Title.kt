@@ -42,7 +42,7 @@ class Title {
     var sectionb: String? = null
     var sectionc: String? = null
     var sectiond: String? = null
-    var orderd: Long = 0
+    var orderd: Boolean = true
 
     override fun toString(): String {
         return "Title(id=$id, num=$num, title=$title, category=$category, difficulty=$difficulty, answer=$answer, analysis=$analysis, directionId=$directionId, status=$status, completeTime=$completeTime, score=$score, addTime=$addTime, teacher=$teacher, stageId=$stageId, courseId=$courseId, daysId=$daysId, gongsiId=$gongsiId, zhiweiId=$zhiweiId, type=$type, url=$url, sectiona=$sectiona, sectionb=$sectionb, sectionc=$sectionc, sectiond=$sectiond, orderd=$orderd)"

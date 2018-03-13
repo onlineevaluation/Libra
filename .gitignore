@@ -15,7 +15,9 @@
 *.iws
 *.iml
 *.ipr
-
+CLASS_PATH
+CLASS_PATHcom
+*.txt
 ### NetBeans ###
 nbproject/private/
 build/

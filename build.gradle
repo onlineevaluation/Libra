@@ -36,6 +36,7 @@ compileTestKotlin {
 }
 
 repositories {
+    jcenter()
     mavenCentral()
 
 }
@@ -71,7 +72,8 @@ dependencies {
     // sentry 日志监控
     compile 'io.sentry:sentry-spring:1.6.8'
     compile group: 'com.getsentry.raven', name: 'raven-logback', version: '8.0.3'
-
+    // Kotlin-Reflect-Tools-For-JVM
+    compile 'wu.seal:kotlin-reflect-tools-for-jvm:1.1.1'
     // test
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }

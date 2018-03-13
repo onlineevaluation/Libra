@@ -6,6 +6,7 @@ import com.nuc.evaluate.exception.ResultException
 import com.nuc.evaluate.po.*
 import com.nuc.evaluate.repository.*
 import com.nuc.evaluate.service.PaperService
+import com.nuc.evaluate.util.ResultUtils
 import com.nuc.evaluate.util.WordUtils
 import com.nuc.evaluate.vo.AnsVO
 import org.slf4j.Logger
@@ -20,6 +21,7 @@ import javax.transaction.Transactional
 
 /**
  * @author 杨晓辉 2018/2/3 16:04
+ * @Version 1.0
  */
 @Service
 class PaperServiceImpl : PaperService {
@@ -85,7 +87,7 @@ class PaperServiceImpl : PaperService {
     /**
      *
      * 通过 监听rabbitMQ， 进行判题
-     * @param json 前端字符串
+     * @param `json` 前端字符串
      */
     @Transactional
     @RabbitListener(queues = ["check"])
@@ -94,8 +96,9 @@ class PaperServiceImpl : PaperService {
 
         val ansList = ArrayList<StudentAnswer>()
 
-        result.result.answer.map {
-            val title = titleRepository.findOne(it.id) ?: throw ResultException("该试题不存在", 500)
+        for (it in result.result.answer) {
+            val title = titleRepository.findOne(it.id) ?: continue //?:throw ResultException("该试题不存在", 500)
+            println("title is $it")
             val studentAnswer = StudentAnswer()
             studentAnswer.pagesId = result.result.pageId
             studentAnswer.studentId = result.result.studentId
@@ -103,6 +106,7 @@ class PaperServiceImpl : PaperService {
             studentAnswer.score = 0.0
             studentAnswer.answer = it.ans
             studentAnswer.titleId = it.id
+            val order = title.orderd
             when (title.category) {
             // 单选题
                 "0" -> {
@@ -125,12 +129,16 @@ class PaperServiceImpl : PaperService {
                 "3" -> {
                     logger.info("填空题")
                     val blankContentList = it.ans.split("】".toRegex())
-                    logger.info("blankContentList: ${blankContentList[0]}")
                     blankContentList.map {
+                        println("it is $it")
+                    }
+
+                    blankContentList.map {
+
                         val similarScore = WordUtils.blankCheck(it.substringAfter("【"), title.answer!!)
                         val score = when (similarScore) {
                             in 0.0..0.75 -> {
-                                0.0
+                                title.score * 0.5
                             }
                             in 0.75..1.0 -> {
                                 title.score
@@ -173,10 +181,107 @@ class PaperServiceImpl : PaperService {
                     ansList.add(studentAnswer)
                 }
             }
-
         }
+        /**
+         * 此代码暂时勿删
+         */
+//        result.result.answer.map {
+//
+//            val title = titleRepository.findOne(it.id) ?: return //?:throw ResultException("该试题不存在", 500)
+//            println("title is $it")
+//            val studentAnswer = StudentAnswer()
+//            studentAnswer.pagesId = result.result.pageId
+//            studentAnswer.studentId = result.result.studentId
+//            studentAnswer.time = Timestamp(System.currentTimeMillis())
+//            studentAnswer.score = 0.0
+//            studentAnswer.answer = it.ans
+//            studentAnswer.titleId = it.id
+//            val order = title.orderd
+//            when (title.category) {
+//            // 单选题
+//                "0" -> {
+//                    logger.info("单选题")
+//
+//                    if (it.ans.toUpperCase() == title.answer?.toUpperCase()) {
+//                        studentAnswer.score = title.score
+//                    }
+//                    ansList.add(studentAnswer)
+//                }
+//            // 多选题
+//                "1" -> {
+//
+//                }
+//            // 判断题
+//                "2" -> {
+//
+//                }
+//            // 填空题
+//                "3" -> {
+//                    logger.info("填空题")
+////                    if (!order) {
+////                        val l = it.ans.substringBeforeLast("】")
+////                        println("l is $l")
+////                    }
+////                    val test = it.ans.substringAfter("【").substringBeforeLast("】")
+////                    println(test)
+//                    val blankContentList = it.ans.split("】".toRegex())
+//                    blankContentList.map {
+//                        println("it is $it")
+//                    }
+//
+//                    blankContentList.map {
+//
+//                        val similarScore = WordUtils.blankCheck(it.substringAfter("【"), title.answer!!)
+//                        val score = when (similarScore) {
+//                            in 0.0..0.75 -> {
+//                                title.score * 0.5
+//                            }
+//                            in 0.75..1.0 -> {
+//                                title.score
+//                            }
+//                            else -> {
+//                                0.0
+//                            }
+//                        }
+//                        studentAnswer.score += score
+//                    }
+//                    ansList.add(studentAnswer)
+//                }
+//            // 简答题
+//                "6" -> {
+//                    logger.info("解答题")
+//                    val similarScore = WordUtils.ansCheck(it.ans, title.answer!!)
+//                    val score: Double = when (similarScore) {
+//                        in 0.0..0.25 -> {
+//                            0.20 * title.score
+//                        }
+//                        in 0.25..0.5 -> {
+//                            0.50 * title.score
+//                        }
+//                        in 0.5..0.75 -> {
+//                            0.80 * title.score
+//                        }
+//                        in 0.75..1.0 -> {
+//                            1.0 * title.score
+//                        }
+//                        else -> {
+//                            0.0
+//                        }
+//                    }
+//                    studentAnswer.score = score
+//                    ansList.add(studentAnswer)
+//                }
+//
+//                else -> {
+//                    logger.info("else")
+//                    ansList.add(studentAnswer)
+//                }
+//            }
+//
+//        }
         studentAnswerRepository.save(ansList)
-        val scoreList = studentAnswerRepository.findByStudentIdAndPagesId(result.result.studentId, result.result.pageId)
+        val scoreList =
+            studentAnswerRepository.findByStudentIdAndPagesId(result.result.studentId, result.result.pageId)
         var sumScore = 0.0
         scoreList.map {
             sumScore += it.score
@@ -206,7 +311,9 @@ class PaperServiceImpl : PaperService {
 
 
     /**
-     * 获取所有成绩
+     * 通过id 获取该学生的所有成绩
+     * @param studentId 学生id
+     * @return list 返回该学生所有的分数
      */
     override fun listScore(studentId: Long): List<StudentScore> {
         return studentScoreRepository.findByStudentId(studentId)
@@ -243,7 +350,10 @@ class PaperServiceImpl : PaperService {
             sa.id = studentAnswer[i].id
             sa.answer = studentAnswer[i].answer
             sa.score = studentAnswer[i].score
-            sa.standardAnswer = titleRepository.findOne(studentAnswer[i].titleId).answer!!
+
+            val t = titleRepository.findOne(studentAnswer[i].titleId)
+            sa.title = t.title
+            sa.standardAnswer = t.answer!!
             ansVO.ansList.add(sa)
         }
         ansVO.pageId = pageId

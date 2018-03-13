@@ -1,0 +1,21 @@
+spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/dev?autoReconnect=true&useSSL=false
+    username: root
+    password: 1234
+  jpa:
+    database: mysql
+    properties:
+      hibernate:
+        ddl-auto: update
+        dialect: org.hibernate.dialect.MySQL5Dialect
+
+server:
+  port: 8080
+
