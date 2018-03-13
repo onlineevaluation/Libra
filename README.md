@@ -44,6 +44,11 @@ Appveyor CI | ![Build status](https://ci.appveyor.com/api/projects/status/ohh6mc
 更新 `kotlin` 版本到 1.2.30  
 启用新的数据库
 
+2018年3月13日  
+1.1.0  
+添加代码运行接口，完成部分代码测试示例  
+更改 banner 为中北大学校徽  
+其他的bug修复
 
 # License
 
