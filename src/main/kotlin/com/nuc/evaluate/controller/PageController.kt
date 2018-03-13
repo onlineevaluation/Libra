@@ -11,6 +11,7 @@ import com.nuc.evaluate.util.CompilerUtils
 import com.nuc.evaluate.util.ResultUtils
 import com.nuc.evaluate.vo.PageVO
 import com.nuc.evaluate.vo.TitleVO
+import io.swagger.annotations.ApiOperation
 import org.hibernate.validator.constraints.NotEmpty
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -143,11 +144,27 @@ class PageController {
 
     /**
      * 编译代码测试
+     * @Test 测试接口
      */
-    @PostMapping("/testCode")
+    @ApiOperation(
+        value = "用户运行编写代码", notes = "public class Hello {\n" +
+                "    private int age;\n" +
+                "\n" +
+                "    public void setAge(int var1) {\n" +
+                "        this.age = var1;\n" +
+                "    }\n" +
+                "\n" +
+                "    public int getAge() {\n" +
+                "        return this.age;\n" +
+                "    }\n" +
+                "}"
+    )
+    @PostMapping("/runCode")
     fun runCode(@RequestBody code: String): Result {
         println("code is $code")
-        return ResultUtils.success(200, "编译完成", CompilerUtils.buildTargetSource(code, "Hello"))
+        val className = code.substringAfter("public class").substringBefore("{").trim()
+
+        return ResultUtils.success(200, "编译完成", CompilerUtils.buildTargetSource(code, className))
     }
 
 
