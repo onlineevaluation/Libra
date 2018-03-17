@@ -5,7 +5,6 @@ import wu.seal.jvm.kotlinreflecttools.changePropertyValue
 import wu.seal.jvm.kotlinreflecttools.getPropertyValue
 import java.io.Console
 import java.io.File
-import java.io.PrintStream
 import java.net.URI
 import java.net.URLClassLoader
 import java.util.*

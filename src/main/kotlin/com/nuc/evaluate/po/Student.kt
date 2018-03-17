@@ -15,7 +15,7 @@ class Student {
     var name: String? = null
     var studentNumber: String? = null
     var proTeamId: Long? = 0
-    var status: Long ?= 0
+    var status: Long? = 0
     var gender: Long? = 0
     var nation: String? = null
     var school: String? = null
@@ -25,7 +25,7 @@ class Student {
     var education: String? = null
     var workException: String? = null
     var birthday: java.sql.Date? = null
-    var married: Long ?= 0
+    var married: Long? = 0
     var politicsStatus: String? = null
     var address: String? = null
     var cenRegister: String? = null

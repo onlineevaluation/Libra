@@ -52,8 +52,8 @@ class UserServiceImpl : UserService {
     override fun saveUser(user: User): User {
         val userList: List<User> = findUser()
         (0 until userList.size)
-                .filter { userList[it].username == user.username }
-                .forEach({ throw ResultException("学号重复", 500) })
+            .filter { userList[it].username == user.username }
+            .forEach({ throw ResultException("学号重复", 500) })
         user.password = Md5Utils.md5(user.password)
         val userInDB = userRepository.save(user) ?: throw ResultException("注册失败", 500)
         val userAndRole = UserAndRole()

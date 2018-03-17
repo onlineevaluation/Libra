@@ -16,5 +16,5 @@ class StudentAnswer {
     var answer: String = ""
     var score: Double = 0.0
     var standardAnswer = ""
-    lateinit var title:String
+    lateinit var title: String
 }

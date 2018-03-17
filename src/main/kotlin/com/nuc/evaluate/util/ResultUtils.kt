@@ -11,7 +11,7 @@ object ResultUtils {
     private var result = Result()
 
     fun success(): Result {
-        result.code =200
+        result.code = 200
         result.data = null
         return result
     }

@@ -6,7 +6,7 @@ import javax.persistence.*
  * @author 杨晓辉 2018-03-09 9:00
  */
 @Entity
-@Table(name = "uek_evaluate_titles1")
+@Table(name = "uek_evaluate_titles")
 class Title {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +20,7 @@ class Title {
     @Column(columnDefinition = "ENUM")
     var difficulty: String? = null
     @Column(columnDefinition = "TEXT")
-    var answer: String? = null
+    lateinit var answer: String
     @Column(columnDefinition = "TEXT")
     var analysis: String? = null
     var directionId: Long = 0

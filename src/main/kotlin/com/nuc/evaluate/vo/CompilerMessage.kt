@@ -6,7 +6,7 @@ package com.nuc.evaluate.vo
 class CompilerMessage {
     //    lateinit var message: String
     var code: String? = null
-    var kind:String? =null
+    var kind: String? = null
     var startPosition: Long? = null
     var endPosition: Long? = null
     var position: Long? = null

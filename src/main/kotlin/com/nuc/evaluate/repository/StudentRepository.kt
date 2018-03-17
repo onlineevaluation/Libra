@@ -13,5 +13,5 @@ interface StudentRepository : JpaRepository<Student, Long> {
      * 通过 studentNumber 查找
      * @param studentNumber studentNumber
      */
-    fun findByStudentNumber(studentNumber: String):Student?
+    fun findByStudentNumber(studentNumber: String): Student?
 }

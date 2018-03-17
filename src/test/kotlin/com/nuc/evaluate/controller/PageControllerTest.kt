@@ -16,7 +16,8 @@ class PageControllerTest {
         var packageName = ""
         var className = ""
         @Language("JAVA")
-        val code = "public class Hello {\n    private int age;\n\n    public void setAge(int age){\n        this.age = age;\n    }\n\n    public int getAge() {\n        return age;\n    }\n}"
+        val code =
+            "public class Hello {\n    private int age;\n\n    public void setAge(int age){\n        this.age = age;\n    }\n\n    public int getAge() {\n        return age;\n    }\n}"
         @Language("RegExp")
         val packageNameRegex = """package [a-zA-Z]+[0-9a-zA-Z_]*(\.[a-zA-Z]+[0-9a-zA-Z_]*)*;""".toRegex()
         @Language("RegExp")

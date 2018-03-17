@@ -49,7 +49,8 @@ class CompilerUtilsTest {
     @Test
     fun runCode() {
         @Language("JAVA")
-        val test = "package com.test;\npublic class Hello { \n    private int age; \n\n    public void setAge(int var1) {\n        this.age = var1;\n    }\n\n    public int getAge() {\n        return this.age;\n    }\n}"
+        val test =
+            "package com.test;\npublic class Hello { \n    private int age; \n\n    public void setAge(int var1) {\n        this.age = var1;\n    }\n\n    public int getAge() {\n        return this.age;\n    }\n}"
         val l = CompilerUtils.buildTargetSource(test, "Hello")
         println(l)
     }

@@ -30,7 +30,7 @@ Appveyor CI | ![Build status](https://ci.appveyor.com/api/projects/status/ohh6mc
 
 - [x] 登录 (学号)   
 - [ ] 权限认证  
-- [x] 后台异常邮件发送
+- [x] 后台异常邮件发送 (通过 `sentry`)
 - [x] 试题获取
 - [x] 当前考试试题
 - [x] 提交考试
@@ -49,6 +49,10 @@ Appveyor CI | ![Build status](https://ci.appveyor.com/api/projects/status/ohh6mc
 添加代码运行接口，完成部分代码测试示例  
 更改 banner 为中北大学校徽  
 其他的bug修复
+
+2018年3月17日  
+1.1.1  
+修改填空题判题规则  
 
 # License
 

@@ -116,7 +116,7 @@ class PageController {
         logger.info("json is $json")
         val result = JSON.parseObject(json, Json::class.java)
                 ?: throw ResultException("解析错误", 500)
-        paperService.verifyPage(result)
+        // paperService.verifyPage(result)
         logger.info("result is  $result")
         rabbitTemplate.convertAndSend("check", result)
 

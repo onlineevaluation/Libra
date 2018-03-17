@@ -21,6 +21,9 @@ interface PaperService {
      */
     fun getOnePage(classId: Long, pageId: Long): List<Title>
 
+    /**
+     * 试卷提交验证接口
+     */
     fun verifyPage(result: Json)
 
     fun listScore(studentId: Long): List<StudentScore>

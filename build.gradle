@@ -9,6 +9,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
+
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
         classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
@@ -24,7 +25,7 @@ apply plugin: 'org.jetbrains.dokka'
 apply plugin: 'jacoco'
 
 group = 'com.nuc'
-version = '1.1.0.' + getDate() + '-α'
+version = '1.1.1.' + getDate() + '-α'
 
 
 sourceCompatibility = 1.8
@@ -74,6 +75,8 @@ dependencies {
     compile group: 'com.getsentry.raven', name: 'raven-logback', version: '8.0.3'
     // Kotlin-Reflect-Tools-For-JVM
     compile 'wu.seal:kotlin-reflect-tools-for-jvm:1.1.1'
+    // 动态编译
+    compile fileTree(dir: 'libs', include: ['*.jar'])
     // test
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
