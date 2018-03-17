@@ -1,6 +1,5 @@
 package com.nuc.evaluate.service
 
-import com.nuc.evaluate.entity.result.Json
 import com.nuc.evaluate.po.ClassAndPages
 import com.nuc.evaluate.po.StudentScore
 import com.nuc.evaluate.po.Title
@@ -24,7 +23,7 @@ interface PaperService {
     /**
      * 试卷提交验证接口
      */
-    fun verifyPage(result: Json)
+    fun verifyPage(studentId: Long, pageId: Long)
 
     fun listScore(studentId: Long): List<StudentScore>
 

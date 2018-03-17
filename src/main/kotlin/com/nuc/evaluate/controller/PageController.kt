@@ -116,7 +116,7 @@ class PageController {
         logger.info("json is $json")
         val result = JSON.parseObject(json, Json::class.java)
                 ?: throw ResultException("解析错误", 500)
-        // paperService.verifyPage(result)
+        paperService.verifyPage(result.result.studentId, result.result.pageId)
         logger.info("result is  $result")
         rabbitTemplate.convertAndSend("check", result)
 
@@ -141,6 +141,14 @@ class PageController {
         return ResultUtils.success(200, "获取成功", paperService.getPageScore(pageId, studentId))
     }
 
+    /**
+     * 试卷验证
+     */
+    @PostMapping("/verifyPage")
+    fun VerifyPage(@RequestBody studentId: Long, @RequestBody pageId: Long): Result {
+        return ResultUtils.success(200, "未考试", paperService.verifyPage(studentId, pageId))
+
+    }
 
     /**
      * 编译代码测试

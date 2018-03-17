@@ -14,5 +14,5 @@ interface PageAndTitleRepository : JpaRepository<PagesAndTitle, Long> {
      * @param pageId 考卷id
      * @return 查询的list集合
      */
-    fun findByPagesId(pageId: Long): List<PagesAndTitle>
+    fun findByPagesId(pageId: Long): MutableList<PagesAndTitle>
 }

@@ -1,6 +1,5 @@
 package com.nuc.evaluate.service.impl
 
-import com.nuc.evaluate.repository.ClassAndPagesRepository
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -31,5 +30,23 @@ class PaperServiceImplTest {
         Assert.assertNotNull(pageList2)
     }
 
+
+    @Test
+    fun testList() {
+        val list1 = ArrayList<String>()
+        list1.add("111")
+        list1.add("222")
+        list1.add("333")
+
+        val list2 = ArrayList<String>()
+        list2.add("111")
+
+        println(list1.removeAll(list2))
+
+
+        list1.map {
+            println("it :: $it")
+        }
+    }
 
 }

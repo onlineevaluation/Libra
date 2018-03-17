@@ -37,7 +37,6 @@ class PaperServiceImpl : PaperService {
     @Autowired
     private lateinit var pagesAndTitleRepository: PageAndTitleRepository
 
-
     @Autowired
     private lateinit var studentAnswerRepository: StudentAnswerRepository
 
@@ -182,19 +181,45 @@ class PaperServiceImpl : PaperService {
                 }
 
                 else -> {
-                    logger.info("else")
                     ansList.add(studentAnswer)
                 }
             }
         }
 
+        val titleList = pagesAndTitleRepository.findByPagesId(result.result.pageId)
+        val titleId = ArrayList<Long>()
+        titleList.map {
+            titleId.add(it.titleId)
+        }
+
+        val studentTitleId = ArrayList<Long>()
+        ansList.map {
+            studentTitleId.add(it.titleId)
+        }
+        titleId.removeAll(studentTitleId)
+
+        for (i in 0 until titleId.size) {
+            val ans = StudentAnswer()
+            ans.titleId = titleId[i]
+            ans.answer = ""
+            ans.score = 0.0
+            ans.pagesId = result.result.pageId
+            ans.studentId = result.result.studentId
+            ans.time = Timestamp(System.currentTimeMillis())
+            ansList.add(ans)
+        }
+
         studentAnswerRepository.save(ansList)
+
+        // 计算总分
         val scoreList =
             studentAnswerRepository.findByStudentIdAndPagesId(result.result.studentId, result.result.pageId)
+
         var sumScore = 0.0
         scoreList.map {
             sumScore += it.score
         }
+
         val studentScore = StudentScore()
         studentScore.pagesId = result.result.pageId
         studentScore.studentId = result.result.studentId
@@ -208,11 +233,11 @@ class PaperServiceImpl : PaperService {
     /**
      * 试卷校验
      */
-    override fun verifyPage(result: Json) {
+    override fun verifyPage(studentId: Long, pageId: Long) {
 
         val ansList = studentAnswerRepository.findByStudentIdAndPagesId(
-            result.result.studentId,
-            result.result.pageId
+            studentId,
+            pageId
         )
         if (ansList.isNotEmpty()) {
             throw ResultException("你已经提交过答案，请勿重复提交", 500)
@@ -273,6 +298,9 @@ class PaperServiceImpl : PaperService {
     }
 
 
+    /**
+     * 评分模块
+     */
     private fun getScore(similarScore: Double, blankNumber: Int, score: Double): Double {
         return when (similarScore) {
             in 0.0..0.9 -> {
