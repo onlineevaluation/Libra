@@ -3,10 +3,12 @@ package com.nuc.evaluate.service.impl
 
 import com.nuc.evaluate.entity.result.Json
 import com.nuc.evaluate.exception.ResultException
-import com.nuc.evaluate.po.*
+import com.nuc.evaluate.po.ClassAndPages
+import com.nuc.evaluate.po.StudentAnswer
+import com.nuc.evaluate.po.StudentScore
+import com.nuc.evaluate.po.Title
 import com.nuc.evaluate.repository.*
 import com.nuc.evaluate.service.PaperService
-import com.nuc.evaluate.util.ResultUtils
 import com.nuc.evaluate.util.WordUtils
 import com.nuc.evaluate.vo.AnsVO
 import org.slf4j.Logger
@@ -68,6 +70,9 @@ class PaperServiceImpl : PaperService {
      */
     @Transactional
     override fun getOnePage(classId: Long, pageId: Long): List<Title> {
+
+        logger.info("classid :: $classId & pageId :: $pageId")
+
         val classAndPages = classAndPagesRepository.findByPagesIdAndClassId(pageId, classId).toList()
         if (classAndPages.isEmpty()) {
             throw ResultException("没有该考试", 500)
@@ -92,7 +97,7 @@ class PaperServiceImpl : PaperService {
     @RabbitListener(queues = ["check"])
     @RabbitHandler
     fun addPages(result: Json) {
-
+        logger.info("result json :: $result")
         val ansList = ArrayList<StudentAnswer>()
 
         for (it in result.result.answer) {
@@ -107,70 +112,74 @@ class PaperServiceImpl : PaperService {
             val order = titleInDB.orderd
             when (titleInDB.category) {
             // 单选题
-                "0" -> {
+                "1" -> {
+                    val singleChoiceScore = 5.0
                     logger.info("单选题")
-
+// 5  // 4  10
                     if (it.ans == titleInDB.answer) {
-                        studentAnswer.score = titleInDB.score
+                        studentAnswer.score = singleChoiceScore
                     }
                     ansList.add(studentAnswer)
                 }
-            // 多选题
-                "1" -> {
-
-                }
-            // 判断题
-                "2" -> {
-
-                }
             // 填空题
-                "3" -> {
+                "2" -> {
                     // （·-·）
+                    val blankTitleScore = 5.0
                     val studentAnswers = it.ans.substringAfter("【").substringBeforeLast("】")
                         .split("】\\s*?【".toRegex())
                     val standardAnswers = titleInDB.answer.substringAfter("【")
                         .substringBeforeLast("】").split("】\\s*?【".toRegex())
                     val blankNumber = standardAnswers.size
                     var blankScore = 0.0
+                    logger.info("blankNumber :: ${studentAnswers.size}")
+                    logger.info("stand number :: $blankNumber")
+                    if (blankNumber != studentAnswers.size) {
+                        studentAnswer.score == 0.0
+                        ansList.add(studentAnswer)
+                        return
+                    }
+
                     // 答案有序
                     if (order) {
                         for (i in 0 until standardAnswers.size) {
                             val similarScore = WordUtils.blankCheck(studentAnswers[i], standardAnswers[i])
-                            blankScore += getScore(similarScore, blankNumber, titleInDB.score)
+                            blankScore += getScore(similarScore, blankNumber, blankTitleScore)
                         }
                     }
                     // 答案无序
                     else {
                         val standardString = StringBuilder()
                         val studentString = StringBuilder()
+
                         for (i in 0 until standardAnswers.size) {
                             standardString.append(standardAnswers[i])
                             studentString.append(studentAnswers[i])
                         }
                         val similarScore = WordUtils.blankCheck(studentString.toString(), standardString.toString())
                         val x = 1.0 / blankNumber
-                        blankScore = (similarScore / x) * (titleInDB.score / blankNumber)
+                        blankScore = (similarScore / x) * (blankTitleScore / blankNumber)
                     }
                     studentAnswer.score = blankScore
 
                     ansList.add(studentAnswer)
                 }
             // 简答题
-                "6" -> {
+                "3" -> {
+                    val ansTitleScore = 10.0
                     logger.info("解答题")
                     val similarScore = WordUtils.ansCheck(it.ans, titleInDB.answer)
                     val score: Double = when (similarScore) {
                         in 0.0..0.25 -> {
-                            0.20 * titleInDB.score
+                            0.20 * ansTitleScore
                         }
                         in 0.25..0.5 -> {
-                            0.50 * titleInDB.score
+                            0.50 * ansTitleScore
                         }
                         in 0.5..0.75 -> {
-                            0.80 * titleInDB.score
+                            0.80 * ansTitleScore
                         }
                         in 0.75..1.0 -> {
-                            1.0 * titleInDB.score
+                            1.0 * ansTitleScore
                         }
                         else -> {
                             0.0

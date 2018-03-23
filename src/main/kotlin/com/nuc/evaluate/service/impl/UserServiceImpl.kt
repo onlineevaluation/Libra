@@ -71,7 +71,7 @@ class UserServiceImpl : UserService {
      */
     @Throws(ResultException::class)
     override fun login(user: User): Student {
-
+        println("user :: ${user.toString()}")
         val student = studentRepository.findByStudentNumber(user.username) ?: throw ResultException("该用户不存在", 500)
         val userInDb = userRepository.findOne(student.userId)
         logger.info("userInDb : $userInDb")

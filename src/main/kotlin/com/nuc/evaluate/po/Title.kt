@@ -23,30 +23,15 @@ class Title {
     lateinit var answer: String
     @Column(columnDefinition = "TEXT")
     var analysis: String? = null
-    var directionId: Long = 0
-    var status: String? = null
-    var completeTime: Long = 0
-    var score: Double = 0.0
+    var teacherId: String? = null
+
     @Column(columnDefinition = "TIMESTAMP")
     var addTime: String? = null
-    var teacher: Long = 0
-    @Column(columnDefinition = "ENUM")
-    var stageId: Long = 0
-    var courseId: Long = 0
-    var daysId: Long = 0
-    var gongsiId: Long = 0
-    var zhiweiId: Long = 0
-    var type: String? = null
-    var url: String? = null
     var sectiona: String? = null
     var sectionb: String? = null
     var sectionc: String? = null
     var sectiond: String? = null
     var orderd: Boolean = true
-
-    override fun toString(): String {
-        return "Title(id=$id, num=$num, title=$title, category=$category, difficulty=$difficulty, answer=$answer, analysis=$analysis, directionId=$directionId, status=$status, completeTime=$completeTime, score=$score, addTime=$addTime, teacher=$teacher, stageId=$stageId, courseId=$courseId, daysId=$daysId, gongsiId=$gongsiId, zhiweiId=$zhiweiId, type=$type, url=$url, sectiona=$sectiona, sectionb=$sectionb, sectionc=$sectionc, sectiond=$sectiond, orderd=$orderd)"
-    }
-
+    var knowledgeId: Long = 0
 
 }

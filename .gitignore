@@ -18,6 +18,7 @@
 CLASS_PATH
 CLASS_PATHcom
 *.txt
+*.class
 ### NetBeans ###
 nbproject/private/
 build/

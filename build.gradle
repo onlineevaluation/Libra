@@ -27,7 +27,6 @@ apply plugin: 'jacoco'
 group = 'com.nuc'
 version = '1.1.2.' + getDate() + '-α'
 
-
 sourceCompatibility = 1.8
 compileKotlin {
     kotlinOptions.jvmTarget = "1.8"
@@ -59,10 +58,6 @@ dependencies {
     compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.8.0'
     //jwt
     compile 'io.jsonwebtoken:jjwt:0.9.0'
-    // mail
-    compile('org.springframework.boot:spring-boot-starter-mail')
-    // freemarker
-    compile('org.springframework.boot:spring-boot-starter-freemarker')
     // fastjson
     compile('com.alibaba:fastjson:1.2.46')
     // mq
@@ -74,8 +69,6 @@ dependencies {
     compile group: 'com.getsentry.raven', name: 'raven-logback', version: '8.0.3'
     // Kotlin-Reflect-Tools-For-JVM
     compile 'wu.seal:kotlin-reflect-tools-for-jvm:1.1.1'
-    // 动态编译
-    compile fileTree(dir: 'libs', include: ['*.jar'])
     // test
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }

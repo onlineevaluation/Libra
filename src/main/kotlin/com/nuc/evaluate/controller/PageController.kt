@@ -72,13 +72,10 @@ class PageController {
          */
         titleVOList.map {
             when (it.category) {
-                "0" -> pageVO.signChoice.add(it)
-                "1" -> pageVO.multipleChoice.add(it)
-                "2" -> pageVO.trueOrFalse.add(it)
-                "3" -> pageVO.blank.add(it)
+                "1" -> pageVO.signChoice.add(it)
+                "2" -> pageVO.blank.add(it)
+                "3" -> pageVO.ansQuestion.add(it)
                 "4" -> pageVO.codeQuestion.add(it)
-                "5" -> pageVO.drawingQuestion.add(it)
-                "6" -> pageVO.ansQuestion.add(it)
                 else -> {
                 }
             }
@@ -185,20 +182,20 @@ class PageController {
         titleVO.category = title.category
         titleVO.title = title.title
         titleVO.difficulty = title.difficulty
-        titleVO.num = title.num
-        titleVO.score = title.score
-        titleVO.completeTime = title.completeTime
+        titleVO.num = "0"
 
         when (title.category) {
-        // 单选题和多选题
-            "0", "1" -> {
+        // 单选题
+            "1" -> {
+                titleVO.score = 5.0
                 titleVO.sectionA = title.sectiona
                 titleVO.sectionB = title.sectionb
                 titleVO.sectionC = title.sectionc
                 titleVO.sectionD = title.sectiond
             }
         // 填空题
-            "3" -> {
+            "2" -> {
+                titleVO.score = 5.0
                 val sb = StringBuilder()
                 val titleList = title.title.split("_{0,15}_".toRegex())
                 for (i in 0 until titleList.size - 1) {
@@ -207,10 +204,11 @@ class PageController {
                 }
                 sb.append(titleList.last())
                 titleVO.title = sb.toString().trim()
-
                 titleVO.blankNum = titleList.size - 1
             }
-
+            "3" -> {
+                titleVO.score = 10.0
+            }
             else -> {
             }
         }

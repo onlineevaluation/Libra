@@ -20,6 +20,7 @@ class StudentAnswer {
     var time: java.sql.Timestamp? = null
     var employeeId: Long? = 0
     var url: String = ""
+
     override fun toString(): String {
         return "StudentAnswer(id=$id, studentId=$studentId, pagesId=$pagesId, titleId=$titleId, answer='$answer', score=$score, time=$time, employeeId=$employeeId, url='$url')"
     }

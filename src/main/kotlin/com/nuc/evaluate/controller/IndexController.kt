@@ -13,4 +13,5 @@ class IndexController {
 
     @RequestMapping("/")
     fun index(): Result = ResultUtils.success()
+
 }

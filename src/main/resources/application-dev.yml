@@ -1,9 +1,9 @@
 spring:
   rabbitmq:
-    host: localhost
+    host: 193.112.6.35:15672
     port: 5672
-    username: guest
-    password: guest
+    username: admin
+    password: admin
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://193.112.6.35:3306/dev?autoReconnect=true&useSSL=false

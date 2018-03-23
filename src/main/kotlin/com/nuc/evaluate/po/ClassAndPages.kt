@@ -20,7 +20,7 @@ class ClassAndPages {
     var endTime: Timestamp? = null
     var invigilator: Long? = 0
     var comment: String? = null
-    @Column(columnDefinition = "DATETIME")
+    @Column(columnDefinition = "TIMESTAMP")
     var addTime: String? = null
     var employeeId: Long? = 0
 

@@ -12,7 +12,7 @@ class AnsVO {
 
 class StudentAnswer {
 
-    var id: Long = 0
+    var id: Long = 0L
     var answer: String = ""
     var score: Double = 0.0
     var standardAnswer = ""
