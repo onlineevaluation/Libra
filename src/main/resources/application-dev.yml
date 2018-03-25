@@ -1,14 +1,14 @@
 spring:
   rabbitmq:
-    host: 193.112.6.35:15672
+    host: localhost
     port: 5672
-    username: admin
-    password: admin
+    username: guest
+    password: guest
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://193.112.6.35:3306/dev?autoReconnect=true&useSSL=false
-    username: root
-    password: 1234
+    url: jdbc:mysql://59.110.154.79:3306/db_online_education?useUnicode=true&amp;characterEncoding=utf-8
+    username: zhongpro
+    password: zhongpro
   jpa:
     database: mysql
     properties:

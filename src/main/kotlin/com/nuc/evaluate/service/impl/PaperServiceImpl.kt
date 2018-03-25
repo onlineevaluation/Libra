@@ -98,6 +98,11 @@ class PaperServiceImpl : PaperService {
     @RabbitHandler
     fun addPages(result: Json) {
         logger.info("result json :: $result")
+        val ansListInDb =
+            studentAnswerRepository.findByStudentIdAndPagesId(result.result.studentId, result.result.pageId)
+        if (ansListInDb.isNotEmpty()) {
+            return
+        }
         val ansList = ArrayList<StudentAnswer>()
 
         for (it in result.result.answer) {
@@ -115,7 +120,6 @@ class PaperServiceImpl : PaperService {
                 "1" -> {
                     val singleChoiceScore = 5.0
                     logger.info("单选题")
-// 5  // 4  10
                     if (it.ans == titleInDB.answer) {
                         studentAnswer.score = singleChoiceScore
                     }
@@ -123,6 +127,7 @@ class PaperServiceImpl : PaperService {
                 }
             // 填空题
                 "2" -> {
+                    logger.info("填空题")
                     // （·-·）
                     val blankTitleScore = 5.0
                     val studentAnswers = it.ans.substringAfter("【").substringBeforeLast("】")
@@ -131,36 +136,35 @@ class PaperServiceImpl : PaperService {
                         .substringBeforeLast("】").split("】\\s*?【".toRegex())
                     val blankNumber = standardAnswers.size
                     var blankScore = 0.0
-                    logger.info("blankNumber :: ${studentAnswers.size}")
-                    logger.info("stand number :: $blankNumber")
+
+                    // 格式错误
                     if (blankNumber != studentAnswers.size) {
-                        studentAnswer.score == 0.0
-                        ansList.add(studentAnswer)
-                        return
-                    }
-
-                    // 答案有序
-                    if (order) {
-                        for (i in 0 until standardAnswers.size) {
-                            val similarScore = WordUtils.blankCheck(studentAnswers[i], standardAnswers[i])
-                            blankScore += getScore(similarScore, blankNumber, blankTitleScore)
+                        studentAnswer.score = 0.0
+                    } else {
+                        var similarScore = 0.0
+                        // 答案有序
+                        if (order) {
+                            for (i in 0 until standardAnswers.size) {
+                                similarScore = WordUtils.blankCheck(studentAnswers[i], standardAnswers[i])
+                                blankScore += getScore(similarScore, blankNumber, blankTitleScore)
+                            }
                         }
-                    }
-                    // 答案无序
-                    else {
-                        val standardString = StringBuilder()
-                        val studentString = StringBuilder()
+                        // 答案无序
+                        else {
+                            val standardString = StringBuilder()
+                            val studentString = StringBuilder()
 
-                        for (i in 0 until standardAnswers.size) {
-                            standardString.append(standardAnswers[i])
-                            studentString.append(studentAnswers[i])
+                            for (i in 0 until standardAnswers.size) {
+                                standardString.append(standardAnswers[i])
+                                studentString.append(studentAnswers[i])
+                            }
+                            similarScore = WordUtils.blankCheck(studentString.toString(), standardString.toString())
+                            val x = 1.0 / blankNumber
+                            blankScore = (similarScore / x) * (blankTitleScore / blankNumber)
                         }
-                        val similarScore = WordUtils.blankCheck(studentString.toString(), standardString.toString())
-                        val x = 1.0 / blankNumber
-                        blankScore = (similarScore / x) * (blankTitleScore / blankNumber)
+                        studentAnswer.similarScore = similarScore
+                        studentAnswer.score = blankScore
                     }
-                    studentAnswer.score = blankScore
-
                     ansList.add(studentAnswer)
                 }
             // 简答题
@@ -170,7 +174,7 @@ class PaperServiceImpl : PaperService {
                     val similarScore = WordUtils.ansCheck(it.ans, titleInDB.answer)
                     val score: Double = when (similarScore) {
                         in 0.0..0.25 -> {
-                            0.20 * ansTitleScore
+                            0.0 * ansTitleScore
                         }
                         in 0.25..0.5 -> {
                             0.50 * ansTitleScore
@@ -185,11 +189,13 @@ class PaperServiceImpl : PaperService {
                             0.0
                         }
                     }
+                    studentAnswer.similarScore = similarScore
                     studentAnswer.score = score
                     ansList.add(studentAnswer)
                 }
 
                 else -> {
+                    studentAnswer.score = 0.0
                     ansList.add(studentAnswer)
                 }
             }
@@ -323,11 +329,5 @@ class PaperServiceImpl : PaperService {
             }
         }
     }
-
-
-    /**
-     * 进行试题收藏
-     */
-
 
 }

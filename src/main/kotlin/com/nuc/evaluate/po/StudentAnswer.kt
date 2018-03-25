@@ -21,7 +21,12 @@ class StudentAnswer {
     var employeeId: Long? = 0
     var url: String = ""
 
+    // 试题相速度
+    var similarScore: Double = 0.0
+
     override fun toString(): String {
-        return "StudentAnswer(id=$id, studentId=$studentId, pagesId=$pagesId, titleId=$titleId, answer='$answer', score=$score, time=$time, employeeId=$employeeId, url='$url')"
+        return "StudentAnswer(id=$id, studentId=$studentId, pagesId=$pagesId, titleId=$titleId, answer='$answer', score=$score, time=$time, employeeId=$employeeId, url='$url', similarScore=$similarScore)"
     }
+
+
 }
