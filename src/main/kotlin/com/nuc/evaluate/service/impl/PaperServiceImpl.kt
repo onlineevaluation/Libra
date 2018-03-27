@@ -103,6 +103,7 @@ class PaperServiceImpl : PaperService {
         if (ansListInDb.isNotEmpty()) {
             return
         }
+
         val ansList = ArrayList<StudentAnswer>()
 
         for (it in result.result.answer) {

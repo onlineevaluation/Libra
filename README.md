@@ -54,6 +54,13 @@ Appveyor CI | ![Build status](https://ci.appveyor.com/api/projects/status/ohh6mc
 1.1.1  
 修改填空题判题规则  
 
+**项目闭源** 
+
+- 2018年5月27日  
+1.1.4  
+完善简单题评分标准
+
+
 # License
 
 [MIT](./LICENSE)
