@@ -172,25 +172,8 @@ class PaperServiceImpl : PaperService {
                     val ansTitleScore = 10.0
                     logger.info("解答题")
                     val similarScore = WordUtils.ansCheck(it.ans, titleInDB.answer)
-                    val score: Double = when (similarScore) {
-                        in 0.0..0.25 -> {
-                            0.0 * ansTitleScore
-                        }
-                        in 0.25..0.5 -> {
-                            0.50 * ansTitleScore
-                        }
-                        in 0.5..0.75 -> {
-                            0.80 * ansTitleScore
-                        }
-                        in 0.75..1.0 -> {
-                            1.0 * ansTitleScore
-                        }
-                        else -> {
-                            0.0
-                        }
-                    }
                     studentAnswer.similarScore = similarScore
-                    studentAnswer.score = score
+                    studentAnswer.score = (similarScore.toInt() * 10).toDouble()
                     ansList.add(studentAnswer)
                 }
 

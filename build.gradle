@@ -25,7 +25,8 @@ apply plugin: 'org.jetbrains.dokka'
 apply plugin: 'jacoco'
 
 group = 'com.nuc'
-version = '1.1.2.' + getDate() + '-α'
+
+version = '1.1.3.' + getDate() + '-β'
 
 sourceCompatibility = 1.8
 compileKotlin {
@@ -78,7 +79,7 @@ dokka {
     outputDirectory = "$buildDir/javadoc"
 }
 
-def getDate() {
+static def getDate() {
     def date = new Date()
     def formattedDate = date.format("yyMMddHH")
     return formattedDate
