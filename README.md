@@ -60,6 +60,10 @@ Appveyor CI | ![Build status](https://ci.appveyor.com/api/projects/status/ohh6mc
 1.1.4  
 完善简单题评分标准
 
+- 2018年4月3日  
+1.2.0
+更新错题返回接口信息，错题展示更加详细
+
 
 # License
 

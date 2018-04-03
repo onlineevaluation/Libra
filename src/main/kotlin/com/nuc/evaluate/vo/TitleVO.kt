@@ -23,18 +23,12 @@ class TitleVO {
 
     fun setSection(category: String, title: Title) {
         when (category) {
-        // 单选题和多选题
-            "0", "1" -> {
-//                sectionList = title.split("\n")
-//                sectionA = sectionList[1].substring(1).trim()
-//                sectionB = sectionList[2].substring(1).trim()
-//                sectionC = sectionList[3].substring(1).trim()
-//                sectionD = sectionList[4].substring(1).trim()
+        // 单选题
+            "1" -> {
                 sectionA = title.sectiona
                 sectionB = title.sectionb
                 sectionC = title.sectionc
                 sectionD = title.sectiond
-//                title = sectionList[0].trim()
             }
 
         // 填空题

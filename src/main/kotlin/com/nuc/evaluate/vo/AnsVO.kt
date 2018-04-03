@@ -11,16 +11,12 @@ class AnsVO {
     var ans = ArrayList<StudentAnswer>()
 }
 
-
-
 open class StudentAnswer {
-
     var id: Long = 0L
     var answer: String = ""
     var score: Double = 0.0
     var standardAnswer = ""
     lateinit var title: String
-
 }
 
 class StudentAnswerSelect:StudentAnswer() {

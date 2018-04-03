@@ -10,10 +10,7 @@ class PageVO {
      * 单选题
      */
     var signChoice: ArrayList<TitleVO> = ArrayList()
-    /**
-     * 多选题
-     */
-    var multipleChoice: ArrayList<TitleVO> = ArrayList()
+
     /**
      * 程序题
      */
@@ -22,14 +19,7 @@ class PageVO {
      * 填空题
      */
     var blank: ArrayList<TitleVO> = ArrayList()
-    /**
-     * 判断题
-     */
-    var trueOrFalse: ArrayList<TitleVO> = ArrayList()
-    /**
-     * 作图题
-     */
-    var drawingQuestion: ArrayList<TitleVO> = ArrayList()
+
     /**
      * 简答题
      */
