@@ -56,7 +56,7 @@ Appveyor CI | ![Build status](https://ci.appveyor.com/api/projects/status/ohh6mc
 
 **项目闭源** 
 
-- 2018年5月27日  
+- 2018年3月27日  
 1.1.4  
 完善简单题评分标准
 

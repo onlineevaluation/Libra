@@ -26,7 +26,7 @@ apply plugin: 'jacoco'
 
 group = 'com.nuc'
 
-version = '1.1.3.' + getDate() + '-β'
+version = '1.1.4.' + getDate()
 
 sourceCompatibility = 1.8
 compileKotlin {

@@ -6,15 +6,26 @@ package com.nuc.evaluate.vo
 class AnsVO {
     var pageId: Long = 0L
     var score: Double = 0.0
-    var ansList = ArrayList<StudentAnswer>()
+    var select: ArrayList<StudentAnswerSelect> = ArrayList<StudentAnswerSelect>()
+    var blank:ArrayList<StudentAnswer> = ArrayList()
+    var ans = ArrayList<StudentAnswer>()
 }
 
 
-class StudentAnswer {
+
+open class StudentAnswer {
 
     var id: Long = 0L
     var answer: String = ""
     var score: Double = 0.0
     var standardAnswer = ""
     lateinit var title: String
+
+}
+
+class StudentAnswerSelect:StudentAnswer() {
+    var sectionA: String = ""
+    var sectionB: String = ""
+    var sectionC: String = ""
+    var sectionD: String = ""
 }

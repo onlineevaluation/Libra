@@ -11,6 +11,7 @@ import com.nuc.evaluate.repository.*
 import com.nuc.evaluate.service.PaperService
 import com.nuc.evaluate.util.WordUtils
 import com.nuc.evaluate.vo.AnsVO
+import com.nuc.evaluate.vo.StudentAnswerSelect
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.RabbitHandler
@@ -174,7 +175,8 @@ class PaperServiceImpl : PaperService {
                     logger.info("解答题")
                     val similarScore = WordUtils.ansCheck(it.ans, titleInDB.answer)
                     studentAnswer.similarScore = similarScore
-                    studentAnswer.score = (similarScore.toInt() * 10).toDouble()
+                    studentAnswer.score = (similarScore * 10).toInt().toDouble()
+                    println(" score :: ${studentAnswer.score}")
                     ansList.add(studentAnswer)
                 }
 
@@ -281,15 +283,47 @@ class PaperServiceImpl : PaperService {
         println("studentAnswer is ${studentAnswer.size}")
         // 标准答案
         for (i in 0 until studentAnswer.size) {
-            val sa = com.nuc.evaluate.vo.StudentAnswer()
-            sa.id = studentAnswer[i].id
-            sa.answer = studentAnswer[i].answer
-            sa.score = studentAnswer[i].score
-
             val t = titleRepository.findOne(studentAnswer[i].titleId)
-            sa.title = t.title
-            sa.standardAnswer = t.answer
-            ansVO.ansList.add(sa)
+            when (t.category) {
+                "1" -> {
+                    val selectAns = StudentAnswerSelect()
+                    selectAns.id = studentAnswer[i].titleId
+                    selectAns.answer = studentAnswer[i].answer
+                    selectAns.score = studentAnswer[i].score
+                    selectAns.title = t.title
+                    selectAns.sectionA = t.sectiona.toString()
+                    selectAns.sectionB = t.sectionb.toString()
+                    selectAns.sectionC = t.sectionc.toString()
+                    selectAns.sectionD = t.sectiond.toString()
+                    selectAns.standardAnswer = t.answer
+                    ansVO.select.add(selectAns)
+                }
+
+                "2" -> {
+                    val blankAnswer = com.nuc.evaluate.vo.StudentAnswer()
+                    blankAnswer.id = studentAnswer[i].titleId
+                    blankAnswer.answer = studentAnswer[i].answer
+                    blankAnswer.score = studentAnswer[i].score
+                    blankAnswer.title = t.title
+                    blankAnswer.standardAnswer = t.answer
+                    ansVO.blank.add(blankAnswer)
+                }
+
+                "3" -> {
+                    val ans = com.nuc.evaluate.vo.StudentAnswer()
+                    ans.id = studentAnswer[i].titleId
+                    ans.answer = studentAnswer[i].answer
+                    ans.score = studentAnswer[i].score
+                    ans.title = t.title
+                    ans.standardAnswer = t.answer
+                    ansVO.ans.add(ans)
+                }
+
+                "4" -> {
+
+                }
+            }
+
         }
         ansVO.pageId = pageId
         ansVO.score = studentScore.score
