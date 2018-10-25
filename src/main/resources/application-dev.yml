@@ -6,9 +6,9 @@ spring:
     password: guest
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://59.110.154.79:3306/db_online_education?useUnicode=true&amp;characterEncoding=utf-8
-    username: zhongpro
-    password: zhongpro
+    url: jdbc:mysql://localhost:3306/eva?useUnicode=true&amp;characterEncoding=utf-8
+    username: root
+    password: 1234
   jpa:
     database: mysql
     properties:
@@ -22,13 +22,13 @@ spring:
     password: nwcoiphamivwxhdw
     default-encoding: UTF-8
     properties:
-        mail:
-          smtp:
-            auth: true
-            starttls:
-              enable: true
-              required: true
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
 
 server:
-  port: 8080
+  port: 8081
 
