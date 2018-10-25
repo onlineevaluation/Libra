@@ -70,6 +70,8 @@ dependencies {
     compile group: 'com.getsentry.raven', name: 'raven-logback', version: '8.0.3'
     // Kotlin-Reflect-Tools-For-JVM
     compile 'wu.seal:kotlin-reflect-tools-for-jvm:1.1.2'
+    // 缓存
+    compile 'org.springframework.boot:spring-boot-starter-redis'
     // test
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
