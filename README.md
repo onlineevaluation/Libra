@@ -7,6 +7,7 @@
 服务 | 状态  
 :---|:---:  
 Travis CI | [![Build Status](https://travis-ci.org/youngxhui/evaluate.svg?branch=master)](https://travis-ci.org/youngxhui/evaluate)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fyoungxhui%2Fevaluate.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fyoungxhui%2Fevaluate?ref=badge_shield)
 Appveyor CI | ![Build status](https://ci.appveyor.com/api/projects/status/ohh6mcfiumv4sxno?svg=true)
  codecov | [![codecov](https://codecov.io/gh/youngxhui/evaluate/branch/master/graph/badge.svg)](https://codecov.io/gh/youngxhui/evaluate)
  codacy |[![Codacy Badge](https://api.codacy.com/project/badge/Grade/d78fd339c610402f867eb437fca47e82)](https://www.codacy.com/app/youngxhui/evaluate?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=youngxhui/evaluate&amp;utm_campaign=Badge_Grade)
@@ -67,3 +68,6 @@ Appveyor CI | ![Build status](https://ci.appveyor.com/api/projects/status/ohh6mc
 # License
 
 [MIT](./LICENSE)
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fyoungxhui%2Fevaluate.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fyoungxhui%2Fevaluate?ref=badge_large)
