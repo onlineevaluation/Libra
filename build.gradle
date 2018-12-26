@@ -1,12 +1,13 @@
 buildscript {
     ext {
-        kotlinVersion = '1.2.30'
-        springBootVersion = '1.5.10.RELEASE'
-        dokka_version = '0.9.15'
+        kotlinVersion = '1.3.10'
+        springBootVersion = '2.1.1.RELEASE'
+        dokka_version = '0.9.17'
     }
     repositories {
         jcenter()
         mavenCentral()
+
     }
     dependencies {
 
@@ -17,63 +18,76 @@ buildscript {
     }
 }
 
-apply plugin: 'kotlin'
-apply plugin: 'kotlin-spring'
+plugins {
+    id "org.jetbrains.kotlin.jvm" version "1.3.10"
+    id "org.jetbrains.kotlin.plugin.spring" version "1.3.10"
+    id "io.spring.dependency-management" version "1.0.6.RELEASE"
+}
+
+
+//apply plugin: 'kotlin'
+//apply plugin: 'kotlin-spring'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'org.jetbrains.dokka'
 apply plugin: 'jacoco'
 
 group = 'com.nuc'
-
 version = '1.2.0.' + getDate()
-
 sourceCompatibility = 1.8
+
 compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions {
+        freeCompilerArgs = ["-Xjsr305=strict"]
+        jvmTarget = "1.8"
+    }
 }
 compileTestKotlin {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions {
+        freeCompilerArgs = ["-Xjsr305=strict"]
+        jvmTarget = "1.8"
+    }
 }
 
 repositories {
     jcenter()
     mavenCentral()
-
+    maven {
+        url "https://plugins.gradle.org/m2/"
+    }
 }
 
 
 dependencies {
     // jpa
-    compile('org.springframework.boot:spring-boot-starter-data-jpa')
-    //jdbc
-    compile('org.springframework.boot:spring-boot-starter-jdbc')
+    implementation('org.springframework.boot:spring-boot-starter-data-jpa')
+    implementation('org.springframework.boot:spring-boot-starter-jdbc')
     // web
-    compile('org.springframework.boot:spring-boot-starter-web')
+    implementation('org.springframework.boot:spring-boot-starter-web')
     // kotlin
-    compile("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
     // mysql链接
-    runtime('mysql:mysql-connector-java')
+    runtimeOnly('mysql:mysql-connector-java')
     // swagger 2
-    compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.8.0'
-    compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.8.0'
+    implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.8.0'
+    implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.8.0'
     //jwt
-    compile 'io.jsonwebtoken:jjwt:0.9.0'
+    implementation 'io.jsonwebtoken:jjwt:0.9.0'
     // fastjson
-    compile('com.alibaba:fastjson:1.2.46')
+    implementation('com.alibaba:fastjson:1.2.46')
     // mq
-    compile('org.springframework.boot:spring-boot-starter-amqp')
+    implementation('org.springframework.boot:spring-boot-starter-amqp')
     // word 分词，词频
-    compile group: 'org.apdplat', name: 'word', version: '1.3'
+    implementation group: 'org.apdplat', name: 'word', version: '1.3'
     // sentry 日志监控
-    compile 'io.sentry:sentry-spring:1.6.8'
-    compile group: 'com.getsentry.raven', name: 'raven-logback', version: '8.0.3'
+    implementation 'io.sentry:sentry-spring:1.6.8'
+    implementation group: 'com.getsentry.raven', name: 'raven-logback', version: '8.0.3'
     // Kotlin-Reflect-Tools-For-JVM
-    compile 'wu.seal:kotlin-reflect-tools-for-jvm:1.1.2'
+    implementation 'wu.seal:kotlin-reflect-tools-for-jvm:1.1.2'
     // 缓存
-    compile 'org.springframework.boot:spring-boot-starter-redis'
+//    compile 'org.springframework.boot:spring-boot-starter-redis'
     // test
-    testCompile('org.springframework.boot:spring-boot-starter-test')
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
 }
 
 dokka {

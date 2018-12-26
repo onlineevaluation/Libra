@@ -1,6 +1,13 @@
-language: kotlin
+language: jvm
 
 jdk: oraclejdk8
+
+services:
+  - mysql
+  - rabbitmq
+
+before_install:
+  - mysql -e 'CREATE DATABASE IF NOT EXISTS eva;'
 
 before_script:
   - chmod +x gradlew
