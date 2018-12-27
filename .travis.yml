@@ -8,8 +8,6 @@ services:
 
 before_install:
   - mysql -e 'CREATE DATABASE IF NOT EXISTS eva;'
-
-before_script:
   - chmod +x gradlew
 
 script:
