@@ -19,5 +19,4 @@ after_success:
 
 notifications:
   webhooks:
-    - https://hook.bearychat.com/=bwAy5/travis/4ab56d4590c667a0997966ff17c08570
-    - https://outlook.office.com/webhook/35c21aff-9cde-45a2-833a-d0aef9e7ca4a@dea6e02c-702b-45bc-9c84-c62f18599043/TravisCI/60dee853ef654dbf8b4c08cc3d480ff2/1cdb000a-6c7b-49f2-885f-de5cf9e238cf
+    - https://outlook.office.com/webhook/35c21aff-9cde-45a2-833a-d0aef9e7ca4a@dea6e02c-702b-45bc-9c84-c62f18599043/TravisCI/c1ff5b3361bc42a6a962f7af8ce99a78/1cdb000a-6c7b-49f2-885f-de5cf9e238cf
