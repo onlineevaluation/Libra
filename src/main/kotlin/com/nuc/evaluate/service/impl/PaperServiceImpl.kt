@@ -85,7 +85,8 @@ class PaperServiceImpl : PaperService {
         }
         val pagesAndTitleList = pagesAndTitleRepository.findByPagesId(pageId)
         return pagesAndTitleList.map {
-            titleRepository.findOne(it.titleId)
+            // 发生过改动
+            titleRepository.findById(it.titleId).get()
         }
     }
 
@@ -108,7 +109,8 @@ class PaperServiceImpl : PaperService {
         val ansList = ArrayList<StudentAnswer>()
 
         for (it in result.result.answer) {
-            val titleInDB = titleRepository.findOne(it.id) ?: continue //?:throw ResultException("该试题不存在", 500)
+            // 发生过改动
+            val titleInDB = titleRepository.findById(it.id).get() ?: continue //?:throw ResultException("该试题不存在", 500)
             val studentAnswer = StudentAnswer()
             studentAnswer.pagesId = result.result.pageId
             studentAnswer.studentId = result.result.studentId
@@ -118,7 +120,7 @@ class PaperServiceImpl : PaperService {
             studentAnswer.titleId = it.id
             val order = titleInDB.orderd
             when (titleInDB.category) {
-            // 单选题
+                // 单选题
                 "1" -> {
                     val singleChoiceScore = 5.0
                     logger.info("单选题")
@@ -127,7 +129,7 @@ class PaperServiceImpl : PaperService {
                     }
                     ansList.add(studentAnswer)
                 }
-            // 填空题
+                // 填空题
                 "2" -> {
                     logger.info("填空题")
                     // （·-·）
@@ -169,7 +171,7 @@ class PaperServiceImpl : PaperService {
                     }
                     ansList.add(studentAnswer)
                 }
-            // 简答题
+                // 简答题
                 "3" -> {
                     val ansTitleScore = 10.0
                     logger.info("解答题")
@@ -210,7 +212,8 @@ class PaperServiceImpl : PaperService {
             ansList.add(ans)
         }
 
-        studentAnswerRepository.save(ansList)
+        // 发生过改动
+        studentAnswerRepository.saveAll(ansList)
 
         // 计算总分
         val scoreList =
@@ -283,7 +286,8 @@ class PaperServiceImpl : PaperService {
         println("studentAnswer is ${studentAnswer.size}")
         // 标准答案
         for (i in 0 until studentAnswer.size) {
-            val t = titleRepository.findOne(studentAnswer[i].titleId)
+            // 发生过改动
+            val t = titleRepository.findById(studentAnswer[i].titleId).get()
             when (t.category) {
                 "1" -> {
                     val selectAns = StudentAnswerSelect()
