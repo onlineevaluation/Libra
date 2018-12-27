@@ -47,7 +47,8 @@ class UserController {
     @PostMapping("/login")
     fun login(@Valid @RequestBody user: User, bindingResult: BindingResult): Result {
         if (bindingResult.hasErrors()) {
-            throw ResultException(bindingResult.fieldError.defaultMessage, 500)
+            // 发生过改动
+            throw ResultException(bindingResult.fieldError?.defaultMessage!!, 500)
         }
         logger.info("user: $user")
         return ResultUtils.success(200, "登录成功", userService.login(user))
