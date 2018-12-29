@@ -1,6 +1,8 @@
+
+
 CREATE DATABASE IF NOT EXISTS eva;
 
-use eva;
+USE `eva`;
 
 -- 创建用户表
 
@@ -55,3 +57,5 @@ create index tg_user_students_fk
 -- 插入学生数据
 
 INSERT INTO eva.uek_acdemic_students (id, name, student_number, pro_team_id, status, gender, nation, phone, qq, email, idcard, member_id, user_id, class_id) VALUES (782, '张晋霞', '1713010101', 0, 2, null, null, null, null, null, null, null, 811, 1);
+
+select * from eva.uek_acdemic_students
