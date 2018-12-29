@@ -1,6 +1,6 @@
 
 
-CREATE DATABASE IF NOT EXISTS eva;
+CREATE DATABASE IF NOT EXISTS eva  DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;;
 
 USE `eva`;
 
@@ -13,12 +13,14 @@ create table uek_privilege_user
 	username varchar(255) not null,
 	password varchar(255) not null,
 	status tinyint not null
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;;
 
 -- 插入用户数据
 
 INSERT INTO eva.uek_privilege_user (id, username, password, status) VALUES (1, 'admin', '96e79218965eb72c92a549dd5a330112', 2);
 INSERT INTO eva.uek_privilege_user (id, username, password, status) VALUES (811, '1713010101', '96e79218965eb72c92a549dd5a330112', 1);
+
+SELECT * from uek_privilege_user;
 
 -- 创建学生表
 
@@ -39,8 +41,8 @@ create table uek_acdemic_students
 	member_id int null,
 	user_id int null,
 	class_id int null
-)
-comment '学生表';
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 create index t_stu_pro_team_fk
 	on uek_acdemic_students (pro_team_id)
@@ -58,4 +60,4 @@ create index tg_user_students_fk
 
 INSERT INTO eva.uek_acdemic_students (id, name, student_number, pro_team_id, status, gender, nation, phone, qq, email, idcard, member_id, user_id, class_id) VALUES (782, '张晋霞', '1713010101', 0, 2, null, null, null, null, null, null, null, 811, 1);
 
-select * from eva.uek_acdemic_students
+select * from eva.uek_acdemic_students;
