@@ -13,6 +13,10 @@ before_install:
 script:
   - ./gradlew check
   - ./gradlew codeCoverageReport
+
+after_failure:
+  - cat /home/travis/build/youngxhui/evaluate/build/reports/tests/test/index.html
+
 after_success:
   - codecov
   - bash <(curl -s https://codecov.io/bash)

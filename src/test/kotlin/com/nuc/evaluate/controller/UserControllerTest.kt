@@ -68,11 +68,14 @@ class UserControllerTest {
                 "  \"message\": \"登录成功\"\n" +
                 "}"
 
-        mockMvc.perform(
+        val mvcResult = mockMvc.perform(
             MockMvcRequestBuilders.post(LOGIN_URL)
                 .contentType(MediaType.APPLICATION_JSON_UTF8).content(JSON.toJSONString(userSuccess))
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.content().json(SUCCESS_JSON))
+            .andReturn()
+
+        println("mvc result ${mvcResult.response.contentAsString}")
     }
 }
