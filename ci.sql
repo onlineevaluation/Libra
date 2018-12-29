@@ -49,6 +49,6 @@ CREATE TABLE `uek_acdemic_students` (
 
 -- 插入学生数据
 
-INSERT INTO `uek_acdemic_students` VALUES ('782', '张晋霞', '1713010101', '0', '2', null, null, null, null, null, null, null, '811', '1')
+INSERT INTO `uek_acdemic_students` VALUES ('782', '张晋霞', '1713010101', '0', '2', null, null, null, null, null, null, null, '811', '1');
 
 select * from eva.uek_acdemic_students;
