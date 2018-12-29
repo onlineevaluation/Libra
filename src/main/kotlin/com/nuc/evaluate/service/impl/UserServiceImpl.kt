@@ -23,7 +23,6 @@ class UserServiceImpl : UserService {
 
     private val logger: Logger = LoggerFactory.getLogger(this.javaClass)
 
-
     @Autowired
     private lateinit var userRepository: UserRepository
 
@@ -73,7 +72,6 @@ class UserServiceImpl : UserService {
     override fun login(user: User): Student {
         println("user :: ${user.toString()}")
         val student = studentRepository.findByStudentNumber(user.username) ?: throw ResultException("该用户不存在", 500)
-        // 发生过改动
         val userInDb = userRepository.findById(student.userId).get()
         logger.info("userInDb : $userInDb")
         logger.info("userInDb password : ${userInDb.password}")
