@@ -61,7 +61,4 @@
 
 # License
 
-[MIT](./LICENSE)
-
-
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fyoungxhui%2Fevaluate.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fyoungxhui%2Fevaluate?ref=badge_large)
