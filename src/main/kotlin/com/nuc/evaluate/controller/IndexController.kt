@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class IndexController {
 
+    /**
+     * 一个首页的请求
+     */
     @RequestMapping("/")
     fun index(): Result = ResultUtils.success()
 

@@ -1,9 +1,9 @@
 package com.nuc.evaluate.service.impl
 
-import com.nuc.evaluate.po.UserAndRole
 import com.nuc.evaluate.exception.ResultException
 import com.nuc.evaluate.po.Student
 import com.nuc.evaluate.po.User
+import com.nuc.evaluate.po.UserAndRole
 import com.nuc.evaluate.repository.StudentRepository
 import com.nuc.evaluate.repository.UserAndRoleRepository
 import com.nuc.evaluate.repository.UserRepository

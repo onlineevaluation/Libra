@@ -11,6 +11,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @Configuration
 class CorsConfig : WebMvcConfigurerAdapter() {
 
+    /**
+     * 跨域请求配置
+     * @param registry 跨域请求？？
+     */
     override fun addCorsMappings(registry: CorsRegistry) {
         registry.addMapping("/**")
             .allowedOrigins("*")
