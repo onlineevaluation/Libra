@@ -142,8 +142,8 @@ codeCoverageReport.dependsOn {
 
 check.dependsOn codeCoverageReport
 
-task ci(type: BootRun) {
-    classpath = sourceSets.main.runtimeClasspath
-    main = 'com.nuc.evaluate.EvaluateApplication'
-    systemProperty 'spring.profiles.active', 'ci'
-}
+//task ci(type: BootRun) {
+//    classpath = sourceSets.main.runtimeClasspath
+//    main = 'com.nuc.evaluate.EvaluateApplication'
+//    systemProperty 'spring.profiles.active', 'ci'
+//}
