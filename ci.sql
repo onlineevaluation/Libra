@@ -1,8 +1,8 @@
 
-
-CREATE DATABASE IF NOT EXISTS eva  DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;;
-
-USE `eva`;
+--
+-- CREATE DATABASE IF NOT EXISTS eva  DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;;
+--
+-- USE `eva`;
 
 -- 创建用户表
 
@@ -17,8 +17,8 @@ CREATE TABLE `uek_privilege_user` (
 
 -- 插入用户数据
 
-INSERT INTO eva.uek_privilege_user (id, username, password, status) VALUES (1, 'admin', '96e79218965eb72c92a549dd5a330112', 2);
-INSERT INTO eva.uek_privilege_user (id, username, password, status) VALUES (811, '1713010101', '96e79218965eb72c92a549dd5a330112', 1);
+INSERT INTO uek_privilege_user (id, username, password, status) VALUES (1, 'admin', '96e79218965eb72c92a549dd5a330112', 2);
+INSERT INTO uek_privilege_user (id, username, password, status) VALUES (811, '1713010101', '96e79218965eb72c92a549dd5a330112', 1);
 
 SELECT * from uek_privilege_user;
 
@@ -51,4 +51,4 @@ CREATE TABLE `uek_acdemic_students` (
 
 INSERT INTO `uek_acdemic_students` VALUES ('782', '张晋霞', '1713010101', '0', '2', null, null, null, null, null, null, null, '811', '1');
 
-select * from eva.uek_acdemic_students;
+select * from uek_acdemic_students;
