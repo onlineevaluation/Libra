@@ -15,10 +15,10 @@ services:
   - rabbitmq
 
 before_install:
-  - sudo mysql -e "use mysql; update user set authentication_string=PASSWORD('new_password') where User='root'; update user set plugin='mysql_native_password';FLUSH PRIVILEGES;"
+  - sudo mysql -e "use mysql; update user set authentication_string=PASSWORD('1234') where User='root'; update user set plugin='mysql_native_password';FLUSH PRIVILEGES;"
   - sudo mysql_upgrade -u root -p1234
   - sudo service mysql restart
-  - mysql -u root --password 1234 < ci.sql
+  - mysql -u root --password1234 < ci.sql
   - chmod +x gradlew
 
 script:
