@@ -26,26 +26,26 @@ private const val LIST_URL = "/user/list"
 /**
  * 测试成功输出的json
  */
-private const val SUCCESS_JSON = "{\n" +
-        "  \"data\": {\n" +
-        "    \"id\": 782,\n" +
-        "    \"name\": \"张晋霞\",\n" +
-        "    \"studentNumber\": \"1713010101\",\n" +
-        "    \"proTeamId\": 0,\n" +
-        "    \"status\": 2,\n" +
-        "    \"gender\": null,\n" +
-        "    \"nation\": null,\n" +
-        "    \"phone\": null,\n" +
-        "    \"qq\": null,\n" +
-        "    \"email\": null,\n" +
-        "    \"idcard\": null,\n" +
-        "    \"memberId\": null,\n" +
-        "    \"userId\": 811,\n" +
-        "    \"classId\": 1\n" +
-        "  },\n" +
-        "  \"code\": 200,\n" +
-        "  \"message\": \"登录成功\"\n" +
-        "}"
+private const val SUCCESS_JSON = """{
+  "data": {
+    "id": 782,
+    "name": "张晋霞",
+    "studentNumber": "1713010101",
+    "proTeamId": 0,
+    "status": 2,
+    "gender": null,
+    "nation": null,
+    "phone": null,
+    "qq": null,
+    "email": null,
+    "idcard": null,
+    "memberId": null,
+    "userId": 811,
+    "classId": 1
+  },
+  "code": 200,
+  "message": "登录成功"
+}"""
 
 @RunWith(SpringRunner::class)
 @SpringBootTest
