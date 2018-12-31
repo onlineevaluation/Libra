@@ -7,11 +7,12 @@ services:
   - rabbitmq
 
 before_install:
-  - mysql -u root  < ci.sql
+  - echo "USE mysql;\nUPDATE user SET password=PASSWORD('1234') WHERE user='root';\nFLUSH PRIVILEGES;\n" | mysql -u root
+  - mysql -u root -p 1234 < ci.sql
   - chmod +x gradlew
 
 script:
-  - ./gradlew bootRun -Dspring.profiles.active=ci
+  - ./gradlew build -Dspring.profiles.active=ci
   - ./gradlew codeCoverageReport
 
 after_success:
