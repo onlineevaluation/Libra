@@ -2,12 +2,22 @@ language: jvm
 
 jdk: oraclejdk8
 
+addons:
+  apt:
+    sources:
+      - mysql-5.7-trusty
+    packages:
+      - mysql-server
+      - mysql-client
+
 services:
   - mysql
   - rabbitmq
 
 before_install:
-  - echo "USE mysql;\nUPDATE user SET password=PASSWORD('1234') WHERE user='root';\nFLUSH PRIVILEGES;\n" | mysql -u root
+  - sudo mysql -e "use mysql; update user set authentication_string=PASSWORD('new_password') where User='root'; update user set plugin='mysql_native_password';FLUSH PRIVILEGES;"
+  - sudo mysql_upgrade -u root -p1234
+  - sudo service mysql restart
   - mysql -u root --password 1234 < ci.sql
   - chmod +x gradlew
 
