@@ -11,7 +11,7 @@ before_install:
   - chmod +x gradlew
 
 script:
-  - ./gradlew bootRun -Pprofile=ci
+  - ./gradlew build -Pprofile=ci
   - ./gradlew codeCoverageReport
 
 after_success:

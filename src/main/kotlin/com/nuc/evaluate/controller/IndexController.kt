@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RestController
 class IndexController {
 
     /**
-     * 一个首页的请求
+     * 首页
      */
     @RequestMapping("/")
-    fun index(): Result = ResultUtils.success()
+    fun index(): Result = ResultUtils.success("swagger-ui.html")
 
 }
