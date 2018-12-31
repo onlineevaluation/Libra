@@ -21,11 +21,31 @@ import org.springframework.web.context.WebApplicationContext
 /**
  * @author 杨晓辉 2018-12-29 16:16
  */
+private const val LOGIN_URL = "/user/login"
+private const val SUCCESS_JSON = "{\n" +
+        "  \"data\": {\n" +
+        "    \"id\": 782,\n" +
+        "    \"name\": \"张晋霞\",\n" +
+        "    \"studentNumber\": \"1713010101\",\n" +
+        "    \"proTeamId\": 0,\n" +
+        "    \"status\": 2,\n" +
+        "    \"gender\": null,\n" +
+        "    \"nation\": null,\n" +
+        "    \"phone\": null,\n" +
+        "    \"qq\": null,\n" +
+        "    \"email\": null,\n" +
+        "    \"idcard\": null,\n" +
+        "    \"memberId\": null,\n" +
+        "    \"userId\": 811,\n" +
+        "    \"classId\": 1\n" +
+        "  },\n" +
+        "  \"code\": 200,\n" +
+        "  \"message\": \"登录成功\"\n" +
+        "}"
+
 @RunWith(SpringRunner::class)
 @SpringBootTest
 class UserControllerTest {
-
-    private val LOGIN_URL = "/user/login"
 
     private val userSuccess: User = User("1713010101", "111111")
 
@@ -47,28 +67,8 @@ class UserControllerTest {
      */
     @Test
     fun successLoginTest() {
-        val SUCCESS_JSON = "{\n" +
-                "  \"data\": {\n" +
-                "    \"id\": 782,\n" +
-                "    \"name\": \"张晋霞\",\n" +
-                "    \"studentNumber\": \"1713010101\",\n" +
-                "    \"proTeamId\": 0,\n" +
-                "    \"status\": 2,\n" +
-                "    \"gender\": null,\n" +
-                "    \"nation\": null,\n" +
-                "    \"phone\": null,\n" +
-                "    \"qq\": null,\n" +
-                "    \"email\": null,\n" +
-                "    \"idcard\": null,\n" +
-                "    \"memberId\": null,\n" +
-                "    \"userId\": 811,\n" +
-                "    \"classId\": 1\n" +
-                "  },\n" +
-                "  \"code\": 200,\n" +
-                "  \"message\": \"登录成功\"\n" +
-                "}"
 
-        val mvcResult = mockMvc.perform(
+        mockMvc.perform(
             MockMvcRequestBuilders.post(LOGIN_URL)
                 .contentType(MediaType.APPLICATION_JSON_UTF8).content(JSON.toJSONString(userSuccess))
         )
@@ -76,6 +76,6 @@ class UserControllerTest {
             .andExpect(MockMvcResultMatchers.content().json(SUCCESS_JSON))
             .andReturn()
 
-        println("mvc result ${mvcResult.response.contentAsString}")
+
     }
 }
