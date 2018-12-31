@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
@@ -46,7 +47,7 @@ private const val SUCCESS_JSON = "{\n" +
         "  \"code\": 200,\n" +
         "  \"message\": \"登录成功\"\n" +
         "}"
-
+@ActiveProfiles("ci")
 @RunWith(SpringRunner::class)
 @SpringBootTest
 class UserControllerTest {
