@@ -47,7 +47,7 @@ private const val SUCCESS_JSON = "{\n" +
         "  \"code\": 200,\n" +
         "  \"message\": \"登录成功\"\n" +
         "}"
-@ActiveProfiles("ci")
+
 @RunWith(SpringRunner::class)
 @SpringBootTest
 class UserControllerTest {

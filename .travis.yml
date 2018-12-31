@@ -11,11 +11,8 @@ before_install:
   - chmod +x gradlew
 
 script:
-  - ./gradlew build
+  - ./gradlew build -Pprofile=ci
   - ./gradlew codeCoverageReport
-
-after_failure:
-  - cat /home/travis/build/youngxhui/evaluate/build/reports/tests/test/index.html
 
 after_success:
   - codecov
