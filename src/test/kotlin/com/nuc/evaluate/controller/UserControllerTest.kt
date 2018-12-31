@@ -3,14 +3,12 @@ package com.nuc.evaluate.controller
 import com.alibaba.fastjson.JSON
 import com.nuc.evaluate.vo.User
 import org.junit.Before
-import org.junit.BeforeClass
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
 import org.springframework.test.context.junit4.SpringRunner
-import org.springframework.test.web.client.match.MockRestRequestMatchers
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
@@ -22,6 +20,9 @@ import org.springframework.web.context.WebApplicationContext
  * @author 杨晓辉 2018-12-29 16:16
  */
 private const val LOGIN_URL = "/user/login"
+/**
+ * 测试成功输出的json
+ */
 private const val SUCCESS_JSON = "{\n" +
         "  \"data\": {\n" +
         "    \"id\": 782,\n" +

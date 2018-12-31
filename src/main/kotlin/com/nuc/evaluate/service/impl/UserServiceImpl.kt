@@ -70,12 +70,8 @@ class UserServiceImpl : UserService {
      */
     @Throws(ResultException::class)
     override fun login(user: User): Student {
-        println("user :: ${user.toString()}")
         val student = studentRepository.findByStudentNumber(user.username) ?: throw ResultException("该用户不存在", 500)
         val userInDb = userRepository.findById(student.userId).get()
-        logger.info("userInDb : $userInDb")
-        logger.info("userInDb password : ${userInDb.password}")
-        logger.info("user password : ${Md5Utils.md5(user.password)}")
         if (userInDb.password != Md5Utils.md5(user.password)) {
             throw ResultException("用户密码错误", 500)
         }

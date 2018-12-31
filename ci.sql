@@ -52,3 +52,7 @@ CREATE TABLE `uek_acdemic_students` (
 INSERT INTO `uek_acdemic_students` VALUES ('782', '张晋霞', '1713010101', '0', '2', null, null, null, null, null, null, null, '811', '1');
 
 select * from uek_acdemic_students;
+
+
+
+select * from uek_privilege_user where id = (select user_id from uek_acdemic_students where student_number='1713010101');
