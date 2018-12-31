@@ -26,7 +26,7 @@ class UserController {
     private val logger: Logger = LoggerFactory.getLogger(this.javaClass)
 
     @Autowired
-    lateinit var userService: UserService
+    private lateinit var userService: UserService
 
     /**
      * 用于查询所有用户
@@ -34,18 +34,6 @@ class UserController {
     @GetMapping("/list")
     fun listUser(): Result {
         return ResultUtils.success(200, "查询成功", userService.findUser())
-    }
-
-    /**
-     * 用于用户注册
-     * @param 用户信息
-     *
-     */
-    @PostMapping("/register")
-    fun register(@RequestBody userParam: com.nuc.evaluate.vo.User): Result {
-        val user: User = User()
-        BeanUtils.copyProperties(userParam, user)
-        return ResultUtils.success(200, "注册成功", userService.saveUser(user))
     }
 
     /**

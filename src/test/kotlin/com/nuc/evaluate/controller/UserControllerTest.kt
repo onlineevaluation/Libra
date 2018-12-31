@@ -1,6 +1,7 @@
 package com.nuc.evaluate.controller
 
 import com.alibaba.fastjson.JSON
+import com.nuc.evaluate.exception.ResultException
 import com.nuc.evaluate.vo.User
 import org.junit.Before
 import org.junit.Test
@@ -23,7 +24,8 @@ import org.springframework.web.context.WebApplicationContext
  * @author 杨晓辉 2018-12-29 16:16
  */
 private const val LOGIN_URL = "/user/login"
-private const val LIST_URL = "/user/list"
+
+
 /**
  * 测试成功输出的json
  */
@@ -48,14 +50,22 @@ private const val SUCCESS_JSON = """{
   "message": "登录成功"
 }"""
 
-@ActiveProfiles(value = ["ci", "dev"])
+private const val NO_PASSWORD_JSON = """
+{
+  "timestamp": "2018-12-31T10:16:02.717+0000",
+  "status": 500,
+  "error": "Internal Server Error",
+  "message": "该用户不存在",
+  "path": "/user/login"
+}
+"""
+
 @RunWith(SpringRunner::class)
 @SpringBootTest
 class UserControllerTest {
 
-    private val userSuccess: User = User("1713010101", "111111")
-
-    private val logger: Logger = LoggerFactory.getLogger(this.javaClass)
+    private val successUser: User = User("1713010101", "111111")
+    private val noPasswordUser: User = User("1713010101", "")
 
 
     @Autowired
@@ -79,19 +89,24 @@ class UserControllerTest {
 
         mockMvc.perform(
             MockMvcRequestBuilders.post(LOGIN_URL)
-                .contentType(MediaType.APPLICATION_JSON_UTF8).content(JSON.toJSONString(userSuccess))
+                .contentType(MediaType.APPLICATION_JSON_UTF8).content(JSON.toJSONString(successUser))
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.content().json(SUCCESS_JSON))
             .andReturn()
     }
 
-    @Test
-    fun sqlTest() {
-        val result = mockMvc.perform(
-            MockMvcRequestBuilders.get(LIST_URL).contentType(MediaType.APPLICATION_JSON_UTF8)
-
-        ).andExpect(MockMvcResultMatchers.status().isOk).andReturn()
-        logger.info("result is ${result.response.contentAsString}")
+    /**
+     * 登录用户没有密码
+     */
+    @Test(expected = ResultException::class)
+    fun failNoPasswordLoginTest() {
+        mockMvc.perform(
+            MockMvcRequestBuilders.post(LOGIN_URL)
+                .contentType(MediaType.APPLICATION_JSON_UTF8).content(JSON.toJSONString(noPasswordUser))
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.content().json(NO_PASSWORD_JSON))
+            .andReturn()
     }
 }
