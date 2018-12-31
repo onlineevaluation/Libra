@@ -1,0 +1,21 @@
+spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/eva?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
+    username: root
+  jpa:
+    database: mysql
+    properties:
+      hibernate:
+        ddl-auto: update
+        dialect: org.hibernate.dialect.MySQL5Dialect
+    show-sql: true
+
+
+server:
+  port: 8081

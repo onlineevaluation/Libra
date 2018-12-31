@@ -7,11 +7,11 @@ services:
   - rabbitmq
 
 before_install:
-  - mysql -u root --password="" < ci.sql
+  - mysql -u root  < ci.sql
   - chmod +x gradlew
 
 script:
-  - ./gradlew build
+  - ./gradlew ci
   - ./gradlew codeCoverageReport
 
 after_failure:
