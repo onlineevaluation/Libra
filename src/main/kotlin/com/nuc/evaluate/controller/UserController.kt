@@ -40,8 +40,9 @@ class UserController {
      * 用户登录
      * @
      */
+    @Throws(ResultException::class)
     @PostMapping("/login")
-    fun login(@Valid @RequestBody userParam: com.nuc.evaluate.vo.User): Result {
+    fun login(@RequestBody userParam: com.nuc.evaluate.vo.User): Result {
         val user = User()
         BeanUtils.copyProperties(userParam, user)
         logger.info("user: $user")

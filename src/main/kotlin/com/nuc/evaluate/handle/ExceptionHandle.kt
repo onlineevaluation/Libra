@@ -18,7 +18,6 @@ class ExceptionHandle {
 
     private final val logger: Logger = LoggerFactory.getLogger(ExceptionHandle::class.java)
 
-
     @ResponseBody
     @ExceptionHandler(value = [(Exception::class)])
     fun handle(e: Exception): Result {

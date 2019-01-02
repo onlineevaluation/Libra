@@ -2,14 +2,14 @@ package com.nuc.evaluate.config
 
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.servlet.config.annotation.CorsRegistry
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 /**
  * @author 杨晓辉 2018/2/1 11:41
  * 全局跨域请求支持
  */
 @Configuration
-class CorsConfig : WebMvcConfigurerAdapter() {
+class CorsConfig : WebMvcConfigurer {
 
     /**
      * 跨域请求配置

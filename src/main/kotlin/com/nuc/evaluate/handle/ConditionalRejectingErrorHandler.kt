@@ -1,13 +1,10 @@
 package com.nuc.evaluate.handle
 
-import com.nuc.evaluate.exception.ResultException
-import com.nuc.evaluate.util.ResultUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.springframework.amqp.AmqpRejectAndDontRequeueException
 import org.springframework.amqp.rabbit.listener.FatalExceptionStrategy
 import org.springframework.util.ErrorHandler
-import org.springframework.amqp.AmqpRejectAndDontRequeueException
-import org.springframework.amqp.rabbit.listener.exception.ListenerExecutionFailedException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseBody
