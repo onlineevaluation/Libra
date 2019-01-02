@@ -22,7 +22,7 @@ before_install:
   - chmod +x gradlew
 
 script:
-  - ./gradlew build -Dspring.profiles.active=ci
+  - ./gradlew build
   - ./gradlew codeCoverageReport
 
 after_success:

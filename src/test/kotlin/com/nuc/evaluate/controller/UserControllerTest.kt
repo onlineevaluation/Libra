@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON
 import com.nuc.evaluate.exception.ResultException
 import com.nuc.evaluate.vo.User
 import org.junit.Before
+import org.junit.BeforeClass
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,7 +24,7 @@ import org.springframework.web.util.NestedServletException
  */
 private const val LOGIN_URL = "/user/login"
 
-
+private const val LIST_URL = "/user/list"
 /**
  * 测试成功输出的json
  */
@@ -58,6 +59,7 @@ private const val NO_PASSWORD_JSON = """
 }
 """
 
+
 @RunWith(SpringRunner::class)
 @SpringBootTest
 class UserControllerTest {
@@ -79,6 +81,21 @@ class UserControllerTest {
         mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build()
     }
 
+
+    /**
+     * 登录用户没有密码
+     */
+    @Test(expected = IllegalStateException::class)
+    fun failNoPasswordLoginTest() {
+        mockMvc.perform(
+            MockMvcRequestBuilders.post(NO_PASSWORD_JSON)
+                .contentType(MediaType.APPLICATION_JSON_UTF8).content(JSON.toJSONString(noPasswordUser))
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.content().json(NO_PASSWORD_JSON))
+            .andReturn()
+    }
+
     /**
      * 成功登录测试
      */
@@ -95,16 +112,14 @@ class UserControllerTest {
     }
 
     /**
-     * 登录用户没有密码
+     * 获取所有的用户列表
      */
-    @Test(expected = IllegalStateException::class)
-    fun failNoPasswordLoginTest() {
+    @Test
+    fun listUserTest() {
         mockMvc.perform(
-            MockMvcRequestBuilders.post(NO_PASSWORD_JSON)
+            MockMvcRequestBuilders.get(LIST_URL)
                 .contentType(MediaType.APPLICATION_JSON_UTF8).content(JSON.toJSONString(noPasswordUser))
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.content().json(NO_PASSWORD_JSON))
-            .andReturn()
     }
 }
