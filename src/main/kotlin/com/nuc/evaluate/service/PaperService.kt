@@ -9,6 +9,11 @@ import com.nuc.evaluate.vo.AnsVO
  * @author 杨晓辉 2018/2/3 15:55
  */
 interface PaperService {
+
+    /**
+     * 获取该班级所有的试卷
+     * @param classId 班级id
+     */
     fun listClassPage(classId: Long): List<ClassAndPages>
 
     /**

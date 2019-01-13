@@ -23,7 +23,7 @@ import org.springframework.security.crypto.password.PasswordEncoder
 class WebSecurityConfig : WebSecurityConfigurerAdapter() {
 
     @Autowired
-    private val jwtTokenProvider: JwtTokenProvider? = null
+    private lateinit var jwtTokenProvider: JwtTokenProvider
 
     @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {
@@ -42,7 +42,7 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
 
 
         // Apply JWT
-        http.apply(JwtTokenFilterConfigurer(jwtTokenProvider!!))
+        http.apply(JwtTokenFilterConfigurer(jwtTokenProvider))
 
     }
 

@@ -12,6 +12,10 @@ object Md5Utils {
 
     private const val salt: Int = 0
 
+    /**
+     * MD5加密
+     * @param message 要加密信息
+     */
     fun md5(message: String): String {
         val sb = StringBuilder()
         val messageDigest = MessageDigest.getInstance("MD5")

@@ -16,9 +16,9 @@ class JwtTokenFilterConfigurer(private val jwtTokenProvider: JwtTokenProvider) :
      * 拦截器配置获取
      */
     @Throws(Exception::class)
-    override fun configure(http: HttpSecurity?) {
+    override fun configure(http: HttpSecurity) {
         val customFilter = JwtTokenFilter(jwtTokenProvider)
-        http!!.addFilterBefore(customFilter, UsernamePasswordAuthenticationFilter::class.java)
+        http.addFilterBefore(customFilter, UsernamePasswordAuthenticationFilter::class.java)
     }
 
 }

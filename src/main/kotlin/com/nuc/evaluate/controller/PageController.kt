@@ -117,7 +117,7 @@ class PageController {
         logger.info("result is  $result")
         rabbitTemplate.convertAndSend("check", result)
 
-        return ResultUtils.success("提交成功")
+        return ResultUtils.success(message = "提交成功")
     }
 
     /**

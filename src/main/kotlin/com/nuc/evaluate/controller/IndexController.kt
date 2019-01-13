@@ -16,7 +16,7 @@ class IndexController {
      */
     @RequestMapping("/")
     fun index(): Result {
-        return ResultUtils.success("swagger-ui.html")
+        return ResultUtils.success(message = "swagger-ui.html")
     }
 
 }

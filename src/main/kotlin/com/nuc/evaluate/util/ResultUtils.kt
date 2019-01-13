@@ -10,32 +10,25 @@ object ResultUtils {
 
     private var result = Result()
 
-    fun success(): Result {
-        result.code = 200
-        result.data = null
-        return result
-    }
-
-    fun success(message: String): Result {
-        result.message = message
-        result.data = null
-        return result
-    }
-
-    fun success(code: Int, message: String): Result {
-        result.code = code
-        result.message = message
-        result.data = null
-        return result
-    }
-
-    fun success(code: Int, message: String, data: Any): Result {
+    /**
+     * 返回结果成功
+     * @param code 返回状态码，默认为 200 表示成功
+     * @param message 状态信息，默认为成功
+     * @param data 返回数据，默认为 `null`
+     *
+     */
+    fun success(code: Int = 200, message: String = "成功", data: Any? = null): Result {
         result.code = code
         result.message = message
         result.data = data
         return result
     }
 
+    /**
+     * 返回错误信息
+     * @param code 错误状态码
+     * @param message 错误信息
+     */
     fun error(code: Int, message: String): Result {
         result.code = code
         result.message = message

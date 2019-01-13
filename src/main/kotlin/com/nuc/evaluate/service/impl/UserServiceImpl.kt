@@ -89,8 +89,8 @@ class UserServiceImpl : UserService, UserDetailsService {
      */
     override fun login(username: String, password: String): HashMap<Any, Any> {
         authenticationManager.authenticate(UsernamePasswordAuthenticationToken(username, password))
-        val user = userRepository.findUserByUsername(username)
-        val userAndRole = userAndRoleRepository.findUserAndRoleByUserId(user?.id!!)
+        val user = userRepository.findUserByUsername(username) ?: throw ResultException("没有该用户", 500)
+        val userAndRole = userAndRoleRepository.findUserAndRoleByUserId(user.id)
         val role = roleRepository.findById(userAndRole.roleId).get()
         val token = jwtTokenProvider.createToken(username, role.name)
         val student = studentRepository.findByStudentNumber(user.username) ?: throw ResultException("用户查询失败", 500)

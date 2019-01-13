@@ -10,6 +10,9 @@ import com.nuc.evaluate.po.User
  */
 interface UserService {
 
+    /**
+     * 获取所有的用户
+     */
     fun findUser(): List<User>
 
     /**
