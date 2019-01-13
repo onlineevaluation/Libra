@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.web.context.WebApplicationContext
+import org.springframework.web.util.NestedServletException
 
 
 /**
@@ -102,7 +103,7 @@ class UserControllerTest {
     /**
      * 成功登录测试
      */
-    @Test(expected = BadCredentialsException::class)
+    @Test(expected = NestedServletException::class)
     fun successLoginTest() {
 
         val result = mockMvc.perform(
