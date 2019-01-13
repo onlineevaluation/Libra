@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository
 
 /**
  * @author 杨晓辉 2018/2/1 15:44
+ * 用户登录
  */
 @Repository
 interface UserRepository : JpaRepository<User, Long> {
@@ -20,6 +21,7 @@ interface UserRepository : JpaRepository<User, Long> {
 
     /**
      * 通过用户名查找用户
+     * @param username 用户学号
      */
     fun findUserByUsername(username: String):User?
 }

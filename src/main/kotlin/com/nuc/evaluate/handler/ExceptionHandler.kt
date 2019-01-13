@@ -18,6 +18,11 @@ class ExceptionHandler {
 
     private final val logger: Logger = LoggerFactory.getLogger(ExceptionHandler::class.java)
 
+    /**
+     * 结果异常捕获
+     * @param e 异常类
+     *
+     */
     @ResponseBody
     @ExceptionHandler(value = [(Exception::class)])
     fun handle(e: Exception): Result {
@@ -26,7 +31,6 @@ class ExceptionHandler {
             ResultUtils.error(resultException.code!!, resultException.message!!)
         } else {
             logger.error("[系统异常]", e)
-//            sendEmail(e)
             ResultUtils.error(-1, "未知错误")
         }
     }

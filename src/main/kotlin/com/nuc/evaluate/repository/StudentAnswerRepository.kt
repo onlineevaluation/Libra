@@ -13,6 +13,8 @@ interface StudentAnswerRepository : JpaRepository<StudentAnswer, Long> {
 
     /**
      * 通过 studentId 和 pagesId 查找
+     * @param studentId 学生id
+     * @param pagesId 试卷id
      */
     fun findByStudentIdAndPagesId(studentId: Long, pagesId: Long): List<StudentAnswer>
 }

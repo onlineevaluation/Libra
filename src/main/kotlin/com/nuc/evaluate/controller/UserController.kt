@@ -19,11 +19,6 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/user")
 class UserController {
 
-    private val logger: Logger = LoggerFactory.getLogger(this.javaClass)
-//
-//    @Autowired
-//    private lateinit var authService: AuthService
-
     @Autowired
     private lateinit var userService: UserService
 
@@ -40,18 +35,10 @@ class UserController {
      * @param userParam user参数
      * @return 返回结果
      */
-//    @Throws(ResultException::class)
-//    @PostMapping("/login")
-//    fun login(@RequestBody userParam: com.nuc.evaluate.vo.User): Result {
-////        val token = authService.login(userParam.username, userParam.password)
-////        return ResultUtils.success(200, "登录成功", token)
-//        return ResultUtils.success()
-//    }
-
     @PostMapping("/login")
     fun login(@RequestBody user: User): Result {
         val token = userService.login(user.username, user.password)
-        return ResultUtils.success(200,"登录成功",token)
+        return ResultUtils.success(200, "登录成功", token)
     }
 
 

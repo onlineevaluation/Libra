@@ -236,6 +236,8 @@ class PaperServiceImpl : PaperService {
 
     /**
      * 试卷校验
+     * @param studentId 学生id
+     * @param pageId 试卷id
      */
     override fun verifyPage(studentId: Long, pageId: Long) {
 

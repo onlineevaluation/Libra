@@ -1,10 +1,8 @@
 package com.nuc.evaluate.controller
 
 import com.alibaba.fastjson.JSON
-import com.nuc.evaluate.exception.ResultException
 import com.nuc.evaluate.vo.User
 import org.junit.Before
-import org.junit.BeforeClass
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.slf4j.Logger
@@ -18,7 +16,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.web.context.WebApplicationContext
-import org.springframework.web.util.NestedServletException
 
 
 /**

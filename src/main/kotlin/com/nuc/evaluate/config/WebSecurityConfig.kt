@@ -38,7 +38,6 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
         http.authorizeRequests()
             .antMatchers("/user/login").permitAll()
             .antMatchers("/").permitAll()
-            .antMatchers("/users/signup").permitAll()
             .anyRequest().authenticated()
 
 
@@ -48,13 +47,13 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
     }
 
     @Throws(Exception::class)
-    override fun configure(web: WebSecurity?) {
+    override fun configure(web: WebSecurity) {
         // Allow swagger to be accessed without authentication
-        web!!.ignoring().antMatchers("/v2/api-docs")//
-            .antMatchers("/swagger-resources/**")//
-            .antMatchers("/swagger-ui.html")//
-            .antMatchers("/configuration/**")//
-            .antMatchers("/webjars/**")//
+        web.ignoring().antMatchers("/v2/api-docs")
+            .antMatchers("/swagger-resources/**")
+            .antMatchers("/swagger-ui.html")
+            .antMatchers("/configuration/**")
+            .antMatchers("/webjars/**")
             .antMatchers("/public")
     }
 

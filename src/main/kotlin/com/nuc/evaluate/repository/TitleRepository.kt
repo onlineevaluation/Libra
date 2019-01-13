@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository
 
 /**
  * @author 杨晓辉 2018-03-09 9:22
+ * 试卷接口
  */
 @Repository
 interface TitleRepository : JpaRepository<Title, Long> {

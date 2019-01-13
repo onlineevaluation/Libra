@@ -20,6 +20,9 @@ class ConditionalRejectingErrorHandler : ErrorHandler {
 
     private final lateinit var exceptionStrategy: FatalExceptionStrategy
 
+    /**
+     * 获取 RabbitMQ 的异常
+     */
     @ResponseBody
     @ExceptionHandler(value = [(Exception::class)])
     override fun handleError(t: Throwable) {

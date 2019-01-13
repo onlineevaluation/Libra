@@ -22,10 +22,21 @@ interface PaperService {
 
     /**
      * 试卷提交验证接口
+     * @param studentId 学生id
+     * @param pageId 试卷id
      */
     fun verifyPage(studentId: Long, pageId: Long)
 
+    /**
+     * 获取所有的试卷分数
+     * @param studentId 学生id
+     */
     fun listScore(studentId: Long): List<StudentScore>
 
+    /**
+     * 获取单个试卷分数
+     * @param pageId 试卷id
+     * @param studentId 学生id
+     */
     fun getPageScore(pageId: Long, studentId: Long): AnsVO
 }
