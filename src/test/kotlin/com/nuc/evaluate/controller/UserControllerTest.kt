@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
+import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
@@ -101,7 +102,7 @@ class UserControllerTest {
     /**
      * 成功登录测试
      */
-    @Test
+    @Test(expected = BadCredentialsException::class)
     fun successLoginTest() {
 
         val result = mockMvc.perform(
