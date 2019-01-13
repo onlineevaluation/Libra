@@ -33,7 +33,7 @@ apply plugin: 'org.jetbrains.dokka'
 apply plugin: 'jacoco'
 
 group = 'com.nuc'
-version = '1.2.0.' + getDate()
+version = '2.0.0.' + getDate()
 sourceCompatibility = 1.8
 
 compileKotlin {
@@ -111,6 +111,8 @@ dependencies {
 //    compile 'org.springframework.boot:spring-boot-starter-redis'
     // test
     testImplementation('org.springframework.boot:spring-boot-starter-test')
+    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.3.1'
+
 }
 
 dokka {
@@ -150,6 +152,6 @@ check.dependsOn codeCoverageReport
 
 //task ci(type: BootRun) {
 //    classpath = sourceSets.main.runtimeClasspath
-//    main = 'com.nuc.evaluate.EvaluateApplication'
+//    main = 'com.nuc.libra.EvaluateApplication'
 //    systemProperty 'spring.profiles.active', 'ci'
 //}
