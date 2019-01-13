@@ -7,6 +7,8 @@ import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
@@ -64,6 +66,9 @@ private const val NO_PASSWORD_JSON = """
 @SpringBootTest
 class UserControllerTest {
 
+
+    private val logger: Logger = LoggerFactory.getLogger(this.javaClass)
+
     private val successUser: User = User("1713010101", "111111")
     private val noPasswordUser: User = User("1713010101", "")
 
@@ -102,13 +107,14 @@ class UserControllerTest {
     @Test
     fun successLoginTest() {
 
-        mockMvc.perform(
+        val result = mockMvc.perform(
             MockMvcRequestBuilders.post(LOGIN_URL)
                 .contentType(MediaType.APPLICATION_JSON_UTF8).content(JSON.toJSONString(successUser))
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.content().json(SUCCESS_JSON))
             .andReturn()
+
+        logger.info("token is " + result.response.contentAsString)
     }
 
     /**
@@ -116,10 +122,12 @@ class UserControllerTest {
      */
     @Test
     fun listUserTest() {
-        mockMvc.perform(
+        val result = mockMvc.perform(
             MockMvcRequestBuilders.get(LIST_URL)
                 .contentType(MediaType.APPLICATION_JSON_UTF8).content(JSON.toJSONString(noPasswordUser))
         )
-            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.status().isOk).andReturn()
+
+        logger.info("result is ${result.response.contentAsString}")
     }
 }

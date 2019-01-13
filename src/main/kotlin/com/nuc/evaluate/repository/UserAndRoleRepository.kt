@@ -9,4 +9,7 @@ import org.springframework.stereotype.Repository
  */
 @Repository
 interface UserAndRoleRepository : JpaRepository<UserAndRole, Long> {
+
+    fun findUserAndRoleByUserId(userId:Long):UserAndRole
+
 }

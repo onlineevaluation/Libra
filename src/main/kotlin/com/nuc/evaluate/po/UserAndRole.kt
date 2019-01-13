@@ -18,5 +18,4 @@ class UserAndRole {
     @Column(name = "role_id")
     var roleId: Long = 0L
 
-
 }

@@ -1,5 +1,6 @@
 package com.nuc.evaluate.po
 
+import org.springframework.security.core.GrantedAuthority
 import javax.persistence.*
 
 /**
@@ -8,7 +9,7 @@ import javax.persistence.*
  */
 @Entity
 @Table(name = "uek_privilege_role")
-class Role {
+class Role : GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,4 +18,10 @@ class Role {
     lateinit var name: String
 
     lateinit var about: String
+
+
+    override fun getAuthority(): String {
+        return name
+    }
+
 }

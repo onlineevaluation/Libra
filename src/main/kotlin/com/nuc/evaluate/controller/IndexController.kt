@@ -15,6 +15,8 @@ class IndexController {
      * 首页
      */
     @RequestMapping("/")
-    fun index(): Result = ResultUtils.success("swagger-ui.html")
+    fun index(): Result {
+        return ResultUtils.success("swagger-ui.html")
+    }
 
 }

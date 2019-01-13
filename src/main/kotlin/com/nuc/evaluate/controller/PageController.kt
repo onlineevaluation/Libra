@@ -185,7 +185,7 @@ class PageController {
         titleVO.num = "0"
 
         when (title.category) {
-        // 单选题
+            // 单选题
             "1" -> {
                 titleVO.score = 5.0
                 titleVO.sectionA = title.sectiona
@@ -193,7 +193,7 @@ class PageController {
                 titleVO.sectionC = title.sectionc
                 titleVO.sectionD = title.sectiond
             }
-        // 填空题
+            // 填空题
             "2" -> {
                 titleVO.score = 5.0
                 val sb = StringBuilder()

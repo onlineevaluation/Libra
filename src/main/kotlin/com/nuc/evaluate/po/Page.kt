@@ -14,7 +14,6 @@ class Page {
     var id: Long = 0L
     @Column(columnDefinition = "INT")
     var num: String? = null
-    @Column(columnDefinition = "ENUM")
     var status: String? = null
     var directionId: Long = 0
     var stageId: Long = 0

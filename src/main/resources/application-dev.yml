@@ -13,9 +13,21 @@ spring:
     database: mysql
     properties:
       hibernate:
-        ddl-auto: update
         dialect: org.hibernate.dialect.MySQL5Dialect
-
+    hibernate:
+      ddl-auto: update
+  main:
+    allow-bean-definition-overriding: true
 
 server:
   port: 8081
+
+jwt:
+  token:
+    secret: nuc_software
+    #一周的有效
+    expire: 604800000
+
+management:
+  security:
+    enable: ture

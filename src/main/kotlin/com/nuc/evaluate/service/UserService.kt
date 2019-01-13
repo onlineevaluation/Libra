@@ -24,10 +24,11 @@ interface UserService {
 
     /**
      * 通过用户名进行用户查找
-     * @param user 用户
-     * @return user 返回用户
+     * @param username 学号
+     * @param password 密码
+     * @return HashMap 返回用户信息和token
      * @throws ResultException 当用户名称和密码不一致
      */
     @Throws(ResultException::class)
-    fun login(user: User): Student
+    fun login(username: String, password: String): HashMap<Any, Any>
 }

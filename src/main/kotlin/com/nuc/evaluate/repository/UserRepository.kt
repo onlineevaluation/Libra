@@ -17,4 +17,9 @@ interface UserRepository : JpaRepository<User, Long> {
      * @return user 可能为空
      */
     fun findByUsernameAndPassword(username: String, password: String): User?
+
+    /**
+     * 通过用户名查找用户
+     */
+    fun findUserByUsername(username: String):User?
 }

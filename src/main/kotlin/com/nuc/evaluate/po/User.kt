@@ -1,37 +1,74 @@
 package com.nuc.evaluate.po
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-import io.swagger.annotations.ApiParam
-import org.hibernate.validator.constraints.NotEmpty
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.userdetails.UserDetails
+
 import javax.persistence.*
-import javax.validation.constraints.NotNull
 
 /**
- * @author 杨晓辉 2018/2/1 15:38
- * 用户表
+ * @author 杨晓辉 2019-01-02 14:29
  */
 @Entity
 @Table(name = "uek_privilege_user")
 @JsonIgnoreProperties(value = ["id"])
-class User {
+class User : UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @ApiParam(hidden = true)
     var id: Long = 0L
 
-    @NotEmpty(message = "账号不能为空")
-    lateinit var username: String
-    @NotEmpty(message = "密码不能为空")
-    @NotNull(message = "密码不能为空")
-    lateinit var password: String
+    private lateinit var username: String
 
-    @ApiParam(hidden = true)
-    var status: Long = 0
+    private lateinit var password: String
 
-    override fun toString(): String {
-        return "User(id=$id, username='$username', password='$password', status=$status)"
+    var status: Long = 0L
+
+
+    @ManyToMany(cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "uek_privilege_user_role",
+        joinColumns = [JoinColumn(name = "user_id", referencedColumnName = "id")],
+        inverseJoinColumns = [JoinColumn(name = "role_id", referencedColumnName = "id")]
+    )
+    private lateinit var  roles: List<Role>
+
+    override fun getUsername(): String {
+        return username
+    }
+
+    override fun isAccountNonExpired(): Boolean {
+        return true
     }
 
 
+    override fun isAccountNonLocked(): Boolean {
+        return true
+    }
+
+
+    override fun isCredentialsNonExpired(): Boolean {
+        return true
+    }
+
+
+    override fun isEnabled(): Boolean {
+        return true
+    }
+
+    fun setUsername(username: String) {
+        this.username = username
+    }
+
+    override fun getAuthorities(): Collection<GrantedAuthority>? {
+        return null
+    }
+
+    override fun getPassword(): String {
+        return password
+    }
+
+    fun setPassword(password: String) {
+        this.password = password
+    }
 }

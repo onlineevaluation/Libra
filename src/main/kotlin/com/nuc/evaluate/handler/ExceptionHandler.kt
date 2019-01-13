@@ -1,4 +1,4 @@
-package com.nuc.evaluate.handle
+package com.nuc.evaluate.handler
 
 import com.nuc.evaluate.exception.ResultException
 import com.nuc.evaluate.result.Result
@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.ResponseBody
  * 异常捕获类
  */
 @ControllerAdvice
-class ExceptionHandle {
+class ExceptionHandler {
 
-    private final val logger: Logger = LoggerFactory.getLogger(ExceptionHandle::class.java)
+    private final val logger: Logger = LoggerFactory.getLogger(ExceptionHandler::class.java)
 
     @ResponseBody
     @ExceptionHandler(value = [(Exception::class)])
