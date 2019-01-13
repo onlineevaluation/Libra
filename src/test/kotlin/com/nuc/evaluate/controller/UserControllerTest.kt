@@ -101,7 +101,7 @@ class UserControllerTest {
     /**
      * 成功登录测试
      */
-    @Test(expected = Exception::class)
+    @Test
     fun successLoginTest() {
 
         val result = mockMvc.perform(
