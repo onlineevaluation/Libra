@@ -18,7 +18,7 @@ CREATE TABLE `uek_privilege_user` (
 -- 插入用户数据
 
 INSERT INTO uek_privilege_user (id, username, password, status) VALUES (1, 'admin', '96e79218965eb72c92a549dd5a330112', 2);
-INSERT INTO uek_privilege_user (id, username, password, status) VALUES (811, '1713010101', '96e79218965eb72c92a549dd5a330112', 1);
+INSERT INTO uek_privilege_user (id, username, password, status) VALUES (811, '1713010101', '$2a$10$ZtD1ocHypusagLSbqD/YFuA//y.juMJeawA9wQfTdZzw6l8iMIQnO', 1);
 
 SELECT * from uek_privilege_user;
 
@@ -56,3 +56,42 @@ select * from uek_acdemic_students;
 
 
 select * from uek_privilege_user where id = (select user_id from uek_acdemic_students where student_number='1713010101');
+
+
+-- 创建角色表
+create table uek_privilege_role
+(
+	id int auto_increment
+		primary key,
+	name varchar(20) not null,
+	about varchar(100) null
+)ENGINE=InnoDB AUTO_INCREMENT=1516 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='角色表';
+
+-- 插入角色数据
+
+INSERT INTO eva.uek_privilege_role (id, name, about) VALUES (1, '超级管理员', null);
+INSERT INTO eva.uek_privilege_role (id, name, about) VALUES (2, '教师', '教师');
+INSERT INTO eva.uek_privilege_role (id, name, about) VALUES (3, '学生', '学生');
+
+-- 创建用户角色表
+
+create table uek_privilege_user_role
+(
+	id int auto_increment
+		primary key,
+	user_id int not null,
+	role_id int not null,
+	constraint FKgh5u057fg34144pb86hb6yp80
+		foreign key (user_id) references uek_privilege_user (id),
+	constraint FKr9h1knhw993ye9thrhdd3l6cp
+		foreign key (role_id) references uek_privilege_role (id)
+);
+
+create index role_id
+	on uek_privilege_user_role (role_id)
+	comment '(null)';
+
+create index user_id
+	on uek_privilege_user_role (user_id)
+	comment '(null)';
+
