@@ -61,6 +61,7 @@ private const val NO_PASSWORD_JSON = """
 
 @RunWith(SpringRunner::class)
 @SpringBootTest
+
  class UserControllerTest {
 
 

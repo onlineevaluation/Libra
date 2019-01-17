@@ -69,10 +69,12 @@ create table uek_privilege_role
 
 -- 插入角色数据
 
-INSERT INTO eva.uek_privilege_role (id, name, about) VALUES (1, '超级管理员', null);
-INSERT INTO eva.uek_privilege_role (id, name, about) VALUES (2, '教师', '教师');
-INSERT INTO eva.uek_privilege_role (id, name, about) VALUES (3, '学生', '学生');
+INSERT INTO uek_privilege_role (id, name, about) VALUES (1, '超级管理员', null);
+INSERT INTO uek_privilege_role (id, name, about) VALUES (2, '教师', '教师');
+INSERT INTO uek_privilege_role (id, name, about) VALUES (3, '学生', '学生');
 
+
+select * from uek_privilege_role;
 -- 创建用户角色表
 
 create table uek_privilege_user_role
@@ -87,11 +89,7 @@ create table uek_privilege_user_role
 		foreign key (role_id) references uek_privilege_role (id)
 );
 
-create index role_id
-	on uek_privilege_user_role (role_id)
-	comment '(null)';
+-- 查询用户和角色表
+INSERT INTO uek_privilege_user_role (id, user_id, role_id) VALUES (1, 811, 3);
 
-create index user_id
-	on uek_privilege_user_role (user_id)
-	comment '(null)';
-
+select * from uek_privilege_user_role;

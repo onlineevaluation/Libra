@@ -6,16 +6,28 @@ spring:
     password: guest
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/eva?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
+    url: jdbc:mysql://localhost:3306/ci?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
     username: root
+    password: 1234
   jpa:
     database: mysql
     properties:
       hibernate:
-        ddl-auto: update
         dialect: org.hibernate.dialect.MySQL5Dialect
-    show-sql: true
-
+    hibernate:
+      ddl-auto: update
+  main:
+    allow-bean-definition-overriding: true
 
 server:
   port: 8081
+
+jwt:
+  token:
+    secret: nuc_software
+    #一周的有效
+    expire: 604800000
+
+management:
+  security:
+    enable: ture
