@@ -1,4 +1,4 @@
-package com.nuc.libra
+package com.nuc.libra.config
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -22,7 +22,7 @@ import java.util.*
  */
 @Configuration
 @EnableSwagger2
-class Swagger2 {
+class SwaggerConfig {
 
     /**
      * swagger2 的配置

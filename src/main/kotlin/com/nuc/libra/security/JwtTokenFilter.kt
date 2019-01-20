@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServletResponse
  */
 class JwtTokenFilter(private val jwtTokenProvider: JwtTokenProvider) : GenericFilterBean() {
 
-//    private final val logger: Logger = LoggerFactory.getLogger(this.javaClass)
 
     /**
      * 拦截方法，将token进行拦截获取
