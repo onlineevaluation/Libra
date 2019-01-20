@@ -36,6 +36,7 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
 
         // Entry points
         http.authorizeRequests()
+            .antMatchers("/druid/**").permitAll()
             .antMatchers("/user/login").permitAll()
             .antMatchers("/").permitAll()
             .anyRequest().authenticated()
@@ -55,6 +56,7 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
             .antMatchers("/configuration/**")
             .antMatchers("/webjars/**")
             .antMatchers("/public")
+            .antMatchers("/druid/**")
     }
 
     /**
