@@ -25,6 +25,10 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
     @Autowired
     private lateinit var jwtTokenProvider: JwtTokenProvider
 
+    /**
+     * 拦截请求配置
+     * @param http 要拦截的请求
+     */
     @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {
 
@@ -47,6 +51,10 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
 
     }
 
+    /**
+     * 忽略配置
+     * @param web 忽略配置
+     */
     @Throws(Exception::class)
     override fun configure(web: WebSecurity) {
         // Allow swagger to be accessed without authentication
@@ -67,6 +75,9 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
         return BCryptPasswordEncoder()
     }
 
+    /**
+     * 重新该方法进行注入
+     */
     @Bean
     @Throws(Exception::class)
     override fun authenticationManagerBean(): AuthenticationManager {

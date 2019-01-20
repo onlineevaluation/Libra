@@ -15,17 +15,24 @@ import javax.sql.DataSource
 
 /**
  * @author 杨晓辉 2019-01-20 19:14
+ * Druid 数据库连接池配置
  */
 @Configuration
 class DruidConfig {
 
 
+    /**
+     * 注入连接池配置
+     */
     @ConfigurationProperties(prefix = "spring.datasource")
     @Bean
     fun druid(): DataSource {
         return DruidDataSource()
     }
 
+    /**
+     * 启动监控
+     */
     @Bean
     fun statViewServlet(): ServletRegistrationBean<StatViewServlet> {
         val bean = ServletRegistrationBean(StatViewServlet(), "/druid/*")
@@ -38,6 +45,9 @@ class DruidConfig {
         return bean
     }
 
+    /**
+     * 拦截请求进行监控
+     */
     @Bean
     fun webStatFilter(): FilterRegistrationBean<Filter> {
         val bean = FilterRegistrationBean<Filter>()
