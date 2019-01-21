@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/youngxhui/Libra.svg?branch=master)](https://travis-ci.org/youngxhui/Libra)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fyoungxhui%2Fevaluate.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fyoungxhui%2Fevaluate?ref=badge_shield)
 [![codecov](https://codecov.io/gh/youngxhui/Libra/branch/master/graph/badge.svg)](https://codecov.io/gh/youngxhui/Libra)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/1fdc2f9dd39c47019f6005810325f8da)](https://www.codacy.com/app/youngxhui/evaluate?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=youngxhui/evaluate&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/ded5babc10eb47d68215d88b29872c59)](https://www.codacy.com/app/youngxhui/Libra?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=youngxhui/Libra&amp;utm_campaign=Badge_Grade)
 [![GitHub count languages](https://img.shields.io/github/languages/count/youngxhui/evaluate.svg)]()
 [![GitHub top language](https://img.shields.io/github/languages/top/youngxhui/evaluate.svg)]()
 [![](https://img.shields.io/github/repo-size/badges/shields.svg)]()

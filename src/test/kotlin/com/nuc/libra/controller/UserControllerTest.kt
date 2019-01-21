@@ -10,12 +10,14 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
+import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.web.context.WebApplicationContext
+import org.springframework.web.util.NestedServletException
 
 
 /**
@@ -58,18 +60,19 @@ private const val NO_PASSWORD_JSON = """
 }
 """
 
-
+/**
+ * 用户用户中心测试
+ */
 @RunWith(SpringRunner::class)
 @SpringBootTest
-
- class UserControllerTest {
+class UserControllerTest {
 
 
     private val logger: Logger = LoggerFactory.getLogger(this.javaClass)
 
     private val successUser: User = User("1713010101", "111111")
     private val noPasswordUser: User = User("1713010101", "")
-
+    private val passwordErrorUser: User = User("1713010101", "123456")
 
     @Autowired
     private lateinit var wac: WebApplicationContext
@@ -104,8 +107,7 @@ private const val NO_PASSWORD_JSON = """
      */
     @Test()
     fun successLoginTest() {
-
-     mockMvc.perform(
+        mockMvc.perform(
             MockMvcRequestBuilders.post(LOGIN_URL)
                 .contentType(MediaType.APPLICATION_JSON_UTF8).content(JSON.toJSONString(successUser))
         )
@@ -124,5 +126,17 @@ private const val NO_PASSWORD_JSON = """
             .andExpect(MockMvcResultMatchers.status().isOk).andReturn()
 
         logger.info("result is ${result.response.contentAsString}")
+    }
+
+    /**
+     * 用户密码错误登录
+     */
+    @Test(expected = NestedServletException::class)
+    fun passwordErrorLoginTest() {
+        val result = mockMvc.perform(
+            MockMvcRequestBuilders.post(LOGIN_URL).contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(JSON.toJSONString(passwordErrorUser))
+        ).andExpect(MockMvcResultMatchers.status().isOk).andReturn()
+        logger.info(result.response.errorMessage)
     }
 }
