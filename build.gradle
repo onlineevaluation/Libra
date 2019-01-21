@@ -86,9 +86,8 @@ dependencies {
     implementation group: 'com.getsentry.raven', name: 'raven-logback', version: '8.0.3'
 
     // Kotlin-Reflect-Tools-For-JVM
-    implementation 'wu.seal:kotlin-reflect-tools-for-jvm:1.1.2'
-//    // druid
-//    compile 'com.alibaba:druid-spring-boot-starter:1.1.10'
+    implementation 'wu.seal:kotlin-reflect-tools-for-jvm:1.1.2' 
+    // druid
     implementation 'com.alibaba:druid:1.1.12'
     // test
     testImplementation('org.springframework.boot:spring-boot-starter-test')
