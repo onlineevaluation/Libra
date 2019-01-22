@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.*
 
 /**
  * @author 杨晓辉 2018/2/1 15:47
- */
-/**
  * 用户中心请求
  */
 @RestController
@@ -30,7 +28,7 @@ class UserController {
 
     /**
      * 用户登录
-     * @param userParam user参数
+     * @param user user参数
      * @return 返回结果
      */
     @PostMapping("/login")

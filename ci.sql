@@ -94,6 +94,46 @@ INSERT INTO uek_privilege_user_role (id, user_id, role_id) VALUES (1, 811, 3);
 
 select * from uek_privilege_user_role;
 
+-- page 试卷表
+create table uek_evaluate_pages
+(
+	id int auto_increment
+		primary key,
+	num varchar(255) null comment '按条件生成的一个编号',
+	status tinyint default 1 not null comment '0 未组卷 1 已组卷',
+	course_id int not null comment '所属课程_id',
+	create_time datetime not null comment '生成试卷的时间',
+	creater_id int default 0 not null comment '创建者id',
+	totalscores int default 0 null comment '总分数',
+	name varchar(255) null,
+	chapter_id int null,
+	company_id bigint not null,
+	day_id bigint not null,
+	direction_id bigint not null,
+	stage_id bigint not null,
+	user_member_id bigint not null
+)
+comment '试卷';
+
+-- 插入试卷
+INSERT INTO uek_evaluate_pages (id, num, status, course_id, create_time, creater_id, totalscores, name, chapter_id, company_id, day_id, direction_id, stage_id, user_member_id) VALUES (1, '53418', 2, 1, '2018-03-21 13:00:00', 0, 100, '面向对象程学设计第一章测试', 3, 0, 0, 0, 0, 0);
+INSERT INTO uek_evaluate_pages (id, num, status, course_id, create_time, creater_id, totalscores, name, chapter_id, company_id, day_id, direction_id, stage_id, user_member_id) VALUES (2, '29435', 2, 1, '2018-03-21 13:00:00', 0, 100, '面向对象程学设计第二章测试', 4, 0, 0, 0, 0, 0);
+INSERT INTO uek_evaluate_pages (id, num, status, course_id, create_time, creater_id, totalscores, name, chapter_id, company_id, day_id, direction_id, stage_id, user_member_id) VALUES (3, '29436', 2, 1, '2018-03-30 19:52:43', 0, 100, '面向对象程学设计第三章测试', 5, 0, 0, 0, 0, 0);
+INSERT INTO uek_evaluate_pages (id, num, status, course_id, create_time, creater_id, totalscores, name, chapter_id, company_id, day_id, direction_id, stage_id, user_member_id) VALUES (4, null, 2, 1, '2018-04-07 11:22:35', 0, 0, '面向对象第4章测试', 6, 0, 0, 0, 0, 0);
+
+
+-- 创建班级表
+create table uek_acdemic_class
+(
+	id int(4) auto_increment
+		primary key,
+	num varchar(255) not null
+)
+comment '班级表';
+
+INSERT INTO eva.uek_acdemic_class (id, num) VALUES (1, '17130101');
+INSERT INTO eva.uek_acdemic_class (id, num) VALUES (2, '17130102');
+
 -- 创建班级 试卷表
 CREATE TABLE `uek_evaluate_class_pages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -109,7 +149,7 @@ CREATE TABLE `uek_evaluate_class_pages` (
 ) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='试卷和班级中间表\r\n'
 
 -- 插入数据
-INSERT INTO uek_evaluate_class_pages (id, pages_id, class_id, start_time, end_time, invigilator, comment, add_time, employee_id) VALUES (2, 1, 1, '2018-03-23 08:00:00', '2018-04-27 22:00:00', null, null, '2018-04-03 17:26:46', null);
-INSERT INTO uek_evaluate_class_pages (id, pages_id, class_id, start_time, end_time, invigilator, comment, add_time, employee_id) VALUES (3, 2, 1, '2018-03-23 08:00:00', '2018-03-27 22:00:00', null, null, '2018-03-27 09:35:09', null);
+INSERT INTO uek_evaluate_class_pages (id, pages_id, class_id, start_time, end_time, invigilator, comment, add_time, employee_id) VALUES (1, 1, 1, '2018-03-23 08:00:00', '2018-04-27 22:00:00', null, null, '2018-04-03 17:26:46', null);
+
 
 select * from uek_evaluate_class_pages;
