@@ -148,7 +148,7 @@ CREATE TABLE `uek_evaluate_class_pages` (
   `add_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '加入记录的时间',
   `employee_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
-) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='试卷和班级中间表'
+) COMMENT='试卷和班级中间表'
 
 -- 插入数据
 INSERT INTO uek_evaluate_class_pages (id, pages_id, class_id, start_time, end_time, invigilator, comment, add_time, employee_id) VALUES (1, 1, 1, '2018-03-23 08:00:00', '2018-04-27 22:00:00', null, null, '2018-04-03 17:26:46', null);
