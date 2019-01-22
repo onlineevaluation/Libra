@@ -112,8 +112,7 @@ create table uek_evaluate_pages
 	direction_id bigint not null,
 	stage_id bigint not null,
 	user_member_id bigint not null
-)
-comment '试卷';
+) comment '试卷';
 
 -- 插入试卷
 INSERT INTO uek_evaluate_pages (id, num, status, course_id, create_time, creater_id, totalscores, name, chapter_id, company_id, day_id, direction_id, stage_id, user_member_id) VALUES (1, '53418', 2, 1, '2018-03-21 13:00:00', 0, 100, '面向对象程学设计第一章测试', 3, 0, 0, 0, 0, 0);
@@ -121,6 +120,7 @@ INSERT INTO uek_evaluate_pages (id, num, status, course_id, create_time, creater
 INSERT INTO uek_evaluate_pages (id, num, status, course_id, create_time, creater_id, totalscores, name, chapter_id, company_id, day_id, direction_id, stage_id, user_member_id) VALUES (3, '29436', 2, 1, '2018-03-30 19:52:43', 0, 100, '面向对象程学设计第三章测试', 5, 0, 0, 0, 0, 0);
 INSERT INTO uek_evaluate_pages (id, num, status, course_id, create_time, creater_id, totalscores, name, chapter_id, company_id, day_id, direction_id, stage_id, user_member_id) VALUES (4, null, 2, 1, '2018-04-07 11:22:35', 0, 0, '面向对象第4章测试', 6, 0, 0, 0, 0, 0);
 
+select * from uek_evaluate_pages;
 
 -- 创建班级表
 create table uek_acdemic_class
@@ -133,6 +133,8 @@ comment '班级表';
 
 INSERT INTO eva.uek_acdemic_class (id, num) VALUES (1, '17130101');
 INSERT INTO eva.uek_acdemic_class (id, num) VALUES (2, '17130102');
+
+select * from uek_acdemic_class;
 
 -- 创建班级 试卷表
 CREATE TABLE `uek_evaluate_class_pages` (
