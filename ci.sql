@@ -106,8 +106,6 @@ CREATE TABLE `uek_evaluate_class_pages` (
   `add_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '加入记录的时间',
   `employee_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `t_class_pages_evaluate_fk` (`pages_id`) COMMENT '(null)',
-  KEY `tg_evaluate_pages_class_fk` (`class_id`) COMMENT '(null)'
 ) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='试卷和班级中间表\r\n'
 
 -- 插入数据
