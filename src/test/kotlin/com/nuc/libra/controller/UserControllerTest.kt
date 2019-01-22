@@ -26,29 +26,6 @@ import org.springframework.web.util.NestedServletException
 private const val LOGIN_URL = "/user/login"
 
 private const val LIST_URL = "/user/list"
-/**
- * 测试成功输出的json
- */
-private const val SUCCESS_JSON = """{
-  "data": {
-    "id": 782,
-    "name": "张晋霞",
-    "studentNumber": "1713010101",
-    "proTeamId": 0,
-    "status": 2,
-    "gender": null,
-    "nation": null,
-    "phone": null,
-    "qq": null,
-    "email": null,
-    "idcard": null,
-    "memberId": null,
-    "userId": 811,
-    "classId": 1
-  },
-  "code": 200,
-  "message": "登录成功"
-}"""
 
 private const val NO_PASSWORD_JSON = """
 {
@@ -121,7 +98,6 @@ class UserControllerTest {
     fun listUserTest() {
         val result = mockMvc.perform(
             MockMvcRequestBuilders.get(LIST_URL)
-                .contentType(MediaType.APPLICATION_JSON_UTF8).content(JSON.toJSONString(noPasswordUser))
         )
             .andExpect(MockMvcResultMatchers.status().isOk).andReturn()
 

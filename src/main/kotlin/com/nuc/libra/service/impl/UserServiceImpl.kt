@@ -82,7 +82,8 @@ class UserServiceImpl : UserService, UserDetailsService {
 
     /**
      * 通过用户名进行用户查找
-     * @param user 用户学号
+     * @param username 用户学号
+     * @param password 用户密码
      * @return token 信息
      * @throws ResultException 当用户名称和密码不一致
      */

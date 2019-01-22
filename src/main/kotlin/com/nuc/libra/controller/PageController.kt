@@ -25,7 +25,7 @@ import javax.validation.constraints.NotNull
 
 /**
  * @author 杨晓辉 2018/2/3 11:22
- * @version 1.0
+ * 试卷管理
  */
 @RestController
 @RequestMapping("/page")
@@ -43,13 +43,9 @@ class PageController {
      * 通过 `classId` 获取该班级所有的考试
      * @param classId 班级 `id`
      */
-    @GetMapping("/listPagesByClassId")
+    @GetMapping("/list/class/{classId}")
     fun listPages(
-        @Valid
-        @NotEmpty(message = "班级不能为空")
-        @NotNull(message = "班级不能为空")
-        @Min(value = 0L, message = "班级不能为0")
-        classId: Long
+       @PathVariable(name = "classId") classId: Long
     ): Result {
         return ResultUtils.success(200, "查询成功", paperService.listClassPage(classId))
     }

@@ -7,11 +7,11 @@ import org.springframework.boot.runApplication
  * spring boot 启动入口
  */
 @SpringBootApplication
-class EvaluateApplication
+class LibraApplication
 
 /**
  * 主函数
  */
 fun main(args: Array<String>) {
-    runApplication<EvaluateApplication>(*args)
+    runApplication<LibraApplication>(*args)
 }

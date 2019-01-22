@@ -93,3 +93,25 @@ create table uek_privilege_user_role
 INSERT INTO uek_privilege_user_role (id, user_id, role_id) VALUES (1, 811, 3);
 
 select * from uek_privilege_user_role;
+
+-- 创建班级 试卷表
+CREATE TABLE `uek_evaluate_class_pages` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `pages_id` int(11) NOT NULL COMMENT '试卷id',
+  `class_id` int(11) NOT NULL COMMENT '班级id',
+  `start_time` datetime DEFAULT NULL COMMENT '开考时间',
+  `end_time` datetime DEFAULT NULL COMMENT '闭考时间',
+  `invigilator` tinyint(4) DEFAULT NULL COMMENT '监考老师',
+  `comment` varchar(255) DEFAULT NULL COMMENT '备注',
+  `add_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '加入记录的时间',
+  `employee_id` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `t_class_pages_evaluate_fk` (`pages_id`) COMMENT '(null)',
+  KEY `tg_evaluate_pages_class_fk` (`class_id`) COMMENT '(null)'
+) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='试卷和班级中间表\r\n'
+
+-- 插入数据
+INSERT INTO uek_evaluate_class_pages (id, pages_id, class_id, start_time, end_time, invigilator, comment, add_time, employee_id) VALUES (2, 1, 1, '2018-03-23 08:00:00', '2018-04-27 22:00:00', null, null, '2018-04-03 17:26:46', null);
+INSERT INTO uek_evaluate_class_pages (id, pages_id, class_id, start_time, end_time, invigilator, comment, add_time, employee_id) VALUES (3, 2, 1, '2018-03-23 08:00:00', '2018-03-27 22:00:00', null, null, '2018-03-27 09:35:09', null);
+
+select * from uek_evaluate_class_pages;
