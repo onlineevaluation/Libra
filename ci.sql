@@ -145,7 +145,7 @@ CREATE TABLE `uek_evaluate_class_pages` (
   `end_time` datetime DEFAULT NULL COMMENT '闭考时间',
   `invigilator` tinyint(4) DEFAULT NULL COMMENT '监考老师',
   `comment` varchar(255) DEFAULT NULL COMMENT '备注',
-  `add_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '加入记录的时间',
+  `add_time` varchar(255) COMMENT '加入记录的时间',
   `employee_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
 ) COMMENT='试卷和班级中间表'
