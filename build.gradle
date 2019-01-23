@@ -83,7 +83,7 @@ dependencies {
     compile group: 'com.hankcs', name: 'hanlp', version: 'portable-1.7.1'
 
     // sentry 日志监控
-    implementation 'io.sentry:sentry-spring:1.6.8'
+    implementation 'io.sentry:sentry-spring:1.7.16'
     implementation group: 'com.getsentry.raven', name: 'raven-logback', version: '8.0.3'
 
     // Kotlin-Reflect-Tools-For-JVM

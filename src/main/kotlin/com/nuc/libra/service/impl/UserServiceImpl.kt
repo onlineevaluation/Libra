@@ -72,7 +72,7 @@ class UserServiceImpl : UserService, UserDetailsService {
             .filter { userList[it].username == user.username }
             .forEach { throw ResultException("学号重复", 500) }
         user.password = Md5Utils.md5(user.password)
-        val userInDB = userRepository.save(user) ?: throw ResultException("注册失败", 500)
+        val userInDB = userRepository.save(user)
         val userAndRole = UserAndRole()
         userAndRole.roleId = 25L
         userAndRole.userId = userInDB.id
@@ -89,11 +89,12 @@ class UserServiceImpl : UserService, UserDetailsService {
      * @throws ResultException 当用户名称和密码不一致
      */
     override fun login(username: String, password: String): String {
+        logger.info("user name is $username and password is $password")
         authenticationManager.authenticate(UsernamePasswordAuthenticationToken(username, password))
         val user = userRepository.findUserByUsername(username) ?: throw ResultException("没有该用户", 500)
         val userAndRole = userAndRoleRepository.findUserAndRoleByUserId(user.id)
         val role = roleRepository.findById(userAndRole.roleId).get()
-        // 传入一个 user 进行包装
+        // 获得用户角色
         val authList = ArrayList<Role>()
         authList.add(role)
         val student = studentRepository.findByStudentNumber(user.username) ?: throw ResultException("用户查询失败", 500)

@@ -72,7 +72,7 @@ class PaperServiceImpl : PaperService {
     @Transactional
     override fun getOnePage(classId: Long, pageId: Long): List<Title> {
 
-        logger.info("classid :: $classId & pageId :: $pageId")
+        logger.info("classId :: $classId & pageId :: $pageId")
 
         val classAndPages = classAndPagesRepository.findByPagesIdAndClassId(pageId, classId).toList()
         if (classAndPages.isEmpty()) {

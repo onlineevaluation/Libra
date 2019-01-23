@@ -18,13 +18,6 @@ class UserController {
     @Autowired
     private lateinit var userService: UserService
 
-    /**
-     * 用于查询所有用户
-     */
-    @GetMapping("/list")
-    fun listUser(): Result {
-        return ResultUtils.success(200, "查询成功", userService.findUser())
-    }
 
     /**
      * 用户登录

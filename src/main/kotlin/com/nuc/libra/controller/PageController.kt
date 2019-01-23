@@ -12,16 +12,12 @@ import com.nuc.libra.util.ResultUtils
 import com.nuc.libra.vo.PageVO
 import com.nuc.libra.vo.TitleVO
 import io.swagger.annotations.ApiOperation
-import org.hibernate.validator.constraints.NotEmpty
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.core.AmqpTemplate
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 import java.util.*
-import javax.validation.Valid
-import javax.validation.constraints.Min
-import javax.validation.constraints.NotNull
 
 /**
  * @author 杨晓辉 2018/2/3 11:22
@@ -43,7 +39,7 @@ class PageController {
      * 通过 `classId` 获取该班级所有的考试
      * @param classId 班级 `id`
      */
-    @GetMapping("/list/class/{classId}")
+    @GetMapping("/exams/{classId}")
     fun listPages(
        @PathVariable(name = "classId") classId: Long
     ): Result {
@@ -51,22 +47,23 @@ class PageController {
     }
 
     /**
-     * 通过 `pageId` 获取考试试题
+     * 通过 `pageId` `class id`获取考试试题
      * @param pageId 试卷 `id`
+     * @param classId 班级 `id`
      */
-    @GetMapping("/onePage")
-    fun getPage(pageId: Long, classId: Long): Result {
-        val title = paperService.getOnePage(classId, pageId)
+    @GetMapping("/Page/{pageId}/{classId}")
+    fun getPage(@PathVariable(name ="pageId") pageId: Long,@PathVariable(name="classId") classId: Long): Result {
+        val titleList = paperService.getOnePage(classId, pageId)
         val titleVOList: MutableList<TitleVO> = ArrayList()
-        title.map {
+        titleList.forEach {
             titleVOList.add(po2vo(it))
         }
 
         val pageVO = PageVO()
         /*
-         * 题的类型：0单选1多选2判断3填空4程序5画图6简答
+         * 题的类型：1单选2填空3简答4程序
          */
-        titleVOList.map {
+        titleVOList.forEach {
             when (it.category) {
                 "1" -> pageVO.signChoice.add(it)
                 "2" -> pageVO.blank.add(it)
@@ -106,7 +103,7 @@ class PageController {
      */
     @PostMapping("/addAns")
     fun addAns(@RequestBody json: String): Result {
-        logger.info("json is $json")
+        logger.info("answer json is $json")
         val result = JSON.parseObject(json, Json::class.java)
                 ?: throw ResultException("解析错误", 500)
         paperService.verifyPage(result.result.studentId, result.result.pageId)
@@ -119,8 +116,8 @@ class PageController {
     /**
      * 获取所有考试分数
      */
-    @GetMapping("/listScore")
-    fun listScore(studentId: Long): Result {
+    @GetMapping("/scores/{studentId}")
+    fun listScore(@PathVariable(name="studentId") studentId: Long): Result {
         return ResultUtils.success(
             200, "获取成功", paperService.listScore(studentId)
         )
@@ -129,8 +126,8 @@ class PageController {
     /**
      * 获取单项考试分数
      */
-    @GetMapping("/getScore")
-    fun getOneScore(pageId: Long, studentId: Long): Result {
+    @GetMapping("/Score/{pageId}/{studentId}")
+    fun getOneScore(@PathVariable(name="pageId") pageId: Long,@PathVariable(name="studentId") studentId: Long): Result {
         return ResultUtils.success(200, "获取成功", paperService.getPageScore(pageId, studentId))
     }
 
@@ -138,7 +135,7 @@ class PageController {
      * 试卷验证
      */
     @PostMapping("/verifyPage")
-    fun VerifyPage(@RequestBody studentId: Long, @RequestBody pageId: Long): Result {
+    fun verifyPage(@RequestBody studentId: Long, @RequestBody pageId: Long): Result {
         return ResultUtils.success(200, "未考试", paperService.verifyPage(studentId, pageId))
 
     }

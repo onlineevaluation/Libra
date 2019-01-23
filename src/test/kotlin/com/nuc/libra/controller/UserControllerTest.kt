@@ -25,8 +25,6 @@ import org.springframework.web.util.NestedServletException
  */
 private const val LOGIN_URL = "/user/login"
 
-private const val LIST_URL = "/user/list"
-
 private const val NO_PASSWORD_JSON = """
 {
   "timestamp": "2018-12-31T10:16:02.717+0000",
@@ -89,19 +87,6 @@ class UserControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_UTF8).content(JSON.toJSONString(successUser))
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
-    }
-
-    /**
-     * 获取所有的用户列表
-     */
-    @Test
-    fun listUserTest() {
-        val result = mockMvc.perform(
-            MockMvcRequestBuilders.get(LIST_URL)
-        )
-            .andExpect(MockMvcResultMatchers.status().isOk).andReturn()
-
-        logger.info("result is ${result.response.contentAsString}")
     }
 
     /**
