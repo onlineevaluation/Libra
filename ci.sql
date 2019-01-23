@@ -138,7 +138,7 @@ select * from uek_acdemic_class;
 
 -- 创建班级 试卷表
 CREATE TABLE `uek_evaluate_class_pages` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11)  AUTO_INCREMENT primary key,
   `pages_id` int(11) NOT NULL COMMENT '试卷id',
   `class_id` int(11) NOT NULL COMMENT '班级id',
   `start_time` datetime DEFAULT NULL COMMENT '开考时间',
@@ -146,8 +146,7 @@ CREATE TABLE `uek_evaluate_class_pages` (
   `invigilator` tinyint(4) DEFAULT NULL COMMENT '监考老师',
   `comment` varchar(255) DEFAULT NULL COMMENT '备注',
   `add_time` varchar(255) COMMENT '加入记录的时间',
-  `employee_id` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`id`),
+  `employee_id` bigint(20) DEFAULT NULL
 );
 
 -- 插入数据
