@@ -87,7 +87,7 @@ class User : UserDetails {
      * 获取权限
      */
     override fun getAuthorities(): Collection<GrantedAuthority>? {
-        return null
+        return roles
     }
 
     /**
@@ -97,6 +97,11 @@ class User : UserDetails {
         return password
     }
 
+
+    fun setAuthorities(roles: List<Role>) {
+        this.roles = roles
+    }
+
     /**
      * 设置密码
      * @param password 密码
@@ -104,4 +109,10 @@ class User : UserDetails {
     fun setPassword(password: String) {
         this.password = password
     }
+
+    override fun toString(): String {
+        return "User(id=$id, username='$username', password='$password', status=$status, roles=$roles)"
+    }
+
+
 }

@@ -29,7 +29,7 @@ class UserController {
     /**
      * 用户登录
      * @param user user参数
-     * @return 返回结果
+     * @return 返回 token 包含 用户名 用户id 学生所在班级
      */
     @PostMapping("/login")
     fun login(@RequestBody user: User): Result {

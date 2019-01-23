@@ -24,4 +24,9 @@ class Role : GrantedAuthority {
         return name
     }
 
+    override fun toString(): String {
+        return "Role(id=$id, name='$name', about='$about')"
+    }
+
+
 }

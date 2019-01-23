@@ -1,6 +1,8 @@
 package com.nuc.libra.security
 
 import com.nuc.libra.exception.ResultException
+import com.nuc.libra.po.Student
+import com.nuc.libra.po.User
 import com.nuc.libra.service.impl.UserServiceImpl
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
@@ -8,10 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
+import org.springframework.security.core.GrantedAuthority
 import org.springframework.stereotype.Component
 import java.util.*
 import javax.annotation.PostConstruct
 import javax.servlet.http.HttpServletRequest
+import kotlin.collections.ArrayList
 
 /**
  * @author 杨晓辉
@@ -49,9 +53,10 @@ class JwtTokenProvider {
      * @param role 角色信息
      * @return jwtToken
      */
-    fun createToken(username: String, role: String): String {
-        val claims = Jwts.claims().setSubject(username)
-        claims["auth"] = role
+    fun createToken(role: Collection<GrantedAuthority>?, student: Student): String {
+        val claims = Jwts.claims().setSubject(student.name)
+        claims["classId"] = student.classId
+        claims["userId"] = student.userId
         val now = Date()
         val validity = Date(now.time + validityInMilliseconds)
         return Jwts.builder()
@@ -79,8 +84,8 @@ class JwtTokenProvider {
     /**
      * 解析token
      * 前端 header头信息用 Authorization
-     * Token用 Nuc 拼接 **Nuc后面有个空格**
-     * @simple Authorization Nuc xxx.yyy.zzz
+     * Token用 Bearer 拼接 **Bearer**
+     * @simple Authorization Bearer xxx.yyy.zzz
      */
     fun resolveToken(req: HttpServletRequest): String? {
         val bearerToken = req.getHeader("Authorization")

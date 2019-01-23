@@ -1,6 +1,7 @@
 package com.nuc.libra.service.impl
 
 import com.nuc.libra.exception.ResultException
+import com.nuc.libra.po.Role
 import com.nuc.libra.po.User
 import com.nuc.libra.po.UserAndRole
 import com.nuc.libra.repository.RoleRepository
@@ -87,18 +88,16 @@ class UserServiceImpl : UserService, UserDetailsService {
      * @return token 信息
      * @throws ResultException 当用户名称和密码不一致
      */
-    override fun login(username: String, password: String): HashMap<Any, Any> {
+    override fun login(username: String, password: String): String {
         authenticationManager.authenticate(UsernamePasswordAuthenticationToken(username, password))
         val user = userRepository.findUserByUsername(username) ?: throw ResultException("没有该用户", 500)
         val userAndRole = userAndRoleRepository.findUserAndRoleByUserId(user.id)
         val role = roleRepository.findById(userAndRole.roleId).get()
-        val token = jwtTokenProvider.createToken(username, role.name)
+        // 传入一个 user 进行包装
+        val authList = ArrayList<Role>()
+        authList.add(role)
         val student = studentRepository.findByStudentNumber(user.username) ?: throw ResultException("用户查询失败", 500)
-        val map = HashMap<Any, Any>()
-        map["token"] = token
-        map["student"] = student
-        logger.info(map.toString())
-        return map
+        return jwtTokenProvider.createToken(authList,student)
     }
 
     @Throws(UsernameNotFoundException::class)
