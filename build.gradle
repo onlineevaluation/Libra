@@ -84,7 +84,7 @@ dependencies {
 
     // sentry 日志监控
     implementation 'io.sentry:sentry-spring:1.7.16'
-    implementation group: 'com.getsentry.raven', name: 'raven-logback', version: '8.0.3'
+//    implementation group: 'com.getsentry.raven', name: 'raven-logback', version: '8.0.3'
 
     // Kotlin-Reflect-Tools-For-JVM
     implementation 'wu.seal:kotlin-reflect-tools-for-jvm:1.1.2' 

@@ -52,3 +52,6 @@ jwt:
 management:
   security:
     enable: ture
+
+sentry:
+  dsn: https://afe0d8b88e904639a7df88e5ae95d856:dbecbf917f444365af516311561e8eb3@sentry.io/288602
