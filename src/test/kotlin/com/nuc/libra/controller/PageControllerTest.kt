@@ -64,6 +64,7 @@ class PageControllerTest {
     /**
      * 通过 试卷id 和 班级 id 获取试卷信息内容
      */
+    @Test
     fun getPageInfoTest() {
         val examParam = ExamParam(1, 1)
         result = mockMvc.perform(

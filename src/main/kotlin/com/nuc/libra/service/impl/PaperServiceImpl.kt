@@ -85,7 +85,7 @@ class PaperServiceImpl : PaperService {
         }
         val pagesAndTitleList = pagesAndTitleRepository.findByPagesId(pageId)
         return pagesAndTitleList.map {
-            
+            logger.info("page is ${it.pagesId}")
             titleRepository.findById(it.titleId).get()
         }
     }
@@ -109,7 +109,7 @@ class PaperServiceImpl : PaperService {
         val ansList = ArrayList<StudentAnswer>()
 
         for (it in result.result.answer) {
-            
+
             val titleInDB = titleRepository.findById(it.id).get() ?: continue //?:throw ResultException("该试题不存在", 500)
             val studentAnswer = StudentAnswer()
             studentAnswer.pagesId = result.result.pageId
@@ -212,7 +212,7 @@ class PaperServiceImpl : PaperService {
             ansList.add(ans)
         }
 
-        
+
         studentAnswerRepository.saveAll(ansList)
 
         // 计算总分
@@ -288,7 +288,7 @@ class PaperServiceImpl : PaperService {
         println("studentAnswer is ${studentAnswer.size}")
         // 标准答案
         for (i in 0 until studentAnswer.size) {
-            
+
             val t = titleRepository.findById(studentAnswer[i].titleId).get()
             when (t.category) {
                 "1" -> {

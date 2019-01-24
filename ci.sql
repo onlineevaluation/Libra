@@ -155,29 +155,54 @@ INSERT INTO uek_evaluate_class_pages (id, pages_id, class_id, start_time, end_ti
 
 select * from uek_evaluate_class_pages;
 
---- 班级试卷中间表
+-- 试卷 题目表
 
-create table uek_evaluate_class_pages
+create table tg_evaluate_pages_title
 (
-	id int auto_increment
+	id int(10) auto_increment
 		primary key,
-	pages_id int not null comment '试卷id',
-	class_id int not null comment '班级id',
-	start_time datetime null comment '开考时间',
-	end_time datetime null comment '闭考时间',
-	invigilator tinyint null comment '监考老师',
-	comment varchar(255) null comment '备注',
-	add_time timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP comment '加入记录的时间',
-	employee_id bigint null
-);
+	pages_id int(10) not null comment '试卷id',
+	title_id int(10) not null comment '题目id'
+)
+comment '试卷和题目中间表';
 
-create index t_class_pages_evaluate_fk
-	on uek_evaluate_class_pages (pages_id)
-	comment '(null)';
+create index tg_pager_title_fk
+	on tg_evaluate_pages_title (title_id);
 
-create index tg_evaluate_pages_class_fk
-	on uek_evaluate_class_pages (class_id)
-	comment '(null)';
+create index tg_title_pages_fk
+	on tg_evaluate_pages_title (pages_id);
 
-INSERT INTO uek_evaluate_class_pages (id, pages_id, class_id, start_time, end_time, invigilator, comment, add_time, employee_id) VALUES (2, 1, 1, '2018-03-23 08:00:00', '2019-04-27 22:00:00', null, null, '2019-01-24 10:45:20', null);
+INSERT INTO uek_evaluate_pages_title (id, pages_id, title_id) VALUES (1, 1, 1583);
 
+select * from tg_evaluate_pages_title;
+
+-- 试题表
+
+create table uek_evaluate_titles
+(
+	id int auto_increment comment 'id'
+		primary key,
+	num text null,
+	title text not null comment '题上内容，也就是题干',
+	category tinyint null comment '题的类型：1单选 2填空 3简答 4程序',
+	difficulty tinyint null comment '难度，有5个级别',
+	answer text null comment '题的答案',
+	analysis text null comment '题的解析',
+	teacher_id int null comment '出题人id，老师出题，如果是企业面试则是企业名',
+	add_time timestamp default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '添加题目的时间',
+	sectiona text null,
+	sectionb text null,
+	sectionc text null,
+	sectiond text null,
+	orderd tinyint(1) default 0 null,
+	knowledge_id int null,
+	constraint title
+		unique (title) comment '(null)'
+)
+comment '题目';
+
+-- 插入试题
+
+INSERT INTO uek_evaluate_titles (id, num, title, category, difficulty, answer, analysis, teacher_id, add_time, sectiona, sectionb, sectionc, sectiond, orderd, knowledge_id) VALUES (1553, null, 'java语言是由那家计算机公司发布的__________.', 2, 1, '【Sun】', '无', 1, '2018-03-23 19:00:37', null, null, null, null, 0, 1436);
+
+select * from uek_evaluate_titles;

@@ -26,10 +26,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNzEzMDEwMTAxIiwiY2xhc3NJZ
 ###
 
 # 根据 班级试卷id 和 试卷id 查询考卷
-# /page/exam/{pageId}/{classId}
-GET http://localhost:8081/page/exam/1/1 HTTP/1.1
+# /page/exam
+GET http://localhost:8081/page/exam
 content-type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNzEzMDEwMTAxIiwiY2xhc3NJZCI6MSwidXNlcklkIjo4MTEsImlhdCI6MTU0ODI5NzUyOSwiZXhwIjoxNTQ4OTAyMzI5fQ.LLJQA6CXqofcBY8xP-PE8KESsYKJlqhXT37sG_0eAXo
+
+{
+  "classId": 1,
+  "pageId": 1
+}
 
 ###
 
