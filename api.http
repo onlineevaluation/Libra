@@ -1,0 +1,37 @@
+# For a quick start check out our HTTP Requests collection (Tools|HTTP Client|Open HTTP Requests Collection).
+#
+# Following HTTP Request Live Templates are available:
+# * 'gtrp' and 'gtr' create a GET request with or without query parameters;
+# * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
+# * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
+
+# 登录测试
+
+POST http://localhost:8081/userParam/login
+content-type: application/json
+
+{
+  "username": "1713010101",
+  "password": "111111"
+}
+
+###
+
+# 根据班级试卷
+
+GET http://localhost:8081/page/exams/1 HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNzEzMDEwMTAxIiwiY2xhc3NJZCI6MSwidXNlcklkIjo4MTEsImlhdCI6MTU0ODI5NzUyOSwiZXhwIjoxNTQ4OTAyMzI5fQ.LLJQA6CXqofcBY8xP-PE8KESsYKJlqhXT37sG_0eAXo
+
+###
+
+# 根据 班级试卷id 和 试卷id 查询考卷
+# /page/exam/{pageId}/{classId}
+GET http://localhost:8081/page/exam/1/1 HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNzEzMDEwMTAxIiwiY2xhc3NJZCI6MSwidXNlcklkIjo4MTEsImlhdCI6MTU0ODI5NzUyOSwiZXhwIjoxNTQ4OTAyMzI5fQ.LLJQA6CXqofcBY8xP-PE8KESsYKJlqhXT37sG_0eAXo
+
+###
+
+
+

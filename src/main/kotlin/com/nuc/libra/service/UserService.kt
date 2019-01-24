@@ -17,7 +17,7 @@ interface UserService {
     /**
      * 进行用户注册保存
      * @param user 用户
-     * @return User 用户 包含用户信息
+     * @return UserParam 用户 包含用户信息
      * @throws ResultException 当用户名称重复抛出该异常
      *
      */

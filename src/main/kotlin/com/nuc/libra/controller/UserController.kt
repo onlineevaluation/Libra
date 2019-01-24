@@ -3,7 +3,9 @@ package com.nuc.libra.controller
 import com.nuc.libra.result.Result
 import com.nuc.libra.service.UserService
 import com.nuc.libra.util.ResultUtils
-import com.nuc.libra.vo.User
+import com.nuc.libra.vo.UserParam
+import io.swagger.annotations.Api
+import io.swagger.annotations.ApiOperation
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.*
  * @author 杨晓辉 2018/2/1 15:47
  * 用户中心请求
  */
+@Api(tags = ["用户中心"],description = "用户中心操作接口")
 @RestController
 @RequestMapping("/user")
 class UserController {
@@ -21,12 +24,13 @@ class UserController {
 
     /**
      * 用户登录
-     * @param user user参数
+     * @param userParam user参数
      * @return 返回 token 包含 用户名 用户id 学生所在班级
      */
+    @ApiOperation("登录授权方法",httpMethod = "POST")
     @PostMapping("/login")
-    fun login(@RequestBody user: User): Result {
-        val token = userService.login(user.username, user.password)
+    fun login(@RequestBody userParam: UserParam): Result {
+        val token = userService.login(userParam.username, userParam.password)
         return ResultUtils.success(200, "登录成功", token)
     }
 

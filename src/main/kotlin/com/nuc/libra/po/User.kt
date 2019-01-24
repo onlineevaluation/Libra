@@ -111,7 +111,7 @@ class User : UserDetails {
     }
 
     override fun toString(): String {
-        return "User(id=$id, username='$username', password='$password', status=$status, roles=$roles)"
+        return "UserParam(id=$id, username='$username', password='$password', status=$status, roles=$roles)"
     }
 
 

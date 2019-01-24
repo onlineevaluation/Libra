@@ -54,7 +54,7 @@ class JwtTokenProvider {
      * @return jwtToken
      */
     fun createToken(role: Collection<GrantedAuthority>?, student: Student): String {
-        val claims = Jwts.claims().setSubject(student.name)
+        val claims = Jwts.claims().setSubject(student.studentNumber)
         claims["classId"] = student.classId
         claims["userId"] = student.userId
         val now = Date()

@@ -154,3 +154,30 @@ INSERT INTO uek_evaluate_class_pages (id, pages_id, class_id, start_time, end_ti
 
 
 select * from uek_evaluate_class_pages;
+
+--- 班级试卷中间表
+
+create table uek_evaluate_class_pages
+(
+	id int auto_increment
+		primary key,
+	pages_id int not null comment '试卷id',
+	class_id int not null comment '班级id',
+	start_time datetime null comment '开考时间',
+	end_time datetime null comment '闭考时间',
+	invigilator tinyint null comment '监考老师',
+	comment varchar(255) null comment '备注',
+	add_time timestamp default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP comment '加入记录的时间',
+	employee_id bigint null
+);
+
+create index t_class_pages_evaluate_fk
+	on uek_evaluate_class_pages (pages_id)
+	comment '(null)';
+
+create index tg_evaluate_pages_class_fk
+	on uek_evaluate_class_pages (class_id)
+	comment '(null)';
+
+INSERT INTO uek_evaluate_class_pages (id, pages_id, class_id, start_time, end_time, invigilator, comment, add_time, employee_id) VALUES (2, 1, 1, '2018-03-23 08:00:00', '2019-04-27 22:00:00', null, null, '2019-01-24 10:45:20', null);
+

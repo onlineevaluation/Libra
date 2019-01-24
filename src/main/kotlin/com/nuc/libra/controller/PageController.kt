@@ -9,6 +9,7 @@ import com.nuc.libra.result.Result
 import com.nuc.libra.service.PaperService
 import com.nuc.libra.util.CompilerUtils
 import com.nuc.libra.util.ResultUtils
+import com.nuc.libra.vo.ExamParam
 import com.nuc.libra.vo.PageVO
 import com.nuc.libra.vo.TitleVO
 import io.swagger.annotations.ApiOperation
@@ -48,12 +49,11 @@ class PageController {
 
     /**
      * 通过 `pageId` `class id`获取考试试题
-     * @param pageId 试卷 `id`
-     * @param classId 班级 `id`
+     * @param examParam 试卷信息
      */
-    @GetMapping("/Page/{pageId}/{classId}")
-    fun getPage(@PathVariable(name ="pageId") pageId: Long,@PathVariable(name="classId") classId: Long): Result {
-        val titleList = paperService.getOnePage(classId, pageId)
+    @GetMapping("/exam/")
+    fun getPage(examParam: ExamParam): Result {
+        val titleList = paperService.getOnePage(examParam.classId, examParam.pageId)
         val titleVOList: MutableList<TitleVO> = ArrayList()
         titleList.forEach {
             titleVOList.add(po2vo(it))
