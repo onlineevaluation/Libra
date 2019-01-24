@@ -166,11 +166,6 @@ create table tg_evaluate_pages_title
 )
 comment '试卷和题目中间表';
 
-create index tg_pager_title_fk
-	on tg_evaluate_pages_title (title_id);
-
-create index tg_title_pages_fk
-	on tg_evaluate_pages_title (pages_id);
 
 INSERT INTO uek_evaluate_pages_title (id, pages_id, title_id) VALUES (1, 1, 1583);
 
