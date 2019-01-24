@@ -195,9 +195,7 @@ create table uek_evaluate_titles
 	sectionc text null,
 	sectiond text null,
 	orderd tinyint(1) default 0 null,
-	knowledge_id int null,
-	constraint title
-		unique (title) comment '(null)'
+	knowledge_id int null
 )
 comment '题目';
 
