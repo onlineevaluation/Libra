@@ -161,10 +161,9 @@ create table tg_evaluate_pages_title
 (
 	id int(10) auto_increment
 		primary key,
-	pages_id int(10) not null comment '试卷id',
-	title_id int(10) not null comment '题目id'
-)
-comment '试卷和题目中间表';
+	pages_id int(10) not null,
+	title_id int(10) not null
+);
 
 
 INSERT INTO uek_evaluate_pages_title (id, pages_id, title_id) VALUES (1, 1, 1583);
@@ -184,7 +183,7 @@ create table uek_evaluate_titles
 	answer text null comment '题的答案',
 	analysis text null comment '题的解析',
 	teacher_id int null comment '出题人id，老师出题，如果是企业面试则是企业名',
-	add_time timestamp default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '添加题目的时间',
+	add_time timestamp null comment '添加题目的时间',
 	sectiona text null,
 	sectionb text null,
 	sectionc text null,
