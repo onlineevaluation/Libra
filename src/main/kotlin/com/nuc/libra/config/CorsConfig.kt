@@ -13,7 +13,7 @@ class CorsConfig : WebMvcConfigurer {
 
     /**
      * 跨域请求配置
-     * @param registry 跨域请求？？
+     * @param registry 跨域请求
      */
     override fun addCorsMappings(registry: CorsRegistry) {
         registry.addMapping("/**")

@@ -13,19 +13,16 @@ class Page {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0L
     @Column(columnDefinition = "INT")
-    var num: String? = null
-    var status: String? = null
+    var num: Int = 0
+    lateinit var status: String
     var directionId: Long = 0
     var stageId: Long = 0
     var courseId: Long = 0
     var dayId: Long = 0
     @Column(columnDefinition = "DATETIME")
     var createTime: Timestamp? = null
-    @Column(columnDefinition = "ENUM")
-    var type: String? = null
-    @Column(columnDefinition = "ENUM")
-    var pagesType: String? = null
     var userMemberId: Long = 0
     var totalscores: Long = 0
     var companyId: Long = 0
+    lateinit var name: String
 }

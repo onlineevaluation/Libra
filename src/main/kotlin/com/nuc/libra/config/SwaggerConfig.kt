@@ -9,6 +9,7 @@ import springfox.documentation.service.ApiInfo
 import springfox.documentation.service.ApiKey
 import springfox.documentation.service.SecurityScheme
 import springfox.documentation.spi.DocumentationType
+import springfox.documentation.spi.service.contexts.SecurityContext
 import springfox.documentation.spring.web.plugins.Docket
 import springfox.documentation.swagger2.annotations.EnableSwagger2
 import java.text.SimpleDateFormat
@@ -20,7 +21,7 @@ import kotlin.collections.ArrayList
  *
  * 用于生成文档页面
  *
- * [swagger页面](api://localhost:8080/swagger-ui.html)
+ * [swagger页面](api://localhost:8081/swagger-ui.html)
  *
  */
 @Configuration
@@ -49,9 +50,9 @@ class SwaggerConfig {
                         )
                     )
                 )
-            )
-            .genericModelSubstitutes(Optional::class.java)
+            ).genericModelSubstitutes(Optional::class.java)
     }
+
 
     private fun apiInfo(): ApiInfo {
         val date = Date()

@@ -32,13 +32,13 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
     @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {
 
-        // Disable CSRF (cross site request forgery)
         http.csrf().disable()
-
-        // No session will be created or used by spring security
+        // 跨域配置
+        http.cors()
+        // session 配置
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
-        // Entry points
+        // 权限配置
         http.authorizeRequests()
             .antMatchers("/druid/**").permitAll()
             .antMatchers("/user/login").permitAll()
@@ -46,7 +46,7 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
             .anyRequest().authenticated()
 
 
-        // Apply JWT
+        // 使用 jwt
         http.apply(JwtTokenFilterConfigurer(jwtTokenProvider))
 
     }

@@ -55,12 +55,20 @@ class PaperServiceImpl : PaperService {
      * @param classId 班级id
      * @return list 班级考试试卷
      */
-    override fun listClassPage(classId: Long): List<ClassAndPages> {
-        val pages = classAndPagesRepository.findByClassId(classId)
-        if (pages.isEmpty()) {
-            throw ResultException("没有该班级", 500)
+    override fun listClassPage(classId: Long): HashMap<String, Any> {
+        val map = HashMap<String, Any>()
+        val classAndPages = classAndPagesRepository.findByClassId(classId)
+        if (classAndPages.isEmpty()) {
+            throw ResultException("没有该班级/该班级没有考试", 500)
         }
-        return pages
+        classAndPages.forEach {
+            logger.info("page id is ${it.pagesId}")
+            val page = pagesRepository.findById(it.pagesId).get()
+            map["exam"] = it
+            map["pageTitle"] = page.name
+        }
+
+        return map
     }
 
     /**
@@ -84,10 +92,11 @@ class PaperServiceImpl : PaperService {
             throw ResultException("该时间段内没有该考试", 500)
         }
         val pagesAndTitleList = pagesAndTitleRepository.findByPagesId(pageId)
-        return pagesAndTitleList.map {
+        val list = pagesAndTitleList.map {
             logger.info("page is ${it.pagesId}")
             titleRepository.findById(it.titleId).get()
         }
+        return list
     }
 
     /**
