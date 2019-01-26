@@ -156,19 +156,18 @@ INSERT INTO uek_evaluate_class_pages (id, pages_id, class_id, start_time, end_ti
 select * from uek_evaluate_class_pages;
 
 -- 试卷 题目表
-
-create table tg_evaluate_pages_title
+create table uek_evaluate_pages_title
 (
 	id int(10) auto_increment
 		primary key,
-	pages_id int(10) not null,
-	title_id int(10) not null
-);
-
+	pages_id int(10) not null comment '试卷id',
+	title_id int(10) not null comment '题目id'
+)
+comment '试卷和题目中间表';
 
 INSERT INTO uek_evaluate_pages_title (id, pages_id, title_id) VALUES (1, 1, 1583);
 
-select * from tg_evaluate_pages_title;
+select * from uek_evaluate_pages_title;
 
 -- 试题表
 
