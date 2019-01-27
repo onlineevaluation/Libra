@@ -14,7 +14,7 @@ interface PaperService {
      * 获取该班级所有的试卷
      * @param classId 班级id
      */
-    fun listClassPage(classId: Long): HashMap<String,Any>
+    fun listClassPage(classId: Long): List<ClassAndPages>
 
     /**
      *

@@ -16,6 +16,7 @@ import io.swagger.annotations.ApiOperation
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.core.AmqpTemplate
+import org.springframework.beans.BeanUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 import java.util.*
@@ -42,7 +43,7 @@ class PageController {
      */
     @GetMapping("/exams/{classId}")
     fun listPages(
-       @PathVariable(name = "classId") classId: Long
+        @PathVariable(name = "classId") classId: Long
     ): Result {
         return ResultUtils.success(200, "查询成功", paperService.listClassPage(classId))
     }
@@ -51,12 +52,16 @@ class PageController {
      * 通过 `pageId` `class id`获取考试试题
      * @param examParam 试卷信息
      */
-    @GetMapping("/exam/")
+    @GetMapping("/exam")
     fun getPage(examParam: ExamParam): Result {
+
         val titleList = paperService.getOnePage(examParam.classId, examParam.pageId)
+
         val titleVOList: MutableList<TitleVO> = ArrayList()
         titleList.forEach {
-            titleVOList.add(po2vo(it))
+            val titleVO = TitleVO()
+            BeanUtils.copyProperties(it, titleVO)
+            titleVOList.add(titleVO)
         }
 
         val pageVO = PageVO()
@@ -117,7 +122,7 @@ class PageController {
      * 获取所有考试分数
      */
     @GetMapping("/scores/{studentId}")
-    fun listScore(@PathVariable(name="studentId") studentId: Long): Result {
+    fun listScore(@PathVariable(name = "studentId") studentId: Long): Result {
         return ResultUtils.success(
             200, "获取成功", paperService.listScore(studentId)
         )
@@ -127,7 +132,7 @@ class PageController {
      * 获取单项考试分数
      */
     @GetMapping("/Score/{pageId}/{studentId}")
-    fun getOneScore(@PathVariable(name="pageId") pageId: Long,@PathVariable(name="studentId") studentId: Long): Result {
+    fun getOneScore(@PathVariable(name = "pageId") pageId: Long, @PathVariable(name = "studentId") studentId: Long): Result {
         return ResultUtils.success(200, "获取成功", paperService.getPageScore(pageId, studentId))
     }
 
@@ -164,49 +169,5 @@ class PageController {
 
         return ResultUtils.success(200, "编译完成", CompilerUtils.buildTargetSource(code, className))
     }
-
-
-    /**
-     * po --> vo
-     */
-    private fun po2vo(title: Title): TitleVO {
-        val titleVO = TitleVO()
-        titleVO.id = title.id
-        titleVO.category = title.category
-        titleVO.title = title.title
-        titleVO.difficulty = title.difficulty
-        titleVO.num = "0"
-
-        when (title.category) {
-            // 单选题
-            "1" -> {
-                titleVO.score = 5.0
-                titleVO.sectionA = title.sectiona
-                titleVO.sectionB = title.sectionb
-                titleVO.sectionC = title.sectionc
-                titleVO.sectionD = title.sectiond
-            }
-            // 填空题
-            "2" -> {
-                titleVO.score = 5.0
-                val sb = StringBuilder()
-                val titleList = title.title.split("_{0,15}_".toRegex())
-                for (i in 0 until titleList.size - 1) {
-                    sb.append(titleList[i])
-                    sb.append("【 】")
-                }
-                sb.append(titleList.last())
-                titleVO.title = sb.toString().trim()
-                titleVO.blankNum = titleList.size - 1
-            }
-            "3" -> {
-                titleVO.score = 10.0
-            }
-            else -> {
-            }
-        }
-        return titleVO
-    }
-
 
 }

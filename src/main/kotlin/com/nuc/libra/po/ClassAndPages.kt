@@ -23,5 +23,5 @@ class ClassAndPages {
     @Column(columnDefinition = "TIMESTAMP")
     var addTime: String? = null
     var employeeId: Long? = 0
-
+    lateinit var title: String
 }

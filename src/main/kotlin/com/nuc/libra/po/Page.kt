@@ -12,7 +12,6 @@ class Page {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0L
-    @Column(columnDefinition = "INT")
     var num: Int = 0
     lateinit var status: String
     var directionId: Long = 0

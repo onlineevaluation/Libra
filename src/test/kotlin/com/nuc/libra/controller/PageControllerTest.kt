@@ -26,7 +26,7 @@ import org.springframework.web.context.WebApplicationContext
  */
 @RunWith(SpringRunner::class)
 @SpringBootTest
-@ActiveProfiles("ci")
+@ActiveProfiles("dev")
 class PageControllerTest {
 
 

@@ -53,22 +53,14 @@ class PaperServiceImpl : PaperService {
     /**
      * 获取该班级的所有考试
      * @param classId 班级id
-     * @return list 班级考试试卷
+     * @return list 班级考试试卷和考试名称
      */
-    override fun listClassPage(classId: Long): HashMap<String, Any> {
-        val map = HashMap<String, Any>()
+    override fun listClassPage(classId: Long): List<ClassAndPages> {
         val classAndPages = classAndPagesRepository.findByClassId(classId)
-        if (classAndPages.isEmpty()) {
+        if (classAndPages.isNullOrEmpty()) {
             throw ResultException("没有该班级/该班级没有考试", 500)
         }
-        classAndPages.forEach {
-            logger.info("page id is ${it.pagesId}")
-            val page = pagesRepository.findById(it.pagesId).get()
-            map["exam"] = it
-            map["pageTitle"] = page.name
-        }
-
-        return map
+        return classAndPages
     }
 
     /**
@@ -306,10 +298,10 @@ class PaperServiceImpl : PaperService {
                     selectAns.answer = studentAnswer[i].answer
                     selectAns.score = studentAnswer[i].score
                     selectAns.title = t.title
-                    selectAns.sectionA = t.sectiona.toString()
-                    selectAns.sectionB = t.sectionb.toString()
-                    selectAns.sectionC = t.sectionc.toString()
-                    selectAns.sectionD = t.sectiond.toString()
+                    selectAns.sectionA = t.sectionA.toString()
+                    selectAns.sectionB = t.sectionB.toString()
+                    selectAns.sectionC = t.sectionC.toString()
+                    selectAns.sectionD = t.sectionD.toString()
                     selectAns.standardAnswer = t.answer
                     ansVO.select.add(selectAns)
                 }

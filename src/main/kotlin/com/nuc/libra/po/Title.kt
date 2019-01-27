@@ -27,10 +27,14 @@ class Title {
 
     @Column(columnDefinition = "TIMESTAMP")
     var addTime: String? = null
-    var sectiona: String? = null
-    var sectionb: String? = null
-    var sectionc: String? = null
-    var sectiond: String? = null
+    @Column(name = "sectiona")
+    var sectionA: String? = null
+    @Column(name = "sectionb")
+    var sectionB: String? = null
+    @Column(name = "sectionc")
+    var sectionC: String? = null
+    @Column(name = "sectiond")
+    var sectionD: String? = null
     var orderd: Boolean = true
     var knowledgeId: Long = 0
 
