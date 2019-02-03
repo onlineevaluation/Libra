@@ -23,7 +23,6 @@ class TitleVO {
                 }
                 blankFlag -> {
                     this.score = 5.0
-                    // todo(暂时由前端进行处理)
                 }
                 ansQuestionFlag -> {
                     this.score = 10.0

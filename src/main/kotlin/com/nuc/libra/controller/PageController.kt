@@ -4,7 +4,6 @@ package com.nuc.libra.controller
 import com.alibaba.fastjson.JSON
 import com.nuc.libra.entity.result.Json
 import com.nuc.libra.exception.ResultException
-import com.nuc.libra.po.Title
 import com.nuc.libra.result.Result
 import com.nuc.libra.service.PaperService
 import com.nuc.libra.util.CompilerUtils
@@ -61,6 +60,19 @@ class PageController {
         titleList.forEach {
             val titleVO = TitleVO()
             BeanUtils.copyProperties(it, titleVO)
+            var blankNumber = 0
+            if (it.category == "2") {
+                val sb = StringBuilder()
+                val titles = it.title.split("_{0,15}_".toRegex())
+                for (i in 0 until titles.size - 1) {
+                    sb.append(titles[i])
+                    sb.append("_____")
+                }
+                sb.append(titles.last())
+                it.title = sb.toString().trim()
+                blankNumber = titles.size - 1
+            }
+            titleVO.blankNum= blankNumber
             titleVOList.add(titleVO)
         }
 
@@ -120,6 +132,7 @@ class PageController {
 
     /**
      * 获取所有考试分数
+     * @param studentId 学生id
      */
     @GetMapping("/scores/{studentId}")
     fun listScore(@PathVariable(name = "studentId") studentId: Long): Result {
@@ -130,6 +143,8 @@ class PageController {
 
     /**
      * 获取单项考试分数
+     * @param pageId 试卷id
+     * @param studentId 学生id
      */
     @GetMapping("/Score/{pageId}/{studentId}")
     fun getOneScore(@PathVariable(name = "pageId") pageId: Long, @PathVariable(name = "studentId") studentId: Long): Result {
@@ -138,6 +153,8 @@ class PageController {
 
     /**
      * 试卷验证
+     * @param studentId 学生id
+     * @param pageId 试卷id
      */
     @PostMapping("/verifyPage")
     fun verifyPage(@RequestBody studentId: Long, @RequestBody pageId: Long): Result {

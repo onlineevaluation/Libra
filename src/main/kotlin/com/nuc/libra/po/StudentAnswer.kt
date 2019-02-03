@@ -20,7 +20,8 @@ class StudentAnswer {
     var time: java.sql.Timestamp? = null
     var employeeId: Long? = 0
     var url: String = ""
-
+    // update date 2019年2月3日
+    var note: String? = null
     // 试题相速度
     var similarScore: Double = 0.0
 

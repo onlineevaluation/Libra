@@ -71,24 +71,20 @@ class PaperServiceImpl : PaperService {
      */
     @Transactional
     override fun getOnePage(classId: Long, pageId: Long): List<Title> {
-
-        logger.info("classId :: $classId & pageId :: $pageId")
-
         val classAndPages = classAndPagesRepository.findByPagesIdAndClassId(pageId, classId).toList()
         if (classAndPages.isEmpty()) {
             throw ResultException("没有该考试", 500)
         }
-
         val nowTime = Timestamp(System.currentTimeMillis())
         if (nowTime.after(classAndPages[0].endTime) || nowTime.before(classAndPages[0].startTime)) {
             throw ResultException("该时间段内没有该考试", 500)
         }
         val pagesAndTitleList = pagesAndTitleRepository.findByPagesId(pageId)
-        val list = pagesAndTitleList.map {
-            logger.info("page is ${it.pagesId}")
+        return pagesAndTitleList.map {
+            //            logger.info("page is ${it.pagesId}")
             titleRepository.findById(it.titleId).get()
         }
-        return list
+
     }
 
     /**
@@ -106,77 +102,74 @@ class PaperServiceImpl : PaperService {
         if (ansListInDb.isNotEmpty()) {
             return
         }
-
         val ansList = ArrayList<StudentAnswer>()
 
-        for (it in result.result.answer) {
-
-            val titleInDB = titleRepository.findById(it.id).get() ?: continue //?:throw ResultException("该试题不存在", 500)
+        for (studentAns in result.result.answer) {
+            val standardAnswer = titleRepository.findById(studentAns.id).get()
             val studentAnswer = StudentAnswer()
             studentAnswer.pagesId = result.result.pageId
             studentAnswer.studentId = result.result.studentId
             studentAnswer.time = Timestamp(System.currentTimeMillis())
             studentAnswer.score = 0.0
-            studentAnswer.answer = it.ans
-            studentAnswer.titleId = it.id
-            val order = titleInDB.orderd
-            when (titleInDB.category) {
+            studentAnswer.answer = studentAns.ans
+            studentAnswer.titleId = studentAns.id
+            val isOrder = standardAnswer.orderd
+            when (standardAnswer.category) {
                 // 单选题
                 "1" -> {
-                    val singleChoiceScore = 5.0
-                    logger.info("单选题")
-                    if (it.ans == titleInDB.answer) {
-                        studentAnswer.score = singleChoiceScore
-                    }
+                    studentAnswer.score = checkChoice(studentAns.ans, standardAnswer.answer, 5.0)
                     ansList.add(studentAnswer)
                 }
                 // 填空题
                 "2" -> {
                     logger.info("填空题")
-                    // （·-·）
-                    val blankTitleScore = 5.0
-                    val studentAnswers = it.ans.substringAfter("【").substringBeforeLast("】")
-                        .split("】\\s*?【".toRegex())
-                    val standardAnswers = titleInDB.answer.substringAfter("【")
-                        .substringBeforeLast("】").split("】\\s*?【".toRegex())
-                    val blankNumber = standardAnswers.size
-                    var blankScore = 0.0
-
-                    // 格式错误
-                    if (blankNumber != studentAnswers.size) {
-                        studentAnswer.score = 0.0
-                    } else {
-                        var similarScore = 0.0
-                        // 答案有序
-                        if (order) {
-                            for (i in 0 until standardAnswers.size) {
-                                similarScore = WordUtils.blankCheck(studentAnswers[i], standardAnswers[i])
-                                blankScore += getScore(similarScore, blankNumber, blankTitleScore)
-                            }
-                        }
-                        // 答案无序
-                        else {
-                            val standardString = StringBuilder()
-                            val studentString = StringBuilder()
-
-                            for (i in 0 until standardAnswers.size) {
-                                standardString.append(standardAnswers[i])
-                                studentString.append(studentAnswers[i])
-                            }
-                            similarScore = WordUtils.blankCheck(studentString.toString(), standardString.toString())
-                            val x = 1.0 / blankNumber
-                            blankScore = (similarScore / x) * (blankTitleScore / blankNumber)
-                        }
-                        studentAnswer.similarScore = similarScore
-                        studentAnswer.score = blankScore
-                    }
+                    studentAnswer.score = checkBlank(studentAns.ans, standardAnswer.answer, 5.0, isOrder)
+// （·-·）
+//                    val blankTitleScore = 5.0
+//                    val studentAnswers = studentAns.ans.substringAfter("【").substringBeforeLast("】")
+//                        .split("】\\s*?【".toRegex())
+//                    val standardAnswers = titleInDB.answer.substringAfter("【")
+//                        .substringBeforeLast("】").split("】\\s*?【".toRegex())
+//                    val blankNumber = standardAnswers.size
+//                    var blankScore = 0.0
+//
+//                    // 格式错误
+//                    if (blankNumber != studentAnswers.size) {
+//                        studentAnswer.score = 0.0
+//                    } else {
+//                        var similarScore = 0.0
+//                        // 答案有序
+//                        if (isOrder) {
+//                            for (i in 0 until standardAnswers.size) {
+//                                similarScore = WordUtils.blankCheck(studentAnswers[i], standardAnswers[i])
+//                                blankScore += calculationScore(similarScore, blankNumber, blankTitleScore)
+//                            }
+//                        }
+//                        // 答案无序
+//                        else {
+//                            val standardString = StringBuilder()
+//                            val studentString = StringBuilder()
+//
+//                            for (i in 0 until standardAnswers.size) {
+//                                standardString.append(standardAnswers[i])
+//                                studentString.append(studentAnswers[i])
+//                            }
+//                            similarScore = WordUtils.blankCheck(studentString.toString(), standardString.toString())
+//                            val x = 1.0 / blankNumber // 这是写的什么？ 归一化处理？
+//                            blankScore = (similarScore / x) * (blankTitleScore / blankNumber)
+//                        }
+//                    ================ 暂时先不计算相似度 ==================
+//                        studentAnswer.similarScore = similarScore
+//                    ===============话说我为什么要计算相似度================
+//                        studentAnswer.score = blankScore
+//                    }
                     ansList.add(studentAnswer)
                 }
                 // 简答题
                 "3" -> {
                     val ansTitleScore = 10.0
                     logger.info("解答题")
-                    val similarScore = WordUtils.ansCheck(it.ans, titleInDB.answer)
+                    val similarScore = WordUtils.ansCheck(studentAns.ans, standardAnswer.answer)
                     studentAnswer.similarScore = similarScore
                     studentAnswer.score = (similarScore * 10).toInt().toDouble()
                     println(" score :: ${studentAnswer.score}")
@@ -192,16 +185,14 @@ class PaperServiceImpl : PaperService {
 
         val titleList = pagesAndTitleRepository.findByPagesId(result.result.pageId)
         val titleId = ArrayList<Long>()
-        titleList.map {
+        titleList.forEach {
             titleId.add(it.titleId)
         }
-
         val studentTitleId = ArrayList<Long>()
-        ansList.map {
+        ansList.forEach {
             studentTitleId.add(it.titleId)
         }
         titleId.removeAll(studentTitleId)
-
         for (i in 0 until titleId.size) {
             val ans = StudentAnswer()
             ans.titleId = titleId[i]
@@ -341,7 +332,7 @@ class PaperServiceImpl : PaperService {
     /**
      * 评分模块
      */
-    private fun getScore(similarScore: Double, blankNumber: Int, score: Double): Double {
+    private fun calculationScore(similarScore: Double, blankNumber: Int, score: Double): Double {
         return when (similarScore) {
             in 0.0..0.9 -> {
                 0.0
@@ -355,4 +346,65 @@ class PaperServiceImpl : PaperService {
         }
     }
 
+    /**
+     * 选择题评分模块
+     * 和标准答案直接进行比对
+     * @param standardAnswer 标准答案
+     * @param studentAnswer 学生答案
+     * @param score 该题分数
+     */
+    private fun checkChoice(studentAnswer: String, standardAnswer: String, score: Double): Double {
+        if (studentAnswer === standardAnswer) {
+            return score
+        }
+        return 0.0
+    }
+
+    /**
+     * 填空题进行评分
+     * 1. 检查提交的答案数是否和空数一致，如果不一致则为 **0** 分
+     * 2. 对有序答案进行验证，有序答案没空进行答案校验
+     * 3. 对无序答案进行验证，将无序答案拼接为一个完整的字符串进行相似度比较
+     * @param studentAnswer 学生答案
+     * @param standardAnswer 标准答案
+     * @param score 该试题分数
+     * @param isOrder 是否有序
+     * @return 返回该试题分数
+     */
+    private fun checkBlank(studentAnswer: String, standardAnswer: String, score: Double, isOrder: Boolean): Double {
+        val studentAnswerList = studentAnswer.substringAfter("【").substringBeforeLast("】").split("】\\s*?【".toRegex())
+        val standardAnswerList = standardAnswer.substringAfter("【").substringBeforeLast("】").split("】\\s*?【".toRegex())
+        // 填空题空的数量
+        val blankNumber = standardAnswerList.size
+        if (blankNumber != studentAnswerList.size) {
+            return 0.0
+        }
+        var blankScore = 0.0
+        var similar: Double
+        // 有序答案
+        if (isOrder) {
+            for (index in 0 until blankNumber) {
+                similar = WordUtils.docSimilar(studentAnswerList[index], standardAnswerList[index])
+                blankScore += calculationScore(similar, blankNumber, score)
+            }
+            return blankScore
+        }
+        // 无序答案
+        else {
+            val studentAnswerSb = StringBuilder()
+            val standardAnswerSb = StringBuilder()
+            for (ans in studentAnswerList) {
+                studentAnswerSb.append(ans)
+            }
+            for (ans in standardAnswerList) {
+                standardAnswerSb.append(ans)
+            }
+            similar = WordUtils.docSimilar(studentAnswerSb.toString(), standardAnswerSb.toString())
+            // x 代表着未知 所以下面的步骤只有天知道！
+            // 我猜是计算平均分
+            val x = 1.0 / blankNumber
+            blankScore = (similar / x) * (score / blankNumber)
+            return blankScore
+        }
+    }
 }
