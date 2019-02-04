@@ -10,7 +10,7 @@ import com.nuc.libra.repository.UserAndRoleRepository
 import com.nuc.libra.repository.UserRepository
 import com.nuc.libra.security.JwtTokenProvider
 import com.nuc.libra.service.UserService
-import com.nuc.libra.util.Md5Utils
+
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -57,29 +57,6 @@ class UserServiceImpl : UserService, UserDetailsService {
         return userRepository.findAll()
     }
 
-    /**
-     * 进行用户注册保存
-     * @param user 用户
-     * @return UserParam 用户 包含用户信息
-     * @throws ResultException 当用户名称重复抛出该异常
-     *
-     */
-    @Transactional(rollbackOn = [ResultException::class])
-    @Throws(ResultException::class)
-    override fun saveUser(user: User): User {
-        val userList: List<User> = findUser()
-        (0 until userList.size)
-            .filter { userList[it].username == user.username }
-            .forEach { throw ResultException("学号重复", 500) }
-        user.password = Md5Utils.md5(user.password)
-        val userInDB = userRepository.save(user)
-        val userAndRole = UserAndRole()
-        userAndRole.roleId = 25L
-        userAndRole.userId = userInDB.id
-        userAndRoleRepository.save(userAndRole)
-        return userInDB
-    }
-
 
     /**
      * 通过用户名进行用户查找
@@ -101,6 +78,9 @@ class UserServiceImpl : UserService, UserDetailsService {
         return jwtTokenProvider.createToken(authList,student)
     }
 
+    /**
+     * @param username 学号
+     */
     @Throws(UsernameNotFoundException::class)
     override fun loadUserByUsername(username: String): UserDetails {
         val user = userRepository.findUserByUsername(username)

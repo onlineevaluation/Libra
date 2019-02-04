@@ -4,6 +4,7 @@ import com.nuc.libra.exception.ResultException
 import com.nuc.libra.po.Student
 import com.nuc.libra.po.User
 import com.nuc.libra.service.impl.UserServiceImpl
+import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import org.springframework.beans.factory.annotation.Autowired
@@ -99,8 +100,9 @@ class JwtTokenProvider {
      * @param token token
      * @return boolean 返回token是否有效
      */
+    @Throws(ExpiredJwtException::class)
     fun validateToken(token: String): Boolean {
-        Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token) ?: throw ResultException("无效的token", 500)
+        Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token)
         return true
     }
 

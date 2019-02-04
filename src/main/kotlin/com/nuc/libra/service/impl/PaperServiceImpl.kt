@@ -9,7 +9,7 @@ import com.nuc.libra.po.StudentScore
 import com.nuc.libra.po.Title
 import com.nuc.libra.repository.*
 import com.nuc.libra.service.PaperService
-import com.nuc.libra.util.WordUtils
+import com.nuc.libra.util.NLPUtils
 import com.nuc.libra.vo.AnsVO
 import com.nuc.libra.vo.StudentAnswerSelect
 import org.slf4j.Logger
@@ -89,7 +89,7 @@ class PaperServiceImpl : PaperService {
 
     /**
      *
-     * 通过 监听rabbitMQ， 进行判题
+     * 通过 监听 rabbitMQ， 进行判题
      * @param `json` 前端字符串
      */
     @Transactional
@@ -124,58 +124,15 @@ class PaperServiceImpl : PaperService {
                 "2" -> {
                     logger.info("填空题")
                     studentAnswer.score = checkBlank(studentAns.ans, standardAnswer.answer, 5.0, isOrder)
-// （·-·）
-//                    val blankTitleScore = 5.0
-//                    val studentAnswers = studentAns.ans.substringAfter("【").substringBeforeLast("】")
-//                        .split("】\\s*?【".toRegex())
-//                    val standardAnswers = titleInDB.answer.substringAfter("【")
-//                        .substringBeforeLast("】").split("】\\s*?【".toRegex())
-//                    val blankNumber = standardAnswers.size
-//                    var blankScore = 0.0
-//
-//                    // 格式错误
-//                    if (blankNumber != studentAnswers.size) {
-//                        studentAnswer.score = 0.0
-//                    } else {
-//                        var similarScore = 0.0
-//                        // 答案有序
-//                        if (isOrder) {
-//                            for (i in 0 until standardAnswers.size) {
-//                                similarScore = WordUtils.blankCheck(studentAnswers[i], standardAnswers[i])
-//                                blankScore += calculationScore(similarScore, blankNumber, blankTitleScore)
-//                            }
-//                        }
-//                        // 答案无序
-//                        else {
-//                            val standardString = StringBuilder()
-//                            val studentString = StringBuilder()
-//
-//                            for (i in 0 until standardAnswers.size) {
-//                                standardString.append(standardAnswers[i])
-//                                studentString.append(studentAnswers[i])
-//                            }
-//                            similarScore = WordUtils.blankCheck(studentString.toString(), standardString.toString())
-//                            val x = 1.0 / blankNumber // 这是写的什么？ 归一化处理？
-//                            blankScore = (similarScore / x) * (blankTitleScore / blankNumber)
-//                        }
-//                    ================ 暂时先不计算相似度 ==================
-//                        studentAnswer.similarScore = similarScore
-//                    ===============话说我为什么要计算相似度================
-//                        studentAnswer.score = blankScore
-//                    }
                     ansList.add(studentAnswer)
                 }
                 // 简答题
                 "3" -> {
                     val ansTitleScore = 10.0
                     logger.info("解答题")
-                    val similarScore = WordUtils.ansCheck(studentAns.ans, standardAnswer.answer)
-                    studentAnswer.similarScore = similarScore
-                    studentAnswer.score = (similarScore * 10).toInt().toDouble()
-                    println(" score :: ${studentAnswer.score}")
+                    studentAnswer.score = checkQuestion(studentAns.ans, standardAnswer.answer, ansTitleScore)
                     ansList.add(studentAnswer)
                 }
-
                 else -> {
                     studentAnswer.score = 0.0
                     ansList.add(studentAnswer)
@@ -204,22 +161,21 @@ class PaperServiceImpl : PaperService {
             ansList.add(ans)
         }
 
-
         studentAnswerRepository.saveAll(ansList)
-
+        // 2019年2月4日 为什么要存了再去取？ 不矛盾吗？ 为什么不直接算分数
         // 计算总分
         val scoreList =
             studentAnswerRepository.findByStudentIdAndPagesId(result.result.studentId, result.result.pageId)
 
         var sumScore = 0.0
-        scoreList.map {
+        scoreList.forEach {
             sumScore += it.score
         }
 
         val studentScore = StudentScore()
         studentScore.pagesId = result.result.pageId
         studentScore.studentId = result.result.studentId
-        studentScore.status = "2"
+        studentScore.status = "1"
         studentScore.score = sumScore
         studentScore.time = Timestamp(System.currentTimeMillis())
         studentScore.dotime = Date(System.currentTimeMillis())
@@ -328,7 +284,6 @@ class PaperServiceImpl : PaperService {
         return ansVO
     }
 
-
     /**
      * 评分模块
      */
@@ -384,7 +339,7 @@ class PaperServiceImpl : PaperService {
         // 有序答案
         if (isOrder) {
             for (index in 0 until blankNumber) {
-                similar = WordUtils.docSimilar(studentAnswerList[index], standardAnswerList[index])
+                similar = NLPUtils.docSimilar(studentAnswerList[index], standardAnswerList[index])
                 blankScore += calculationScore(similar, blankNumber, score)
             }
             return blankScore
@@ -399,12 +354,31 @@ class PaperServiceImpl : PaperService {
             for (ans in standardAnswerList) {
                 standardAnswerSb.append(ans)
             }
-            similar = WordUtils.docSimilar(studentAnswerSb.toString(), standardAnswerSb.toString())
+            similar = NLPUtils.docSimilar(studentAnswerSb.toString(), standardAnswerSb.toString())
             // x 代表着未知 所以下面的步骤只有天知道！
             // 我猜是计算平均分
             val x = 1.0 / blankNumber
             blankScore = (similar / x) * (score / blankNumber)
             return blankScore
         }
+    }
+
+    /**
+     * 简单题评分
+     * @param studentAnswer 学生答案
+     * @param standardAnswer 标准答案
+     * @param score 该题满分
+     *
+     * @return 学生所得分数
+     */
+    private fun checkQuestion(studentAnswer: String, standardAnswer: String, score: Double): Double {
+        val similar = NLPUtils.docSimilar(standardAnswer, studentAnswer)
+        val studentScore = (score * similar).toInt().toDouble()
+        return if (studentScore < 0) {
+            0.0
+        } else {
+            studentScore
+        }
+
     }
 }

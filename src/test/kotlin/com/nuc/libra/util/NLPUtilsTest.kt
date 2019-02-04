@@ -5,7 +5,7 @@ import org.junit.Test
 /**
  * @author 杨晓辉 2019-02-03 21:27
  */
-class WordUtilsTest {
+class NLPUtilsTest {
 
     private val docA = "奥运会女排夺冠"
     private val docB = "世界锦标赛胜出"
@@ -14,13 +14,13 @@ class WordUtilsTest {
 
     @Test
     fun docVectorModelTest() {
-        val similar = WordUtils.docSimilar(docA, docB)
+        val similar = NLPUtils.docSimilar(docA, docB)
         println(similar)
     }
 
     @Test
     fun docVectorModelFailTest() {
-        val similar = WordUtils.docSimilar(docA, docC)
+        val similar = NLPUtils.docSimilar(docA, docC)
         println(similar)
     }
 }

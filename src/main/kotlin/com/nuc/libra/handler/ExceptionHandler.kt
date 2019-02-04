@@ -3,6 +3,7 @@ package com.nuc.libra.handler
 import com.nuc.libra.exception.ResultException
 import com.nuc.libra.result.Result
 import com.nuc.libra.util.ResultUtils
+import io.jsonwebtoken.ExpiredJwtException
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.web.bind.annotation.ControllerAdvice
@@ -26,12 +27,16 @@ class ExceptionHandler {
     @ResponseBody
     @ExceptionHandler(value = [(Exception::class)])
     fun handle(e: Exception): Result {
-        return if (e is ResultException) {
-            val resultException: ResultException = e
-            ResultUtils.error(resultException.code!!, resultException.message!!)
-        } else {
-            logger.error("[系统异常]", e)
-            ResultUtils.error(-1, "未知错误")
+        return when (e) {
+            is ResultException -> {
+                val resultException: ResultException = e
+                ResultUtils.error(resultException.code!!, resultException.message!!)
+            }
+            is ExpiredJwtException -> ResultUtils.error(501, e.message.toString())
+            else -> {
+                logger.error("[系统异常]", e)
+                ResultUtils.error(-1, "未知错误")
+            }
         }
     }
 

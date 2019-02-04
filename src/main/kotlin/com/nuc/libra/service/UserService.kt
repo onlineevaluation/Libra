@@ -14,15 +14,15 @@ interface UserService {
      */
     fun findUser(): List<User>
 
-    /**
-     * 进行用户注册保存
-     * @param user 用户
-     * @return UserParam 用户 包含用户信息
-     * @throws ResultException 当用户名称重复抛出该异常
-     *
-     */
-    @Throws(ResultException::class)
-    fun saveUser(user: User): User
+//    /**
+//     * 进行用户注册保存
+//     * @param user 用户
+//     * @return UserParam 用户 包含用户信息
+//     * @throws ResultException 当用户名称重复抛出该异常
+//     *
+//     */
+//    @Throws(ResultException::class)
+//    fun saveUser(user: User): User
 
     /**
      * 通过用户名进行用户查找

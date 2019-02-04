@@ -77,8 +77,8 @@ dependencies {
     implementation('com.alibaba:fastjson:1.2.46')
     // RabbitMq
     implementation('org.springframework.boot:spring-boot-starter-amqp')
-    // word 分词，词频
-    implementation group: 'org.apdplat', name: 'word', version: '1.3'
+//    // word 分词，词频
+//    implementation group: 'org.apdplat', name: 'word', version: '1.3'
     compile group: 'com.hankcs', name: 'hanlp', version: 'portable-1.7.1'
     // sentry 日志监控
     implementation 'io.sentry:sentry-spring:1.7.16'
