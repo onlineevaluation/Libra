@@ -14,7 +14,14 @@ object NLPUtils {
      * 初始化参数
      */
     init {
-        val docPath = "C:\\Users\\young\\Desktop\\polyglot-zh\\polyglot-zh.txt"
+        val docPath: String
+        val os = System.getProperty("os.name")
+        docPath = if (os.contains("Windows")) {
+            "C:\\Users\\young\\Desktop\\polyglot-zh.txt"
+
+        } else {
+            "~/data/polyglot-zh.txt"
+        }
         docVectorModel = DocVectorModel(WordVectorModel(docPath))
     }
 
