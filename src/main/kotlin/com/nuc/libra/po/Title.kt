@@ -38,4 +38,9 @@ class Title {
     var orderd: Boolean = true
     var knowledgeId: Long = 0
 
+    override fun toString(): String {
+        return "Title(id=$id, num='$num', title='$title', category='$category', difficulty=$difficulty, answer='$answer', analysis=$analysis, teacherId=$teacherId, addTime=$addTime, sectionA=$sectionA, sectionB=$sectionB, sectionC=$sectionC, sectionD=$sectionD, orderd=$orderd, knowledgeId=$knowledgeId)"
+    }
+
+
 }

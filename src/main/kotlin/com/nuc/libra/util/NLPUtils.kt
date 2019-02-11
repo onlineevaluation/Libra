@@ -17,8 +17,7 @@ object NLPUtils {
         val docPath: String
         val os = System.getProperty("os.name")
         docPath = if (os.contains("Windows")) {
-            "C:\\Users\\young\\Desktop\\polyglot-zh.txt"
-
+            "C:/Users/young/Desktop/polyglot-zh.txt"
         } else {
             "~/data/polyglot-zh.txt"
         }
@@ -37,4 +36,14 @@ object NLPUtils {
 
 }
 
+/**
+ * 该方法存在问题 应该使用 top-k 进行检查
+ */
+fun main(args: Array<String>) {
+    val s1 = "JVM哈哈哈哈"
+    val s2 = "java虚拟机嘻嘻嘻嘻嘻"
+
+    val similar = NLPUtils.docSimilar(s1, s2)
+    println("similar is $similar")
+}
 

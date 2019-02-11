@@ -72,7 +72,7 @@ class PageController {
                 it.title = sb.toString().trim()
                 blankNumber = titles.size - 1
             }
-            titleVO.blankNum= blankNumber
+            titleVO.blankNum = blankNumber
             titleVOList.add(titleVO)
         }
 
@@ -121,9 +121,12 @@ class PageController {
     @PostMapping("/addAns")
     fun addAns(@RequestBody json: String): Result {
         logger.info("answer json is $json")
-        val result = JSON.parseObject(json, Json::class.java)
+        val result = JSON.parseObject(json, com.nuc.libra.entity.result.Result::class.java)
                 ?: throw ResultException("解析错误", 500)
-        paperService.verifyPage(result.result.studentId, result.result.pageId)
+        println("result is $result")
+        println(result.studentId)
+        println(result.pageId)
+//        paperService.verifyPage(result.result.studentId, result.result.pageId)
         logger.info("result is  $result")
         rabbitTemplate.convertAndSend("check", result)
 

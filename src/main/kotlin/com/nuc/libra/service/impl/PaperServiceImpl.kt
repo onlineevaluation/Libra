@@ -2,6 +2,7 @@ package com.nuc.libra.service.impl
 
 
 import com.nuc.libra.entity.result.Json
+import com.nuc.libra.entity.result.Result
 import com.nuc.libra.exception.ResultException
 import com.nuc.libra.po.ClassAndPages
 import com.nuc.libra.po.StudentAnswer
@@ -95,20 +96,26 @@ class PaperServiceImpl : PaperService {
     @Transactional
     @RabbitListener(queues = ["check"])
     @RabbitHandler
-    fun addPages(result: Json) {
+    fun addPages(result: Result) {
         logger.info("result json :: $result")
         val ansListInDb =
-            studentAnswerRepository.findByStudentIdAndPagesId(result.result.studentId, result.result.pageId)
-        if (ansListInDb.isNotEmpty()) {
-            return
-        }
+            studentAnswerRepository.findByStudentIdAndPagesId(result.studentId, result.pageId)
+        // 该学生是否已经提交过答案
+//        if (ansListInDb.isNotEmpty()) {
+//            throw ResultException("没有该试题", 501)
+//
+//            return
+//        }
         val ansList = ArrayList<StudentAnswer>()
 
-        for (studentAns in result.result.answer) {
+        for (studentAns in result.answer) {
             val standardAnswer = titleRepository.findById(studentAns.id).get()
+            logger.info("标准答案是 $standardAnswer ")
+
+            logger.info("学生答案是 ${studentAns.ans}")
             val studentAnswer = StudentAnswer()
-            studentAnswer.pagesId = result.result.pageId
-            studentAnswer.studentId = result.result.studentId
+            studentAnswer.pagesId = result.pageId
+            studentAnswer.studentId = result.studentId
             studentAnswer.time = Timestamp(System.currentTimeMillis())
             studentAnswer.score = 0.0
             studentAnswer.answer = studentAns.ans
@@ -118,6 +125,7 @@ class PaperServiceImpl : PaperService {
                 // 单选题
                 "1" -> {
                     studentAnswer.score = checkChoice(studentAns.ans, standardAnswer.answer, 5.0)
+
                     ansList.add(studentAnswer)
                 }
                 // 填空题
@@ -140,7 +148,7 @@ class PaperServiceImpl : PaperService {
             }
         }
 
-        val titleList = pagesAndTitleRepository.findByPagesId(result.result.pageId)
+        val titleList = pagesAndTitleRepository.findByPagesId(result.pageId)
         val titleId = ArrayList<Long>()
         titleList.forEach {
             titleId.add(it.titleId)
@@ -155,8 +163,8 @@ class PaperServiceImpl : PaperService {
             ans.titleId = titleId[i]
             ans.answer = ""
             ans.score = 0.0
-            ans.pagesId = result.result.pageId
-            ans.studentId = result.result.studentId
+            ans.pagesId = result.pageId
+            ans.studentId = result.studentId
             ans.time = Timestamp(System.currentTimeMillis())
             ansList.add(ans)
         }
@@ -165,7 +173,7 @@ class PaperServiceImpl : PaperService {
         // 2019年2月4日 为什么要存了再去取？ 不矛盾吗？ 为什么不直接算分数
         // 计算总分
         val scoreList =
-            studentAnswerRepository.findByStudentIdAndPagesId(result.result.studentId, result.result.pageId)
+            studentAnswerRepository.findByStudentIdAndPagesId(result.studentId, result.pageId)
 
         var sumScore = 0.0
         scoreList.forEach {
@@ -173,12 +181,13 @@ class PaperServiceImpl : PaperService {
         }
 
         val studentScore = StudentScore()
-        studentScore.pagesId = result.result.pageId
-        studentScore.studentId = result.result.studentId
+        studentScore.pagesId = result.pageId
+        studentScore.studentId = result.studentId
         studentScore.status = "1"
         studentScore.score = sumScore
         studentScore.time = Timestamp(System.currentTimeMillis())
         studentScore.dotime = Date(System.currentTimeMillis())
+        logger.info("student score is ${studentScore.score}")
         studentScoreRepository.save(studentScore)
     }
 
@@ -309,7 +318,8 @@ class PaperServiceImpl : PaperService {
      * @param score 该题分数
      */
     private fun checkChoice(studentAnswer: String, standardAnswer: String, score: Double): Double {
-        if (studentAnswer === standardAnswer) {
+        val answer = "【$studentAnswer】"
+        if (answer.equals(standardAnswer, ignoreCase = true)) {
             return score
         }
         return 0.0
@@ -331,7 +341,9 @@ class PaperServiceImpl : PaperService {
         val standardAnswerList = standardAnswer.substringAfter("【").substringBeforeLast("】").split("】\\s*?【".toRegex())
         // 填空题空的数量
         val blankNumber = standardAnswerList.size
+        logger.info("填空题 空数 $blankNumber")
         if (blankNumber != studentAnswerList.size) {
+            logger.info("该题的答案和空数不一致")
             return 0.0
         }
         var blankScore = 0.0
@@ -339,7 +351,9 @@ class PaperServiceImpl : PaperService {
         // 有序答案
         if (isOrder) {
             for (index in 0 until blankNumber) {
+                logger.info("该空学生答案 ${studentAnswerList[index]} 和  标准答案 ${standardAnswerList[index]}")
                 similar = NLPUtils.docSimilar(studentAnswerList[index], standardAnswerList[index])
+                logger.info("填空题数量的相似度为 $similar")
                 blankScore += calculationScore(similar, blankNumber, score)
             }
             return blankScore
@@ -354,11 +368,14 @@ class PaperServiceImpl : PaperService {
             for (ans in standardAnswerList) {
                 standardAnswerSb.append(ans)
             }
+            logger.info("学生答案 是 $studentAnswerSb  标准答案是 $standardAnswerSb")
             similar = NLPUtils.docSimilar(studentAnswerSb.toString(), standardAnswerSb.toString())
+            logger.info("相似度为 $similar")
             // x 代表着未知 所以下面的步骤只有天知道！
             // 我猜是计算平均分
             val x = 1.0 / blankNumber
             blankScore = (similar / x) * (score / blankNumber)
+            logger.info("该题得分为 $blankScore")
             return blankScore
         }
     }
