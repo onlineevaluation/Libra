@@ -1,5 +1,6 @@
 package com.nuc.libra.util
 
+import com.hankcs.hanlp.dictionary.CustomDictionary
 import com.hankcs.hanlp.mining.word2vec.DocVectorModel
 import com.hankcs.hanlp.mining.word2vec.WordVectorModel
 
@@ -8,7 +9,8 @@ import com.hankcs.hanlp.mining.word2vec.WordVectorModel
  * @author 杨晓辉 2018/2/9 10:10
  */
 object NLPUtils {
-    private var docVectorModel: DocVectorModel
+
+    private var wordVectorModel: WordVectorModel
 
     /**
      * 初始化参数
@@ -21,29 +23,49 @@ object NLPUtils {
         } else {
             "~/data/polyglot-zh.txt"
         }
-        docVectorModel = DocVectorModel(WordVectorModel(docPath))
+        wordVectorModel = WordVectorModel(docPath)
     }
 
     /**
+     * 词语相似度
+     */
+    fun wordSimilar(word1: String, word2: String): Double {
+        val similarity = wordVectorModel.similarity(word1, word2).toDouble()
+        return when {
+            similarity <= 0.0 -> 0.0
+            similarity >= 1.0 -> 1.0
+            else -> similarity
+        }
+
+    }
+
+
+    /**
      * 用 wod2Vec 相似度进行分析
-     * @param docA 语句1
-     * @param docB 语句2
+     * @param doc1 语句1
+     * @param doc2 语句2
      * @return 相似度
      */
-    fun docSimilar(docA: String, docB: String): Double {
-        return docVectorModel.similarity(docA, docB).toDouble()
+    fun docSimilar(doc1: String, doc2: String): Double {
+        val docVectorModel = DocVectorModel(wordVectorModel)
+        val similar = docVectorModel.similarity(doc1, doc2).toDouble()
+        return when {
+            similar <= 0.0 -> 0.0
+            similar >= 1.0 -> 1.0
+            else -> similar
+        }
     }
 
 }
 
 /**
- * 该方法存在问题 应该使用 top-k 进行检查
+ * 该方法存在问题
  */
 fun main(args: Array<String>) {
-    val s1 = "JVM哈哈哈哈"
-    val s2 = "java虚拟机嘻嘻嘻嘻嘻"
+    val s1 = "Sun"
+    val s2 = ""
 
-    val similar = NLPUtils.docSimilar(s1, s2)
+    val similar = NLPUtils.wordSimilar(s1, s2)
     println("similar is $similar")
 }
 

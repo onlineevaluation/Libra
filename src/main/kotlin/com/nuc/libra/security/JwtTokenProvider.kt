@@ -1,8 +1,6 @@
 package com.nuc.libra.security
 
-import com.nuc.libra.exception.ResultException
 import com.nuc.libra.po.Student
-import com.nuc.libra.po.User
 import com.nuc.libra.service.impl.UserServiceImpl
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.Jwts
@@ -16,7 +14,6 @@ import org.springframework.stereotype.Component
 import java.util.*
 import javax.annotation.PostConstruct
 import javax.servlet.http.HttpServletRequest
-import kotlin.collections.ArrayList
 
 /**
  * @author 杨晓辉
@@ -50,7 +47,7 @@ class JwtTokenProvider {
 
     /**
      * 创建token 使用 HS256加密
-     * @param username 用户学号
+     * @param student 学生信息
      * @param role 角色信息
      * @return jwtToken
      */

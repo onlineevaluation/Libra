@@ -2,7 +2,6 @@ package com.nuc.libra.controller
 
 
 import com.alibaba.fastjson.JSON
-import com.nuc.libra.entity.result.Json
 import com.nuc.libra.exception.ResultException
 import com.nuc.libra.result.Result
 import com.nuc.libra.service.PaperService
@@ -134,7 +133,7 @@ class PageController {
     }
 
     /**
-     * 获取所有考试分数
+     * 获取一个学生所有考试分数
      * @param studentId 学生id
      */
     @GetMapping("/scores/{studentId}")

@@ -1,7 +1,5 @@
 package com.nuc.libra.service.impl
 
-
-import com.nuc.libra.entity.result.Json
 import com.nuc.libra.entity.result.Result
 import com.nuc.libra.exception.ResultException
 import com.nuc.libra.po.ClassAndPages
@@ -26,6 +24,7 @@ import javax.transaction.Transactional
 /**
  * @author 杨晓辉 2018/2/3 16:04
  * @Version 1.0
+ * 代码千万行，注释第一行
  */
 @Service
 class PaperServiceImpl : PaperService {
@@ -101,11 +100,9 @@ class PaperServiceImpl : PaperService {
         val ansListInDb =
             studentAnswerRepository.findByStudentIdAndPagesId(result.studentId, result.pageId)
         // 该学生是否已经提交过答案
-//        if (ansListInDb.isNotEmpty()) {
-//            throw ResultException("没有该试题", 501)
-//
-//            return
-//        }
+        if (ansListInDb.isNotEmpty()) {
+            return
+        }
         val ansList = ArrayList<StudentAnswer>()
 
         for (studentAns in result.answer) {
@@ -341,9 +338,7 @@ class PaperServiceImpl : PaperService {
         val standardAnswerList = standardAnswer.substringAfter("【").substringBeforeLast("】").split("】\\s*?【".toRegex())
         // 填空题空的数量
         val blankNumber = standardAnswerList.size
-        logger.info("填空题 空数 $blankNumber")
         if (blankNumber != studentAnswerList.size) {
-            logger.info("该题的答案和空数不一致")
             return 0.0
         }
         var blankScore = 0.0
@@ -351,9 +346,7 @@ class PaperServiceImpl : PaperService {
         // 有序答案
         if (isOrder) {
             for (index in 0 until blankNumber) {
-                logger.info("该空学生答案 ${studentAnswerList[index]} 和  标准答案 ${standardAnswerList[index]}")
                 similar = NLPUtils.docSimilar(studentAnswerList[index], standardAnswerList[index])
-                logger.info("填空题数量的相似度为 $similar")
                 blankScore += calculationScore(similar, blankNumber, score)
             }
             return blankScore
@@ -368,14 +361,11 @@ class PaperServiceImpl : PaperService {
             for (ans in standardAnswerList) {
                 standardAnswerSb.append(ans)
             }
-            logger.info("学生答案 是 $studentAnswerSb  标准答案是 $standardAnswerSb")
             similar = NLPUtils.docSimilar(studentAnswerSb.toString(), standardAnswerSb.toString())
-            logger.info("相似度为 $similar")
             // x 代表着未知 所以下面的步骤只有天知道！
             // 我猜是计算平均分
             val x = 1.0 / blankNumber
             blankScore = (similar / x) * (score / blankNumber)
-            logger.info("该题得分为 $blankScore")
             return blankScore
         }
     }
@@ -391,11 +381,11 @@ class PaperServiceImpl : PaperService {
     private fun checkQuestion(studentAnswer: String, standardAnswer: String, score: Double): Double {
         val similar = NLPUtils.docSimilar(standardAnswer, studentAnswer)
         val studentScore = (score * similar).toInt().toDouble()
+        logger.info("学生的分数是 $studentScore")
         return if (studentScore < 0) {
             0.0
         } else {
             studentScore
         }
-
     }
 }
