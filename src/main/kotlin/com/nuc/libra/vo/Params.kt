@@ -2,6 +2,8 @@ package com.nuc.libra.vo
 
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
+import java.sql.Date
+import java.sql.Timestamp
 
 /**
  * @author 杨晓辉 2018-12-29 16:06
@@ -44,3 +46,26 @@ data class ExamParam(
     )
     val pageId: Long
 )
+
+/**
+ * 返回的成绩视图
+ */
+class StudentScoreParam {
+    var id: Long = 0L
+    var studentId: Long = 0L
+    var pagesId: Long = 0L
+    var score: Double = 0.0
+    var time: Timestamp? = null
+    var dotime: Date? = null
+    var classRank = 0
+    var gradeRank = 0
+    lateinit var pageTitle: String
+
+
+    override fun toString(): String {
+        return "StudentScoreParam(id=$id, studentId=$studentId, score=$score, time=$time, dotime=$dotime, classRank=$classRank, gradeRank=$gradeRank)"
+    }
+
+
+}
+

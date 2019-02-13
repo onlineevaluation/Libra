@@ -25,4 +25,10 @@ class StudentScore {
     var time: Timestamp? = null
     var employeeId: Long? = 0
     var dotime: Date? = null
+
+    override fun toString(): String {
+        return "StudentScore(id=$id, studentId=$studentId, pagesId=$pagesId, objectivesScore=$objectivesScore, subjectivityScore=$subjectivityScore, score=$score, status=$status, time=$time, employeeId=$employeeId, dotime=$dotime)"
+    }
+
+
 }

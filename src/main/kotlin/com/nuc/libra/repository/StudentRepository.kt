@@ -14,4 +14,11 @@ interface StudentRepository : JpaRepository<Student, Long> {
      * @param studentNumber studentNumber
      */
     fun findByStudentNumber(studentNumber: String): Student?
+
+    /**
+     * 通过班级号查找学生
+     * @param classId 班级号
+     *
+     */
+    fun findStudentsByClassId(classId: Long): List<Student>
 }

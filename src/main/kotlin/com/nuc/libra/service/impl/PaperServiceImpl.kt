@@ -11,10 +11,12 @@ import com.nuc.libra.service.PaperService
 import com.nuc.libra.util.NLPUtils
 import com.nuc.libra.vo.AnsVO
 import com.nuc.libra.vo.StudentAnswerSelect
+import com.nuc.libra.vo.StudentScoreParam
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.RabbitHandler
 import org.springframework.amqp.rabbit.annotation.RabbitListener
+import org.springframework.beans.BeanUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.sql.Date
@@ -49,6 +51,8 @@ class PaperServiceImpl : PaperService {
     @Autowired
     private lateinit var titleRepository: TitleRepository
 
+    @Autowired
+    private lateinit var studentRepository: StudentRepository
 
     /**
      * 获取该班级的所有考试
@@ -210,9 +214,65 @@ class PaperServiceImpl : PaperService {
      * @param studentId 学生id
      * @return list 返回该学生所有的分数
      */
-    override fun listScore(studentId: Long): List<StudentScore> {
-        return studentScoreRepository.findByStudentId(studentId)
-                ?: throw ResultException("你还没有参加考试", 500)
+    override fun listScore(studentId: Long): List<StudentScoreParam> {
+        // 获得该考生所有的考试信息
+        val student = studentRepository.findById(studentId).get()
+        val studentScoreList = ArrayList<StudentScoreParam>()
+        // 查找同班同学
+        val classmate = studentRepository.findStudentsByClassId(student.classId)
+        // 该学生的所有考试
+        val list = studentScoreRepository.findByStudentId(studentId)
+                ?: throw ResultException("你还没有参加任何考试", 500)
+
+        for (i in 0 until list.size) {
+            // 存放单张试卷的全班分数
+            val scoreList = ArrayList<Double>()
+            for (j in 0 until classmate.size) {
+                val pageScore =
+                    studentScoreRepository.findByPagesIdAndStudentId(list[i].pagesId, classmate[j].id) ?: continue
+
+                scoreList.add(pageScore.score)
+            }
+            // 计算班级排名
+            val selfScore = studentScoreRepository.findByPagesIdAndStudentId(list[i].pagesId, studentId)
+                    ?: throw ResultException("你还没有参加该考试", 500)
+            scoreList.sortDescending()
+
+            var classRank = 1
+            for (j in 0 until scoreList.size) {
+                if (scoreList[j] == selfScore.score) {
+                    classRank = j
+                    break
+                }
+            }
+            // 计算年级排名
+            val studentScores = studentScoreRepository.findStudentScoresByPagesId(list[i].pagesId)
+                    ?: continue
+
+            val gradeScores = ArrayList<Double>()
+            studentScores.forEach { it ->
+                gradeScores.add(it.score)
+            }
+            var gradeRank = 1
+            gradeScores.sortedDescending()
+            for (j in 0 until gradeScores.size) {
+                if (gradeScores[j] == selfScore.score) {
+                    gradeRank = j
+                    break
+                }
+            }
+
+
+            val studentScoreParam = StudentScoreParam()
+            BeanUtils.copyProperties(list[i], studentScoreParam)
+
+            val page = pagesRepository.findById(list[i].pagesId).get()
+            studentScoreParam.pageTitle = page.name
+            studentScoreParam.classRank = classRank
+            studentScoreParam.gradeRank = gradeRank
+            studentScoreList.add(studentScoreParam)
+        }
+        return studentScoreList
     }
 
     /**

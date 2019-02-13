@@ -21,4 +21,11 @@ interface StudentScoreRepository : JpaRepository<StudentScore, Long> {
      * @param studentId 学生id
      */
     fun findByPagesIdAndStudentId(pagesId: Long, studentId: Long): StudentScore?
+
+
+    /**
+     * 通过 pageId 获取所有的参加该考试分数
+     * @param pageId 试卷id
+     */
+    fun findStudentScoresByPagesId(pageId: Long): List<StudentScore>?
 }
