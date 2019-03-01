@@ -1,6 +1,7 @@
 package com.nuc.libra.security
 
 import com.nuc.libra.exception.ResultException
+import io.jsonwebtoken.ExpiredJwtException
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.filter.GenericFilterBean
 import java.io.IOException
@@ -9,7 +10,6 @@ import javax.servlet.ServletException
 import javax.servlet.ServletRequest
 import javax.servlet.ServletResponse
 import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
 
 /**
  * @author 杨晓辉
@@ -27,13 +27,11 @@ class JwtTokenFilter(private val jwtTokenProvider: JwtTokenProvider) : GenericFi
         val token = jwtTokenProvider.resolveToken(req as HttpServletRequest)
         try {
             if (token != null && jwtTokenProvider.validateToken(token)) {
-                val auth = if (token != null) jwtTokenProvider.getAuthentication(token) else null
+                val auth = jwtTokenProvider.getAuthentication(token)
                 SecurityContextHolder.getContext().authentication = auth
             }
-        } catch (ex: ResultException) {
-            val response = res as HttpServletResponse
-            println(response)
-            return
+        } catch (ex: ExpiredJwtException) {
+            throw ex
         }
         filterChain.doFilter(req, res)
     }

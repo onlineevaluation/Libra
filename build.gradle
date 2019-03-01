@@ -31,7 +31,7 @@ apply plugin: 'jacoco'
 
 group = 'com.nuc'
 version = '2.0.0'
-sourceCompatibility = 1.8
+sourceCompatibility = 11
 
 compileKotlin {
     kotlinOptions {
@@ -47,7 +47,7 @@ compileTestKotlin {
 }
 
 repositories {
-    jcenter()
+//    jcenter()
     mavenCentral()
     maven {
         url "https://plugins.gradle.org/m2/"
@@ -56,7 +56,6 @@ repositories {
 
 
 dependencies {
-
     // jpa
     implementation('org.springframework.boot:spring-boot-starter-data-jpa')
     implementation('org.springframework.boot:spring-boot-starter-jdbc')
@@ -87,7 +86,7 @@ dependencies {
     implementation 'com.alibaba:druid:1.1.12'
     // jna
     implementation 'net.java.dev.jna:jna:5.2.0'
-
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.1'
     // test
     testImplementation('org.springframework.boot:spring-boot-starter-test')
 
@@ -111,14 +110,12 @@ task codeCoverageReport(type: JacocoReport) {
 
     reports {
         xml.enabled true
-        xml.destination "${buildDir}/reports/jacoco/report.xml"
+        // todo(这个有问题，无法提交测试结果)
+        // xml.destination "${buildDir}/reports/jacoco/report.xml"
         html.enabled false
         csv.enabled false
     }
 }
 
-codeCoverageReport.dependsOn {
-    subprojects*.test
-}
 
 check.dependsOn codeCoverageReport

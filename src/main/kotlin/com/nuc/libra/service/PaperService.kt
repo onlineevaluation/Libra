@@ -2,7 +2,7 @@ package com.nuc.libra.service
 
 import com.nuc.libra.po.ClassAndPages
 import com.nuc.libra.po.Title
-import com.nuc.libra.vo.AnsVO
+import com.nuc.libra.vo.PageDetailsParam
 import com.nuc.libra.vo.StudentScoreParam
 
 /**
@@ -43,5 +43,5 @@ interface PaperService {
      * @param pageId 试卷id
      * @param studentId 学生id
      */
-    fun getPageScore(pageId: Long, studentId: Long): AnsVO
+    fun getPageScore(pageId: Long, studentId: Long): PageDetailsParam
 }

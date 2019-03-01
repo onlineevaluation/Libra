@@ -29,10 +29,14 @@ class ExceptionHandler {
     fun handle(e: Exception): Result {
         return when (e) {
             is ResultException -> {
+                logger.info("发生了异常 $e")
                 val resultException: ResultException = e
-                ResultUtils.error(resultException.code!!, resultException.message!!)
+                ResultUtils.error(resultException.code, resultException.message!!)
             }
-            is ExpiredJwtException -> ResultUtils.error(501, e.message.toString())
+            is ExpiredJwtException -> {
+                logger.info("token失效")
+
+                ResultUtils.error(501, e.message.toString())}
             else -> {
                 logger.error("[系统异常]", e)
                 ResultUtils.error(-1, "未知错误")

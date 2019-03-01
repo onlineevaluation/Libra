@@ -2,6 +2,8 @@ package com.nuc.libra.service.impl
 
 import com.nuc.libra.entity.result.Result
 import com.nuc.libra.exception.ResultException
+import com.nuc.libra.jni.Capricornus
+import com.nuc.libra.jni.GoString
 import com.nuc.libra.po.ClassAndPages
 import com.nuc.libra.po.StudentAnswer
 import com.nuc.libra.po.StudentScore
@@ -9,9 +11,11 @@ import com.nuc.libra.po.Title
 import com.nuc.libra.repository.*
 import com.nuc.libra.service.PaperService
 import com.nuc.libra.util.NLPUtils
-import com.nuc.libra.vo.AnsVO
+import com.nuc.libra.vo.PageDetailsParam
 import com.nuc.libra.vo.StudentAnswerSelect
 import com.nuc.libra.vo.StudentScoreParam
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.RabbitHandler
@@ -19,6 +23,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.BeanUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.io.File
 import java.sql.Date
 import java.sql.Timestamp
 import javax.transaction.Transactional
@@ -54,6 +59,9 @@ class PaperServiceImpl : PaperService {
     @Autowired
     private lateinit var studentRepository: StudentRepository
 
+    @Autowired
+    private lateinit var courseRepository: CourseRepository
+
     /**
      * 获取该班级的所有考试
      * @param classId 班级id
@@ -85,7 +93,6 @@ class PaperServiceImpl : PaperService {
         }
         val pagesAndTitleList = pagesAndTitleRepository.findByPagesId(pageId)
         return pagesAndTitleList.map {
-            //            logger.info("page is ${it.pagesId}")
             titleRepository.findById(it.titleId).get()
         }
 
@@ -99,7 +106,7 @@ class PaperServiceImpl : PaperService {
     @Transactional
     @RabbitListener(queues = ["check"])
     @RabbitHandler
-    fun addPages(result: Result) {
+    suspend fun addPages(result: Result) {
         logger.info("result json :: $result")
         val ansListInDb =
             studentAnswerRepository.findByStudentIdAndPagesId(result.studentId, result.pageId)
@@ -111,9 +118,6 @@ class PaperServiceImpl : PaperService {
 
         for (studentAns in result.answer) {
             val standardAnswer = titleRepository.findById(studentAns.id).get()
-            logger.info("标准答案是 $standardAnswer ")
-
-            logger.info("学生答案是 ${studentAns.ans}")
             val studentAnswer = StudentAnswer()
             studentAnswer.pagesId = result.pageId
             studentAnswer.studentId = result.studentId
@@ -141,6 +145,23 @@ class PaperServiceImpl : PaperService {
                     logger.info("解答题")
                     studentAnswer.score = checkQuestion(studentAns.ans, standardAnswer.answer, ansTitleScore)
                     ansList.add(studentAnswer)
+                }
+                "4" -> {
+
+                }
+                // 算法试题
+                "5" -> {
+                    val algorithmScore = 10.0
+                    checkAlgorithm(
+                        studentAnswer.titleId,
+                        studentAnswer.pagesId,
+                        studentAnswer.studentId,
+                        studentAns.ans,
+                        standardAnswer.answer,
+                        algorithmScore,
+                        standardAnswer.sectionA!!.toInt(),// 限制时间
+                        standardAnswer.sectionB!!.toInt() // 限制内存
+                    )
                 }
                 else -> {
                     studentAnswer.score = 0.0
@@ -171,7 +192,7 @@ class PaperServiceImpl : PaperService {
         }
 
         studentAnswerRepository.saveAll(ansList)
-        // 2019年2月4日 为什么要存了再去取？ 不矛盾吗？ 为什么不直接算分数
+        // todo 2019年2月4日 为什么要存了再去取？ 不矛盾吗？ 为什么不直接算分数
         // 计算总分
         val scoreList =
             studentAnswerRepository.findByStudentIdAndPagesId(result.studentId, result.pageId)
@@ -190,6 +211,8 @@ class PaperServiceImpl : PaperService {
         studentScore.dotime = Date(System.currentTimeMillis())
         logger.info("student score is ${studentScore.score}")
         studentScoreRepository.save(studentScore)
+
+
     }
 
     /**
@@ -237,7 +260,6 @@ class PaperServiceImpl : PaperService {
             val selfScore = studentScoreRepository.findByPagesIdAndStudentId(list[i].pagesId, studentId)
                     ?: throw ResultException("你还没有参加该考试", 500)
             scoreList.sortDescending()
-
             var classRank = 1
             for (j in 0 until scoreList.size) {
                 if (scoreList[j] == selfScore.score) {
@@ -248,7 +270,6 @@ class PaperServiceImpl : PaperService {
             // 计算年级排名
             val studentScores = studentScoreRepository.findStudentScoresByPagesId(list[i].pagesId)
                     ?: continue
-
             val gradeScores = ArrayList<Double>()
             studentScores.forEach { it ->
                 gradeScores.add(it.score)
@@ -261,17 +282,15 @@ class PaperServiceImpl : PaperService {
                     break
                 }
             }
-
-
             val studentScoreParam = StudentScoreParam()
             BeanUtils.copyProperties(list[i], studentScoreParam)
-
             val page = pagesRepository.findById(list[i].pagesId).get()
             studentScoreParam.pageTitle = page.name
-            studentScoreParam.classRank = classRank
-            studentScoreParam.gradeRank = gradeRank
+            studentScoreParam.classRank = String.format("%.2f", (classRank.toDouble() / classmate.size) * 100)
+            studentScoreParam.gradeRank = String.format("%.2f", (gradeRank.toDouble() / studentScores.size) * 100)
             studentScoreList.add(studentScoreParam)
         }
+
         return studentScoreList
     }
 
@@ -285,8 +304,8 @@ class PaperServiceImpl : PaperService {
      * @return ansVO 返回 ansVo 对象
      */
     @Transactional
-    override fun getPageScore(pageId: Long, studentId: Long): AnsVO {
-        val ansVO = AnsVO()
+    override fun getPageScore(pageId: Long, studentId: Long): PageDetailsParam {
+        val pageDetails = PageDetailsParam()
         val studentScore = studentScoreRepository.findByPagesIdAndStudentId(pageId, studentId)
                 ?: throw ResultException("没有该成绩", 500)
         // 学生提交答案
@@ -298,8 +317,11 @@ class PaperServiceImpl : PaperService {
         if (studentAnswer.isEmpty()) {
             throw ResultException("该学生没有参加该考试", 500)
         }
+        val page = pagesRepository.findById(pageId).get()
+        pageDetails.pageTitle = page.name
+        logger.info("page is $page")
+        pageDetails.course = courseRepository.findById(page.courseId).get().name
 
-        println("studentAnswer is ${studentAnswer.size}")
         // 标准答案
         for (i in 0 until studentAnswer.size) {
 
@@ -316,7 +338,7 @@ class PaperServiceImpl : PaperService {
                     selectAns.sectionC = t.sectionC.toString()
                     selectAns.sectionD = t.sectionD.toString()
                     selectAns.standardAnswer = t.answer
-                    ansVO.select.add(selectAns)
+                    pageDetails.select.add(selectAns)
                 }
 
                 "2" -> {
@@ -326,7 +348,7 @@ class PaperServiceImpl : PaperService {
                     blankAnswer.score = studentAnswer[i].score
                     blankAnswer.title = t.title
                     blankAnswer.standardAnswer = t.answer
-                    ansVO.blank.add(blankAnswer)
+                    pageDetails.blank.add(blankAnswer)
                 }
 
                 "3" -> {
@@ -336,18 +358,20 @@ class PaperServiceImpl : PaperService {
                     ans.score = studentAnswer[i].score
                     ans.title = t.title
                     ans.standardAnswer = t.answer
-                    ansVO.ans.add(ans)
+                    pageDetails.ans.add(ans)
                 }
 
                 "4" -> {
+                    val code = com.nuc.libra.vo.StudentAnswer()
+                    code.id = studentAnswer[i].titleId
 
                 }
             }
 
         }
-        ansVO.pageId = pageId
-        ansVO.score = studentScore.score
-        return ansVO
+        pageDetails.pageId = pageId
+        pageDetails.score = studentScore.score
+        return pageDetails
     }
 
     /**
@@ -447,5 +471,92 @@ class PaperServiceImpl : PaperService {
         } else {
             studentScore
         }
+    }
+
+    /**
+     * @param studentAnswer 学生代码
+     * @param standardAnswer 测试数据集
+     * @param score 试题得分
+     * @param limitTime 限制时间
+     * @param limitMemory 限制内存
+     */
+    private suspend fun checkAlgorithm(
+        codeId: Long,
+        pageId: Long,
+        studentId: Long,
+        studentAnswer: String,
+        standardAnswer: String,
+        score: Double,
+        limitTime: Int,
+        limitMemory: Int
+    ): Double {
+
+
+        val inputPath: String
+        val outputPath: String
+        val fileName = "${codeId}_${java.util.Date().time}_out"
+        val osName = System.getProperty("os.name")
+        if (osName.contains("windows", true)) {
+            inputPath = "d:/page_$pageId/student_$studentId/${codeId}_${java.util.Date().time}.cpp"
+            outputPath = "d:/page_out_$pageId/student_$studentId"
+        } else {
+            inputPath = "~/page_$pageId/student_$studentId/${codeId}_${java.util.Date().time}.cpp"
+            outputPath = "~/page_out_$pageId/student_$studentId"
+        }
+        val outFile = File(outputPath)
+        if (!outFile.exists()) {
+            outFile.mkdirs()
+        }
+        val codePath = File(inputPath)
+        if (!codePath.exists()) {
+            codePath.createNewFile()
+        }
+        var resultScore = 0.0
+        var result:String = ""
+        val job  = GlobalScope.launch {
+            codePath.writeText(studentAnswer, charset = Charsets.UTF_8)
+             result = Capricornus.INSTANCE.judgeCode(
+                GoString.ByValue(inputPath),
+                GoString.ByValue(outputPath),
+                GoString.ByValue(fileName),
+                GoString.ByValue(standardAnswer),
+                limitTime
+            )
+
+            when (result.substring(5, 6)) {
+                "9" -> {
+                    resultScore = score
+                }
+                "8" -> {
+
+                }
+                "7" -> {
+
+                }
+                "6" -> {
+
+                }
+                "5" -> {
+
+                }
+                "4" -> {
+
+                }
+                "3" -> {
+
+                }
+                "2" -> {
+
+                }
+                "1" -> {
+
+                }
+
+            }
+
+        }
+        job.join()
+
+        return resultScore
     }
 }

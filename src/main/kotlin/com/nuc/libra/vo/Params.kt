@@ -57,8 +57,8 @@ class StudentScoreParam {
     var score: Double = 0.0
     var time: Timestamp? = null
     var dotime: Date? = null
-    var classRank = 0
-    var gradeRank = 0
+    lateinit var classRank: String
+    lateinit var gradeRank: String
     lateinit var pageTitle: String
 
 
@@ -69,3 +69,62 @@ class StudentScoreParam {
 
 }
 
+/**
+ * 试卷详情
+ */
+class PageDetailsParam {
+    var id: Long = 0L
+
+    var pageId: Long = 0L
+
+    /**
+     * 分数
+     */
+    var score: Double = 0.0
+    /**
+     * 试卷名称
+     */
+    lateinit var pageTitle: String
+    /**
+     * 学科
+     */
+    lateinit var course: String
+    /**
+     * 完成用时
+     */
+    var doTime: String? = null
+
+    var select: ArrayList<StudentAnswerSelect> = ArrayList()
+    var blank: ArrayList<StudentAnswer> = ArrayList()
+    var ans = ArrayList<StudentAnswer>()
+
+}
+
+
+open class StudentAnswer {
+    var id: Long = 0L
+    var answer: String = ""
+    var score: Double = 0.0
+    var standardAnswer = ""
+    lateinit var title: String
+}
+
+class StudentAnswerSelect : StudentAnswer() {
+    var sectionA: String = ""
+    var sectionB: String = ""
+    var sectionC: String = ""
+    var sectionD: String = ""
+}
+
+
+class StudentParams {
+    lateinit var name: String
+    lateinit var studentNumber: String
+    var userId: Long = 0L
+    var classId: Long = 0L
+}
+
+/**
+ * 用户的代码提交
+ */
+data class Code(val id: Long, val codeString: String, val language: String)

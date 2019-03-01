@@ -1,5 +1,6 @@
 package com.nuc.libra.service
 
+import com.nuc.libra.vo.Code
 import org.springframework.stereotype.Service
 
 /**
@@ -10,7 +11,11 @@ interface CodeService {
 
     /**
      * @param code 学生代码
+     * @param language 语言
+     * @param pageId 试卷id
+     * @param studentId 学生id
+     * @return 返回运行结果
      */
-    fun runCode(code:String):String
+    fun runCode(code: Code, language: String, pageId: Long, studentId: Long): String
 
 }

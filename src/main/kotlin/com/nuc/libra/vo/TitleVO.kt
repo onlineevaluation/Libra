@@ -11,6 +11,7 @@ class TitleVO {
     private val blankFlag = "2"
     private val ansQuestionFlag = "3"
     private val codeQuestionFlag = "4"
+    private val algorithmFlag = "5"
 
     var id: Long = 0
     var title: String = ""
@@ -31,6 +32,9 @@ class TitleVO {
                 codeQuestionFlag -> {
                     //todo(代码试题，慢慢研究)
                     this.score = 0.0
+                }
+                algorithmFlag -> {
+                    this.score = 10.0
                 }
             }
         }

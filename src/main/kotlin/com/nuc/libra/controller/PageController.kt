@@ -77,7 +77,7 @@ class PageController {
 
         val pageVO = PageVO()
         /*
-         * 题的类型：1单选2填空3简答4程序
+         * 题的类型：1单选2填空3简答4程序5算法试题
          */
         titleVOList.forEach {
             when (it.category) {
@@ -85,6 +85,7 @@ class PageController {
                 "2" -> pageVO.blank.add(it)
                 "3" -> pageVO.ansQuestion.add(it)
                 "4" -> pageVO.codeQuestion.add(it)
+                "5" -> pageVO.algorithm.add(it)
                 else -> {
                 }
             }

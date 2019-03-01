@@ -157,7 +157,3 @@ constructor(className: String, private val content: String) : SimpleJavaFileObje
     }
 
 }
-
-fun main(args: Array<String>) {
-    CompilerUtils.getConsoleInfo()
-}

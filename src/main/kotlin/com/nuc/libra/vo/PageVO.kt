@@ -2,7 +2,7 @@ package com.nuc.libra.vo
 
 /**
  * @author 杨晓辉 2018/2/4 14:34
- * 题的类型：0单选1多选2判断3填空4程序5画图6简答
+ * 题的类型：
  */
 class PageVO {
 
@@ -24,5 +24,8 @@ class PageVO {
      * 简答题
      */
     var ansQuestion: ArrayList<TitleVO> = ArrayList()
-
+    /**
+     * 算法题
+     */
+    var algorithm:ArrayList<TitleVO> = ArrayList()
 }

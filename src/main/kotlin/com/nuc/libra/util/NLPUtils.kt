@@ -58,14 +58,3 @@ object NLPUtils {
 
 }
 
-/**
- * 该方法存在问题
- */
-fun main(args: Array<String>) {
-    val s1 = "Sun"
-    val s2 = ""
-
-    val similar = NLPUtils.wordSimilar(s1, s2)
-    println("similar is $similar")
-}
-

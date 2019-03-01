@@ -1,5 +1,6 @@
 package com.nuc.libra.security
 
+import com.nuc.libra.exception.ResultException
 import com.nuc.libra.po.Student
 import com.nuc.libra.service.impl.UserServiceImpl
 import io.jsonwebtoken.ExpiredJwtException
@@ -99,7 +100,12 @@ class JwtTokenProvider {
      */
     @Throws(ExpiredJwtException::class)
     fun validateToken(token: String): Boolean {
-        Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token)
+        try {
+            Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token)
+        } catch (ex: ExpiredJwtException) {
+//            throw ResultException("token失效，重新登录", 403)
+            return false
+        }
         return true
     }
 

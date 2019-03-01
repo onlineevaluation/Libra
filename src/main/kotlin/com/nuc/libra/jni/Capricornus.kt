@@ -2,6 +2,8 @@ package com.nuc.libra.jni
 
 import com.sun.jna.Library
 import com.sun.jna.Native
+import org.springframework.core.io.ClassPathResource
+import org.springframework.util.ResourceUtils
 
 /**
  * @author 杨晓辉 2019-02-11 10:21
@@ -27,7 +29,11 @@ interface Capricornus : Library {
 
 
     companion object {
+//D:\IdeaProjects\evaluate\src\main\resources\dll\libCapricornus.so
+//        val resource = ClassPathResource("dll\\libCapricornus.so")
+//        val `is` = resource.inputStream
+//        private val path = ResourceUtils.getFile("classpath:dll/libCapricornus.so").absolutePath!!
         val INSTANCE =
-            Native.load("./dll/libCapricornus.so", Capricornus::class.java)!!
+            Native.load("E:\\goLand\\HelloWorld\\out\\libCapricornus.so", Capricornus::class.java)!!
     }
 }

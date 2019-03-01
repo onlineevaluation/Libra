@@ -2,6 +2,7 @@ package com.nuc.libra.service
 
 import com.nuc.libra.exception.ResultException
 import com.nuc.libra.po.User
+import com.nuc.libra.vo.StudentParams
 
 
 /**
@@ -14,15 +15,6 @@ interface UserService {
      */
     fun findUser(): List<User>
 
-//    /**
-//     * 进行用户注册保存
-//     * @param user 用户
-//     * @return UserParam 用户 包含用户信息
-//     * @throws ResultException 当用户名称重复抛出该异常
-//     *
-//     */
-//    @Throws(ResultException::class)
-//    fun saveUser(user: User): User
 
     /**
      * 通过用户名进行用户查找
@@ -33,4 +25,10 @@ interface UserService {
      */
     @Throws(ResultException::class)
     fun login(username: String, password: String): String
+
+
+    /**
+     * 通过用户 id 获取用户信息
+     */
+    fun profile(id: Long): StudentParams
 }
