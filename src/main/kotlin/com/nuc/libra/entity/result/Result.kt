@@ -32,8 +32,6 @@ class Json : Serializable {
     override fun toString(): String {
         return "Json(result=$result)"
     }
-
-
 }
 
 /**

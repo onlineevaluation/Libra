@@ -1,5 +1,6 @@
 package com.nuc.libra.service.impl
 
+import com.alibaba.fastjson.JSON
 import com.nuc.libra.entity.result.Result
 import com.nuc.libra.exception.ResultException
 import com.nuc.libra.jni.Capricornus
@@ -14,8 +15,6 @@ import com.nuc.libra.util.NLPUtils
 import com.nuc.libra.vo.PageDetailsParam
 import com.nuc.libra.vo.StudentAnswerSelect
 import com.nuc.libra.vo.StudentScoreParam
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.RabbitHandler
@@ -106,16 +105,19 @@ class PaperServiceImpl : PaperService {
     @Transactional
     @RabbitListener(queues = ["check"])
     @RabbitHandler
-    suspend fun addPages(result: Result) {
+    fun addPages(result: Result) {
+        logger.info("result json :: $result")
+
+//        val result = JSON.parseObject(json, Result::class.java)
         logger.info("result json :: $result")
         val ansListInDb =
             studentAnswerRepository.findByStudentIdAndPagesId(result.studentId, result.pageId)
         // 该学生是否已经提交过答案
-        if (ansListInDb.isNotEmpty()) {
-            return
-        }
+//        if (ansListInDb.isNotEmpty()) {
+//            return
+//        }
         val ansList = ArrayList<StudentAnswer>()
-
+//        logger.info("student $a")
         for (studentAns in result.answer) {
             val standardAnswer = titleRepository.findById(studentAns.id).get()
             val studentAnswer = StudentAnswer()
@@ -130,7 +132,6 @@ class PaperServiceImpl : PaperService {
                 // 单选题
                 "1" -> {
                     studentAnswer.score = checkChoice(studentAns.ans, standardAnswer.answer, 5.0)
-
                     ansList.add(studentAnswer)
                 }
                 // 填空题
@@ -151,8 +152,10 @@ class PaperServiceImpl : PaperService {
                 }
                 // 算法试题
                 "5" -> {
+                    logger.info("算法试题")
+                    logger.info("student ans is ${studentAns.ans}")
                     val algorithmScore = 10.0
-                    checkAlgorithm(
+                    studentAnswer.score = checkAlgorithm(
                         studentAnswer.titleId,
                         studentAnswer.pagesId,
                         studentAnswer.studentId,
@@ -162,6 +165,7 @@ class PaperServiceImpl : PaperService {
                         standardAnswer.sectionA!!.toInt(),// 限制时间
                         standardAnswer.sectionB!!.toInt() // 限制内存
                     )
+                    ansList.add(studentAnswer)
                 }
                 else -> {
                     studentAnswer.score = 0.0
@@ -169,6 +173,7 @@ class PaperServiceImpl : PaperService {
                 }
             }
         }
+
 
         val titleList = pagesAndTitleRepository.findByPagesId(result.pageId)
         val titleId = ArrayList<Long>()
@@ -190,7 +195,6 @@ class PaperServiceImpl : PaperService {
             ans.time = Timestamp(System.currentTimeMillis())
             ansList.add(ans)
         }
-
         studentAnswerRepository.saveAll(ansList)
         // todo 2019年2月4日 为什么要存了再去取？ 不矛盾吗？ 为什么不直接算分数
         // 计算总分
@@ -474,13 +478,14 @@ class PaperServiceImpl : PaperService {
     }
 
     /**
+     * 算法题测评
      * @param studentAnswer 学生代码
      * @param standardAnswer 测试数据集
      * @param score 试题得分
      * @param limitTime 限制时间
      * @param limitMemory 限制内存
      */
-    private suspend fun checkAlgorithm(
+    private fun checkAlgorithm(
         codeId: Long,
         pageId: Long,
         studentId: Long,
@@ -509,54 +514,58 @@ class PaperServiceImpl : PaperService {
         }
         val codePath = File(inputPath)
         if (!codePath.exists()) {
+            val parent = codePath.parent
+            val parentFile = File(parent)
+            if (!parentFile.exists()) {
+                parentFile.mkdirs()
+            }
             codePath.createNewFile()
         }
+
         var resultScore = 0.0
-        var result:String = ""
-        val job  = GlobalScope.launch {
-            codePath.writeText(studentAnswer, charset = Charsets.UTF_8)
-             result = Capricornus.INSTANCE.judgeCode(
-                GoString.ByValue(inputPath),
-                GoString.ByValue(outputPath),
-                GoString.ByValue(fileName),
-                GoString.ByValue(standardAnswer),
-                limitTime
-            )
+        var result: String = ""
 
-            when (result.substring(5, 6)) {
-                "9" -> {
-                    resultScore = score
-                }
-                "8" -> {
+        codePath.writeText(studentAnswer, charset = Charsets.UTF_8)
+        result = Capricornus.INSTANCE.judgeCode(
+            GoString.ByValue(inputPath),
+            GoString.ByValue(outputPath),
+            GoString.ByValue(fileName),
+            GoString.ByValue(standardAnswer),
+            limitTime
+        )
 
-                }
-                "7" -> {
+        when (result.substring(5, 6)) {
+            "9" -> {
+                resultScore = score
+            }
+            "8" -> {
 
-                }
-                "6" -> {
+            }
+            "7" -> {
 
-                }
-                "5" -> {
+            }
+            "6" -> {
 
-                }
-                "4" -> {
+            }
+            "5" -> {
 
-                }
-                "3" -> {
+            }
+            "4" -> {
 
-                }
-                "2" -> {
+            }
+            "3" -> {
 
-                }
-                "1" -> {
+            }
+            "2" -> {
 
-                }
+            }
+            "1" -> {
 
             }
 
         }
-        job.join()
-
         return resultScore
     }
 }
+
+

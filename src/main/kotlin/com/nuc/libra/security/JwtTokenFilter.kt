@@ -1,6 +1,5 @@
 package com.nuc.libra.security
 
-import com.nuc.libra.exception.ResultException
 import io.jsonwebtoken.ExpiredJwtException
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.filter.GenericFilterBean

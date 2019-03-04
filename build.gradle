@@ -86,7 +86,6 @@ dependencies {
     implementation 'com.alibaba:druid:1.1.12'
     // jna
     implementation 'net.java.dev.jna:jna:5.2.0'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.1'
     // test
     testImplementation('org.springframework.boot:spring-boot-starter-test')
 
