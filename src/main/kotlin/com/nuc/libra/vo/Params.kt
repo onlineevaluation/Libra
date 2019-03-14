@@ -128,3 +128,5 @@ class StudentParams {
  * 用户的代码提交
  */
 data class Code(val id: Long, val codeString: String, val language: String)
+
+data class TitleParam(val id:Long)
