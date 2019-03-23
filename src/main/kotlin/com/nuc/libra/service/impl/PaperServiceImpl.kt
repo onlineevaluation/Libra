@@ -1,6 +1,5 @@
 package com.nuc.libra.service.impl
 
-import com.alibaba.fastjson.JSON
 import com.nuc.libra.entity.result.Result
 import com.nuc.libra.exception.ResultException
 import com.nuc.libra.jni.Capricornus
@@ -106,18 +105,13 @@ class PaperServiceImpl : PaperService {
     @RabbitListener(queues = ["check"])
     @RabbitHandler
     fun addPages(result: Result) {
-        logger.info("result json :: $result")
-
-//        val result = JSON.parseObject(json, Result::class.java)
-        logger.info("result json :: $result")
         val ansListInDb =
             studentAnswerRepository.findByStudentIdAndPagesId(result.studentId, result.pageId)
         // 该学生是否已经提交过答案
-//        if (ansListInDb.isNotEmpty()) {
-//            return
-//        }
+        if (ansListInDb.isNotEmpty()) {
+            return
+        }
         val ansList = ArrayList<StudentAnswer>()
-//        logger.info("student $a")
         for (studentAns in result.answer) {
             val standardAnswer = titleRepository.findById(studentAns.id).get()
             val studentAnswer = StudentAnswer()
@@ -160,7 +154,8 @@ class PaperServiceImpl : PaperService {
                         studentAnswer.pagesId,
                         studentAnswer.studentId,
                         studentAns.ans,
-                        standardAnswer.answer,
+                        // 测试数据集
+                        standardAnswer.sectionC!!,
                         algorithmScore,
                         standardAnswer.sectionA!!.toInt(),// 限制时间
                         standardAnswer.sectionB!!.toInt() // 限制内存
@@ -370,6 +365,14 @@ class PaperServiceImpl : PaperService {
                     code.id = studentAnswer[i].titleId
 
                 }
+                "5" -> {
+                    val algorithm = com.nuc.libra.vo.StudentAnswer()
+                    algorithm.id = studentAnswer[i].titleId
+                    BeanUtils.copyProperties(studentAnswer[i], algorithm)
+                    algorithm.title = t.title
+                    algorithm.standardAnswer = t.answer
+                    pageDetails.algorithm.add(algorithm)
+                }
             }
 
         }
@@ -554,7 +557,7 @@ class PaperServiceImpl : PaperService {
 
             }
             "3" -> {
-
+                logger.error("运行出错")
             }
             "2" -> {
 

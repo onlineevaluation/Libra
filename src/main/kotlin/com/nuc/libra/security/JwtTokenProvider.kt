@@ -1,6 +1,5 @@
 package com.nuc.libra.security
 
-import com.nuc.libra.exception.ResultException
 import com.nuc.libra.po.Student
 import com.nuc.libra.service.impl.UserServiceImpl
 import io.jsonwebtoken.ExpiredJwtException
@@ -15,6 +14,7 @@ import org.springframework.stereotype.Component
 import java.util.*
 import javax.annotation.PostConstruct
 import javax.servlet.http.HttpServletRequest
+
 
 /**
  * @author 杨晓辉

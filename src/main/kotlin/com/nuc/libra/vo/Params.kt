@@ -31,6 +31,9 @@ data class UserParam(
     val password: String
 )
 
+/**
+ * 页面考试信息
+ */
 @ApiModel("考试试卷信息")
 data class ExamParam(
     @ApiModelProperty(
@@ -97,6 +100,7 @@ class PageDetailsParam {
     var select: ArrayList<StudentAnswerSelect> = ArrayList()
     var blank: ArrayList<StudentAnswer> = ArrayList()
     var ans = ArrayList<StudentAnswer>()
+    var algorithm = ArrayList<StudentAnswer>()
 
 }
 
@@ -129,4 +133,10 @@ class StudentParams {
  */
 data class Code(val id: Long, val codeString: String, val language: String)
 
-data class TitleParam(val id:Long)
+/**
+ * 学生提交有异议的试题
+ * @param titleId 试题编号
+ * @param studentId 学生id
+ * @param content 提交内容
+ */
+data class WorngTitlesParam(val titleId: Long, val studentId: Long,  val content: String)
