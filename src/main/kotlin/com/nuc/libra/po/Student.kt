@@ -30,5 +30,4 @@ class Student {
         return "Student(id=$id, name=$name, studentNumber=$studentNumber, proTeamId=$proTeamId, status=$status, gender=$gender, nation=$nation, phone=$phone, qq=$qq, email=$email, idcard=$idcard, memberId=$memberId, userId=$userId, classId=$classId)"
     }
 
-
 }

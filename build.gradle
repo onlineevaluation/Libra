@@ -86,9 +86,11 @@ dependencies {
     implementation 'com.alibaba:druid:1.1.12'
     // jna
     implementation 'net.java.dev.jna:jna:5.2.0'
+    // 热更新
+    implementation 'org.springframework.boot:spring-boot-devtools'
     // test
-    testImplementation('org.springframework.boot:spring-boot-starter-test')
-
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    
 }
 
 dokka {
@@ -96,25 +98,3 @@ dokka {
     outputDirectory = "$buildDir/javadoc"
 }
 
-
-task codeCoverageReport(type: JacocoReport) {
-    classDirectories = files('build/classes')
-    sourceDirectories = files('src/main/kotlin')
-
-    executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
-
-    subprojects.each {
-        sourceSets it.sourceSets.main
-    }
-
-    reports {
-        xml.enabled true
-        // todo(这个有问题，无法提交测试结果)
-        // xml.destination "${buildDir}/reports/jacoco/report.xml"
-        html.enabled false
-        csv.enabled false
-    }
-}
-
-
-check.dependsOn codeCoverageReport

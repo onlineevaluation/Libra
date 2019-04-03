@@ -1,5 +1,6 @@
 package com.nuc.libra.vo
 
+import com.nuc.libra.po.Student
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import java.sql.Date
@@ -31,9 +32,6 @@ data class UserParam(
     val password: String
 )
 
-/**
- * 页面考试信息
- */
 @ApiModel("考试试卷信息")
 data class ExamParam(
     @ApiModelProperty(
@@ -101,7 +99,6 @@ class PageDetailsParam {
     var blank: ArrayList<StudentAnswer> = ArrayList()
     var ans = ArrayList<StudentAnswer>()
     var algorithm = ArrayList<StudentAnswer>()
-
 }
 
 
@@ -121,7 +118,7 @@ class StudentAnswerSelect : StudentAnswer() {
 }
 
 
-class StudentParams {
+class StudentParam {
     lateinit var name: String
     lateinit var studentNumber: String
     var userId: Long = 0L
@@ -133,10 +130,18 @@ class StudentParams {
  */
 data class Code(val id: Long, val codeString: String, val language: String)
 
+
 /**
  * 学生提交有异议的试题
  * @param titleId 试题编号
  * @param studentId 学生id
  * @param content 提交内容
  */
-data class WorngTitlesParam(val titleId: Long, val studentId: Long,  val content: String)
+data class WrongTitleParam(val titleId: Long, val studentId: Long, val content: String)
+
+/**
+ * 试卷验证id
+ * @param studentId 学生id
+ * @param pageId 试卷id
+ */
+data class VerifyPageParam(val studentId:Long,val pageId:Long)

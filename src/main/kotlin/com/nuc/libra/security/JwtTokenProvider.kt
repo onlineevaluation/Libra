@@ -1,6 +1,7 @@
 package com.nuc.libra.security
 
 import com.nuc.libra.po.Student
+import com.nuc.libra.po.Teacher
 import com.nuc.libra.service.impl.UserServiceImpl
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.Jwts
@@ -56,6 +57,26 @@ class JwtTokenProvider {
         val claims = Jwts.claims().setSubject(student.studentNumber)
         claims["classId"] = student.classId
         claims["userId"] = student.userId
+        val now = Date()
+        val validity = Date(now.time + validityInMilliseconds)
+        return Jwts.builder()
+            .setClaims(claims)
+            .setIssuedAt(now)
+            .setExpiration(validity)
+            .signWith(SignatureAlgorithm.HS256, secretKey)
+            .compact()
+    }
+
+    /**
+     * 创建token 使用 HS256加密
+     * @param teacher 教师信息
+     * @param role 角色信息
+     * @return jwtToken
+     */
+    fun createToken(role: Collection<GrantedAuthority>?, teacher: Teacher): String {
+        val claims = Jwts.claims().setSubject(teacher.jobNumber)
+        claims["positionId"] = teacher.positionId
+        claims["userId"] = teacher.userId
         val now = Date()
         val validity = Date(now.time + validityInMilliseconds)
         return Jwts.builder()

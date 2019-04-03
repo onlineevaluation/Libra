@@ -1,19 +1,27 @@
-# For a quick start check out our HTTP Requests collection (Tools|HTTP Client|Open HTTP Requests Collection).
-#
-# Following HTTP Request Live Templates are available:
-# * 'gtrp' and 'gtr' create a GET request with or without query parameters;
-# * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
-# * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
+# 学生登录测试
 
-# 登录测试
-
-POST http://localhost:8081/userParam/login
+POST http://localhost:8081/user/login
 content-type: application/json
 
 {
   "username": "1713010101",
   "password": "111111"
 }
+
+###
+
+# 教师登录测试
+
+POST http://localhost:8081/user/login
+content-type: application/json
+
+{
+  "username": "T1514010101",
+  "password": "111111"
+}
+
+
+
 
 ###
 

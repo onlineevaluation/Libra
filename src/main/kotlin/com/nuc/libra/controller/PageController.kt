@@ -10,6 +10,7 @@ import com.nuc.libra.util.ResultUtils
 import com.nuc.libra.vo.ExamParam
 import com.nuc.libra.vo.PageVO
 import com.nuc.libra.vo.TitleVO
+import com.nuc.libra.vo.VerifyPageParam
 import io.swagger.annotations.ApiOperation
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -153,12 +154,16 @@ class PageController {
 
     /**
      * 试卷验证
-     * @param studentId 学生id
-     * @param pageId 试卷id
+     * @param verifyPageParams 校验参数
      */
     @PostMapping("/verifyPage")
-    fun verifyPage(@RequestBody studentId: Long, @RequestBody pageId: Long): Result {
-        return ResultUtils.success(200, "未考试", paperService.verifyPage(studentId, pageId))
+    fun verifyPage(@RequestBody verifyPageParams: VerifyPageParam): Result {
+
+        return ResultUtils.success(
+            200,
+            "未考试",
+            paperService.verifyPage(verifyPageParams.studentId, verifyPageParams.pageId)
+        )
 
     }
 

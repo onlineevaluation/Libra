@@ -20,6 +20,9 @@ class User : UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0L
 
+    /**
+     * 该属性为 **学号** 或者 **工号**
+     */
     private lateinit var username: String
 
     private lateinit var password: String

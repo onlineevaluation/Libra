@@ -3,13 +3,10 @@ package com.nuc.libra.service.impl
 import com.nuc.libra.exception.ResultException
 import com.nuc.libra.po.Role
 import com.nuc.libra.po.User
-import com.nuc.libra.repository.RoleRepository
-import com.nuc.libra.repository.StudentRepository
-import com.nuc.libra.repository.UserAndRoleRepository
-import com.nuc.libra.repository.UserRepository
+import com.nuc.libra.repository.*
 import com.nuc.libra.security.JwtTokenProvider
 import com.nuc.libra.service.UserService
-import com.nuc.libra.vo.StudentParams
+import com.nuc.libra.vo.StudentParam
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.BeanUtils
@@ -49,6 +46,9 @@ class UserServiceImpl : UserService, UserDetailsService {
     @Autowired
     private lateinit var roleRepository: RoleRepository
 
+    @Autowired
+    private lateinit var teacherRepository: TeacherRepository
+
     /**
      * 获得所有的用户
      */
@@ -65,7 +65,6 @@ class UserServiceImpl : UserService, UserDetailsService {
      * @throws ResultException 当用户名称和密码不一致
      */
     override fun login(username: String, password: String): String {
-        logger.info("user name is $username and password is $password")
         authenticationManager.authenticate(UsernamePasswordAuthenticationToken(username, password))
         val user = userRepository.findUserByUsername(username) ?: throw ResultException("没有该用户", 500)
         val userAndRole = userAndRoleRepository.findUserAndRoleByUserId(user.id)
@@ -73,22 +72,42 @@ class UserServiceImpl : UserService, UserDetailsService {
         // 获得用户角色
         val authList = ArrayList<Role>()
         authList.add(role)
-        val student = studentRepository.findByStudentNumber(user.username) ?: throw ResultException("用户查询失败", 500)
-        return jwtTokenProvider.createToken(authList, student)
+        logger.debug("role is ${role.name}")
+        return when {
+            role.name == "teacher" -> {
+                logger.debug("username is ${user.username}")
+                val teacher =
+                    teacherRepository.findTeacherByJobNumber(user.username) ?: throw ResultException("用户查询失败", 500)
+                jwtTokenProvider.createToken(authList, teacher)
+            }
+            role.name == "student" -> {
+                val student =
+                    studentRepository.findByStudentNumber(user.username) ?: throw ResultException("用户查询失败", 500)
+                jwtTokenProvider.createToken(authList, student)
+            }
+            else -> "token"
+        }
+
     }
 
     /**
-     * @param username 学号
+     * @param username 学号/工号
      */
     @Throws(UsernameNotFoundException::class)
     override fun loadUserByUsername(username: String): UserDetails {
         val user = userRepository.findUserByUsername(username)
                 ?: throw UsernameNotFoundException("UserParam '$username' not found")
+        // 获取 user id
+        val u = userRepository.findUserByUsername(username) ?: throw ResultException("没有该用户", 500)
+
+        // 权限查询
+        val userAndRole = userAndRoleRepository.findUserAndRoleByUserId(u.id)
+        val role = roleRepository.findById(userAndRole.roleId).get()
 
         return org.springframework.security.core.userdetails.User
             .withUsername(username)
             .password(user.password)
-            .authorities("STU")
+            .authorities(role.name)
             .accountExpired(false)
             .accountLocked(false)
             .credentialsExpired(false)
@@ -101,11 +120,11 @@ class UserServiceImpl : UserService, UserDetailsService {
      * 通过id获取详细信息
      * @param id userId
      */
-    override fun profile(id: Long): StudentParams {
+    override fun profile(id: Long): StudentParam {
         val user = userRepository.findById(id).get()
         val student = studentRepository.findByStudentNumber(user.username)
                 ?: throw ResultException("没有该用户", 500)
-        val studentParam = StudentParams()
+        val studentParam = StudentParam()
         BeanUtils.copyProperties(student, studentParam)
         return studentParam
     }
