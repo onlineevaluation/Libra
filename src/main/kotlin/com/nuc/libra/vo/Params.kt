@@ -145,3 +145,10 @@ data class WrongTitleParam(val titleId: Long, val studentId: Long, val content: 
  * @param pageId 试卷id
  */
 data class VerifyPageParam(val studentId:Long,val pageId:Long)
+
+/**
+ * 用户展示班级信息
+ * @param id 班级id
+ * @param num 班级号
+ */
+data class ClassInfo(val id:Long,val num:String)
