@@ -1,6 +1,5 @@
 package com.nuc.libra.vo
 
-import com.nuc.libra.po.Student
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import java.sql.Date
@@ -144,11 +143,14 @@ data class WrongTitleParam(val titleId: Long, val studentId: Long, val content: 
  * @param studentId 学生id
  * @param pageId 试卷id
  */
-data class VerifyPageParam(val studentId:Long,val pageId:Long)
+data class VerifyPageParam(val studentId: Long, val pageId: Long)
 
 /**
- * 用户展示班级信息
- * @param id 班级id
- * @param num 班级号
+ * 获取前 10 名 参数
+ * @property teacherId Long
+ * @property pageId Long
+ * @property classId Long
+ * @constructor
  */
-data class ClassInfo(val id:Long,val num:String)
+data class ClassAndPageParam(val teacherId: Long, val pageId: Long, val classId: Long)
+

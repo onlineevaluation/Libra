@@ -12,8 +12,16 @@ interface ClassAndTeacherRepository : JpaRepository<ClassAndTeacher, Long> {
 
     /**
      * @param teacherId 教师 id
-     * 
+     *
      */
-    fun findClassAndTeachersByTeacherId(teacherId: Long): List<ClassAndTeacher>?
+    fun findClassAndTeachersByTeacherId(teacherId: Long): List<ClassAndTeacher>
+
+
+    /**
+     * 通过教师id和班级id查询
+     * @param teacherId Long
+     * @param classId Long
+     */
+    fun findClassAndTeacherByTeacherIdAndClassId(teacherId: Long, classId: Long): ClassAndTeacher?
 
 }

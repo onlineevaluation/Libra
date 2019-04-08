@@ -10,4 +10,5 @@ import org.springframework.stereotype.Repository
 @Repository
 interface PagesRepository : JpaRepository<Page, Long>{
 
+
 }

@@ -20,5 +20,5 @@ interface StudentRepository : JpaRepository<Student, Long> {
      * @param classId 班级号
      *
      */
-    fun findStudentsByClassId(classId: Long): List<Student>
+    fun findStudentsByClassId(classId: Long): ArrayList<Student>
 }

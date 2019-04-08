@@ -10,7 +10,7 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "uek_evaluate_student_score")
-class StudentScore {
+class StudentScore : Comparable<StudentScore> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,6 +25,15 @@ class StudentScore {
     var time: Timestamp? = null
     var employeeId: Long? = 0
     var dotime: Date? = null
+
+    override fun compareTo(other: StudentScore): Int {
+        return when {
+            other.score > this.score -> 1
+            other.score == this.score -> 0
+            else -> -1
+        }
+    }
+
 
     override fun toString(): String {
         return "StudentScore(id=$id, studentId=$studentId, pagesId=$pagesId, objectivesScore=$objectivesScore, subjectivityScore=$subjectivityScore, score=$score, status=$status, time=$time, employeeId=$employeeId, dotime=$dotime)"
