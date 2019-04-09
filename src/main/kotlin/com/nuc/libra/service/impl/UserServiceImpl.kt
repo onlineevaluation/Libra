@@ -6,7 +6,7 @@ import com.nuc.libra.po.User
 import com.nuc.libra.repository.*
 import com.nuc.libra.security.JwtTokenProvider
 import com.nuc.libra.service.UserService
-import com.nuc.libra.vo.StudentParam
+import com.nuc.libra.vo.UserProfileInfo
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.BeanUtils
@@ -70,9 +70,8 @@ class UserServiceImpl : UserService, UserDetailsService {
         val userAndRole = userAndRoleRepository.findUserAndRoleByUserId(user.id)
         val role = roleRepository.findById(userAndRole.roleId).get()
         // 获得用户角色
-        val authList = ArrayList<Role>()
-        authList.add(role)
-        logger.debug("role is ${role.name}")
+        val authList = ArrayList<String>()
+        authList.add(role.name)
         return when {
             role.name == "teacher" -> {
                 logger.debug("username is ${user.username}")
@@ -120,13 +119,36 @@ class UserServiceImpl : UserService, UserDetailsService {
      * 通过id获取详细信息
      * @param id userId
      */
-    override fun profile(id: Long): StudentParam {
+    override fun profile(id: Long): UserProfileInfo {
         val user = userRepository.findById(id).get()
-        val student = studentRepository.findByStudentNumber(user.username)
-                ?: throw ResultException("没有该用户", 500)
-        val studentParam = StudentParam()
-        BeanUtils.copyProperties(student, studentParam)
-        return studentParam
+
+        val auth = user.authorities.joinToString {
+            it.authority
+        }
+
+        val userProfileInfo = UserProfileInfo()
+        when {
+            auth.contains("student") -> {
+                val student = studentRepository.findByStudentNumber(user.username)
+                        ?: throw ResultException("没有该用户", 500)
+                BeanUtils.copyProperties(student, userProfileInfo)
+
+                userProfileInfo.number = student.studentNumber
+                userProfileInfo.identity = student.id
+            }
+            auth.contains("teacher") -> {
+                val teacher =
+                    teacherRepository.findTeacherByJobNumber(user.username) ?: throw ResultException("没有该用户", 500)
+                BeanUtils.copyProperties(teacher, userProfileInfo)
+                userProfileInfo.identity = teacher.id
+                userProfileInfo.number = teacher.jobNumber
+            }
+            else -> {
+
+            }
+        }
+
+        return userProfileInfo
     }
 }
 

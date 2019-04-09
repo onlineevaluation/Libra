@@ -10,7 +10,10 @@ import javax.persistence.*
  * @author 杨晓辉 2019-01-02 14:29
  */
 @Entity
-@Table(name = "uek_privilege_user")
+@Table(
+    name = "uek_privilege_user",
+    indexes = [Index(name = "id", columnList = "id"), Index(name = "username", columnList = "username")]
+)
 @JsonIgnoreProperties(value = ["id"])
 class User : UserDetails {
     /**
@@ -89,7 +92,7 @@ class User : UserDetails {
     /**
      * 获取权限
      */
-    override fun getAuthorities(): Collection<GrantedAuthority>? {
+    override fun getAuthorities(): Collection<GrantedAuthority> {
         return roles
     }
 

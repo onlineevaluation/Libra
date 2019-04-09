@@ -6,7 +6,12 @@ import javax.persistence.*
  * @author 杨晓辉 2019/4/3 16:45
  */
 @Entity
-@Table(name = "uek_acdemic_teacher")
+@Table(
+    name = "uek_acdemic_teacher",
+    indexes = [Index(name = "id", columnList = "id"),
+        Index(name = "job_number", columnList = "jobNumber"),
+        Index(name = "user_id", columnList = "userId")]
+)
 class Teacher {
 
     @Id

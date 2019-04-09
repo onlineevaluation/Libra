@@ -21,7 +21,7 @@ class ClassController {
      * 通过教师 id 获取班级列表
      */
     @GetMapping("/teacher/{teacherId}")
-    fun getClass(@PathVariable teacherId: Long): Result {
+    fun getClass(@PathVariable(name = "teacherId") teacherId: Long): Result {
         val listAllClass = classService.listAllClassByTeacherId(teacherId)
         return ResultUtils.success(data = listAllClass)
     }
@@ -30,11 +30,15 @@ class ClassController {
      * 分数统计
      */
     @GetMapping("/classScore/{classId}")
-    fun scoreAnalytics(@PathVariable classId: Long): Result {
+    fun scoreAnalytics(@PathVariable(name = "classId") classId: Long): Result {
         return ResultUtils.success()
     }
 
-
+    /**
+     * 获取班级前十名
+     * @param classAndPageParam ClassAndPageParam
+     * @return Result
+     */
     @GetMapping("/top10")
     fun top10InClass(@RequestBody classAndPageParam: ClassAndPageParam): Result {
 
@@ -42,6 +46,18 @@ class ClassController {
             classService.classTop10(classAndPageParam.classId, classAndPageParam.teacherId, classAndPageParam.pageId)
 
         return ResultUtils.success(data = top10List)
+    }
+
+    /**
+     * 获取教师所教授班级和班级人数
+     * @param teacherId Long
+     * @return Result
+     */
+    @GetMapping("/teached/{teacherId}")
+    fun teachClass(@PathVariable(name = "teacherId") teacherId: Long): Result {
+
+        val countByClass = classService.studentCountByClass(teacherId)
+        return ResultUtils.success(data = countByClass)
     }
 
 }

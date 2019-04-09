@@ -117,13 +117,6 @@ class StudentAnswerSelect : StudentAnswer() {
 }
 
 
-class StudentParam {
-    lateinit var name: String
-    lateinit var studentNumber: String
-    var userId: Long = 0L
-    var classId: Long = 0L
-}
-
 /**
  * 用户的代码提交
  */

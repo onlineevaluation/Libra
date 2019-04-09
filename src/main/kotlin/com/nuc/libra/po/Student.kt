@@ -6,14 +6,19 @@ import javax.persistence.*
  * @author 杨晓辉 2018/2/3 14:48
  */
 @Entity
-@Table(name = "uek_acdemic_students")
+@Table(
+    name = "uek_acdemic_students",
+    indexes = [Index(name = "id", columnList = "id"),
+        Index(name = "user_id", columnList = "userId"),
+        Index(name = "class_id", columnList = "classId")]
+)
 class Student {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0
     var name: String? = null
-    var studentNumber: String? = null
+    lateinit var studentNumber: String
     var proTeamId: Long? = 0
     var status: Long? = 0
     var gender: Long? = 0

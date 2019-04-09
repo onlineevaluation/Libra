@@ -9,7 +9,14 @@ import javax.persistence.*
  */
 
 @Entity
-@Table(name = "uek_evaluate_student_score")
+@Table(
+    name = "uek_evaluate_student_score", indexes = [
+        Index(name = "id", columnList = "id"),
+        Index(name = "student_id", columnList = "studentId"),
+        Index(name = "pages_id", columnList = "pagesId"),
+        Index(name = "pages_id", columnList = "pagesId")
+    ]
+)
 class StudentScore : Comparable<StudentScore> {
 
     @Id

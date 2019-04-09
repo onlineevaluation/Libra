@@ -53,24 +53,3 @@ class StudentScoreRepositoryTest {
 
 
 }
-
-
-class Person : Comparable<Person> {
-    lateinit var name: String
-    var age: Int = 0
-
-
-    override fun compareTo(other: Person): Int {
-        return when {
-            other.age > this.age -> 1
-            other.age < this.age -> -1
-            else -> 0
-        }
-    }
-
-    override fun toString(): String {
-        return "Person(name='$name', age=$age)"
-    }
-
-
-}

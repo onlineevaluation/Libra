@@ -2,7 +2,7 @@ package com.nuc.libra.service
 
 import com.nuc.libra.exception.ResultException
 import com.nuc.libra.po.User
-import com.nuc.libra.vo.StudentParam
+import com.nuc.libra.vo.UserProfileInfo
 
 
 /**
@@ -30,5 +30,5 @@ interface UserService {
     /**
      * 通过用户 id 获取用户信息
      */
-    fun profile(id: Long): StudentParam
+    fun profile(id: Long): UserProfileInfo
 }

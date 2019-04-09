@@ -1,6 +1,7 @@
 package com.nuc.libra.service
 
 import com.nuc.libra.vo.ClassInfo
+import com.nuc.libra.vo.ClassStudentCountInfo
 import com.nuc.libra.vo.StudentAndScoreInfo
 import org.springframework.stereotype.Service
 
@@ -24,11 +25,18 @@ interface ClassService {
     /**
      * 获取班级前十名
      */
-    fun classTop10(classId: Long, teacherId: Long, pageId:Long):List<StudentAndScoreInfo>
+    fun classTop10(classId: Long, teacherId: Long, pageId: Long): List<StudentAndScoreInfo>
 
     /**
      * 教师所教授的班级总人数
+     * @param teacherId 教师id
      */
-    fun studentCount(teacherId: Long)
+    fun studentCount(teacherId: Long): Long
 
+    /**
+     * 查询教师班级所带人数
+     * @param teacherId Long 教师id
+     * @return List<ClassStudentCountInfo>
+     */
+    fun studentCountByClass(teacherId: Long): List<ClassStudentCountInfo>
 }

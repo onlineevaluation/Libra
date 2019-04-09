@@ -31,3 +31,42 @@ class StudentAndScoreInfo {
         return "StudentAndScoreInfo(studentId=$studentId, studentName='$studentName', studentNumber='$studentNumber', pageId=$pageId, score=$score)"
     }
 }
+
+/**
+ * 用户详细信息
+ * @property name String 名字
+ * @property number String 学号/工号
+ * @property userId Long 用户id
+ * @property classId Long 班级id
+ */
+class UserProfileInfo {
+    lateinit var name: String
+    lateinit var number: String
+    var userId: Long = 0L
+    var classId: Long = 0L
+    /**
+     * 身份id ，student id 或者 teacher id
+     */
+    var identity: Long = 0L
+    override fun toString(): String {
+        return "UserProfileInfo(name='$name', number='$number', userId=$userId, classId=$classId)"
+    }
+}
+
+/**
+ * 班级学生总数
+ * @property classNumber String 班级号
+ * @property count Long 学生数
+ * @property classId Long 班级id
+ */
+class ClassStudentCountInfo {
+    lateinit var classNumber: String
+    var classId: Long = 0L
+    var count: Long = 0L
+
+    override fun toString(): String {
+        return "ClassStudentCountInfo(classNumber='$classNumber', classId=$classId, count=$count)"
+    }
+
+
+}

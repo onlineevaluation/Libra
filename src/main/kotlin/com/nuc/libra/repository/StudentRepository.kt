@@ -21,4 +21,11 @@ interface StudentRepository : JpaRepository<Student, Long> {
      *
      */
     fun findStudentsByClassId(classId: Long): ArrayList<Student>
+
+    /**
+     * 通过班级 id 获取人数
+     * @param classId Long
+     * @return Long 班级总人数
+     */
+    fun countByClassId(classId: Long):Long
 }

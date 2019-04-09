@@ -53,10 +53,11 @@ class JwtTokenProvider {
      * @param role 角色信息
      * @return jwtToken
      */
-    fun createToken(role: Collection<GrantedAuthority>?, student: Student): String {
+    fun createToken(role: Collection<String>?, student: Student): String {
         val claims = Jwts.claims().setSubject(student.studentNumber)
         claims["classId"] = student.classId
         claims["userId"] = student.userId
+        claims["roles"] = role
         val now = Date()
         val validity = Date(now.time + validityInMilliseconds)
         return Jwts.builder()
@@ -73,10 +74,11 @@ class JwtTokenProvider {
      * @param role 角色信息
      * @return jwtToken
      */
-    fun createToken(role: Collection<GrantedAuthority>?, teacher: Teacher): String {
+    fun createToken(role: Collection<String>?, teacher: Teacher): String {
         val claims = Jwts.claims().setSubject(teacher.jobNumber)
         claims["positionId"] = teacher.positionId
         claims["userId"] = teacher.userId
+        claims["roles"] = role
         val now = Date()
         val validity = Date(now.time + validityInMilliseconds)
         return Jwts.builder()
