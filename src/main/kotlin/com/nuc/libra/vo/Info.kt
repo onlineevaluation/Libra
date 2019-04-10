@@ -17,6 +17,7 @@ data class ClassInfo(val id: Long, val num: String)
  * @property studentNumber String 学生学号
  * @property pageId Long 试卷id
  * @property score Double 成绩
+ * @property index Int 名次
  */
 class StudentAndScoreInfo {
 
@@ -25,6 +26,7 @@ class StudentAndScoreInfo {
     lateinit var studentNumber: String
     var pageId: Long = 0L
     var score: Double = 0.0
+    var index: Int = 0
 
 
     override fun toString(): String {
@@ -48,6 +50,7 @@ class UserProfileInfo {
      * 身份id ，student id 或者 teacher id
      */
     var identity: Long = 0L
+
     override fun toString(): String {
         return "UserProfileInfo(name='$name', number='$number', userId=$userId, classId=$classId)"
     }
@@ -62,10 +65,10 @@ class UserProfileInfo {
 class ClassStudentCountInfo {
     lateinit var classNumber: String
     var classId: Long = 0L
-    var count: Long = 0L
+    var membersCount: Long = 0L
 
     override fun toString(): String {
-        return "ClassStudentCountInfo(classNumber='$classNumber', classId=$classId, count=$count)"
+        return "ClassStudentCountInfo(classNumber='$classNumber', classId=$classId, count=$membersCount)"
     }
 
 

@@ -51,8 +51,24 @@ class ClassServiceImplTest {
     }
 
     @Test
-    fun classTop10Test(){
-        classService.classTop10(classId = 1,pageId = 1,teacherId = 31)
+    fun classTop10Test() {
+        val classTop10 = classService.classTop10(classId = 2, pageId = 1, teacherId = 31)
+        logger.info("-----------")
+        classTop10.forEach {
+
+
+            logger.info("it is 排名 ${it.index} 试卷 ${it.pageId} 学号 ${it.studentNumber} score : ${it.score}")
+        }
+        logger.info("-----------")
+    }
+
+
+    @Test
+    fun scoreAnalyticsTest() {
+        val map = classService.scoreAnalytics(1, 1)
+        map.forEach { t, u ->
+            logger.info("Group $t  count: ${u.size}")
+        }
     }
 
     @After

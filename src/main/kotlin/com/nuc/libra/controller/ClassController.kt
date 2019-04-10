@@ -29,9 +29,11 @@ class ClassController {
     /**
      * 分数统计
      */
-    @GetMapping("/classScore/{classId}")
-    fun scoreAnalytics(@PathVariable(name = "classId") classId: Long): Result {
-        return ResultUtils.success()
+    @GetMapping("/classScore/{classId}/{pageId}")
+    fun scoreAnalytics(@PathVariable(name = "classId") classId: Long, @PathVariable("pageId") pageId: Long)
+            : Result {
+        val analytics = classService.scoreAnalytics(classId, pageId)
+        return ResultUtils.success(data = analytics)
     }
 
     /**
@@ -40,7 +42,7 @@ class ClassController {
      * @return Result
      */
     @GetMapping("/top10")
-    fun top10InClass(@RequestBody classAndPageParam: ClassAndPageParam): Result {
+    fun top10InClass(classAndPageParam: ClassAndPageParam): Result {
 
         val top10List =
             classService.classTop10(classAndPageParam.classId, classAndPageParam.teacherId, classAndPageParam.pageId)
@@ -58,6 +60,18 @@ class ClassController {
 
         val countByClass = classService.studentCountByClass(teacherId)
         return ResultUtils.success(data = countByClass)
+    }
+
+    @GetMapping("/students/teacher/{teacherId}")
+    fun allStudentCount(@PathVariable(name = "teacherId") teacherId: Long): Result {
+        val count = classService.studentCount(teacherId)
+        return ResultUtils.success(data = count)
+    }
+
+    @GetMapping("/passed/{pageId}/{classId}")
+    fun passedRate(@PathVariable(name = "pageId") pageId: Long, @PathVariable(name = "classId") classId: Long): Result {
+        val passedRate = classService.studentPassedInClass(classId, pageId)
+        return ResultUtils.success(message = "及格率", data = passedRate)
     }
 
 }
