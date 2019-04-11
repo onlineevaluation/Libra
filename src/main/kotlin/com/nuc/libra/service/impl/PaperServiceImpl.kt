@@ -462,7 +462,7 @@ class PaperServiceImpl : PaperService {
     }
 
     /**
-     * 简单题评分
+     * 简答题评分
      * @param studentAnswer 学生答案
      * @param standardAnswer 标准答案
      * @param score 该题满分
@@ -526,10 +526,9 @@ class PaperServiceImpl : PaperService {
         }
 
         var resultScore = 0.0
-        var result: String = ""
-
+     
         codePath.writeText(studentAnswer, charset = Charsets.UTF_8)
-        result = Capricornus.INSTANCE.judgeCode(
+        val result = Capricornus.INSTANCE.judgeCode(
             GoString.ByValue(inputPath),
             GoString.ByValue(outputPath),
             GoString.ByValue(fileName),

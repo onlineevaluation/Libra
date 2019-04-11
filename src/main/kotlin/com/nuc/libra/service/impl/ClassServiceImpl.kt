@@ -1,6 +1,7 @@
 package com.nuc.libra.service.impl
 
 import com.nuc.libra.exception.ResultException
+import com.nuc.libra.po.Class
 import com.nuc.libra.po.StudentScore
 import com.nuc.libra.repository.ClassAndTeacherRepository
 import com.nuc.libra.repository.ClassRepository
@@ -47,7 +48,7 @@ class ClassServiceImpl : ClassService {
 
         list.forEach {
             val `class` = classRepository.findById(it.classId).get()
-            classList.add(ClassInfo(`class`.id, `class`.num))
+            classList.add(ClassInfo(`class`.id, `class`.name))
         }
         return classList
     }
@@ -123,7 +124,7 @@ class ClassServiceImpl : ClassService {
             BeanUtils.copyProperties(it, studentAndScoreInfo)
             val student = studentRepository.findById(it.studentId).get()
             studentAndScoreInfo.pageId = pageId
-            studentAndScoreInfo.studentName = student.name!!
+            studentAndScoreInfo.studentName = student.name
             studentAndScoreInfo.studentNumber = student.studentNumber
             index++
             studentAndScoreInfo.index = index
@@ -155,7 +156,7 @@ class ClassServiceImpl : ClassService {
             val count = studentRepository.countByClassId(it.classId)
             return@map ClassStudentCountInfo().apply {
                 this.classId = it.classId
-                this.classNumber = classRepository.findById(it.classId).get().num
+                this.classNumber = classRepository.findById(it.classId).get().name
                 this.membersCount = count
             }
         }
@@ -180,4 +181,42 @@ class ClassServiceImpl : ClassService {
 
         return (passedCount * 1.0 / classmateCount)
     }
+
+    override fun listStudentScoreByClassId(classId: Long, pageId: Long): List<StudentAndScoreInfo> {
+        val studentList = studentRepository.findStudentsByClassId(classId)
+        var index = 0
+        val studentAndScoreInfoList = studentList.map { student ->
+            val studentAndScore = studentScoreRepository.findByPagesIdAndStudentId(pageId, student.id)
+            val studentAndScoreInfo = StudentAndScoreInfo()
+            studentAndScoreInfo.studentNumber = student.studentNumber
+            studentAndScoreInfo.studentId = student.id
+            studentAndScoreInfo.studentName = student.name
+            // 缺考
+            studentAndScoreInfo.score = -1.0
+            if (studentAndScore != null) {
+                studentAndScoreInfo.score = studentAndScore.score
+                studentAndScoreInfo.pageId = pageId
+                studentAndScoreInfo
+            } else {
+                studentAndScoreInfo
+            }
+        }.sortedByDescending {
+            it.score
+        }.map { studentAndScoreInfo ->
+            index++
+            studentAndScoreInfo.index = index
+            return@map studentAndScoreInfo
+        }
+        return studentAndScoreInfoList
+    }
+
+    /**
+     * 获取所有班级
+     * @return List<Class>
+     */
+    override fun getAllClass(): List<Class> {
+        return classRepository.findAll()
+    }
+
 }
+

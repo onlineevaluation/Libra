@@ -15,5 +15,5 @@ class Class {
     /**
      * 班级号
      */
-    lateinit var num: String
+    lateinit var name: String
 }

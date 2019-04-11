@@ -131,8 +131,8 @@ create table uek_acdemic_class
 )
 comment '班级表';
 
-INSERT INTO eva.uek_acdemic_class (id, num) VALUES (1, '17130101');
-INSERT INTO eva.uek_acdemic_class (id, num) VALUES (2, '17130102');
+INSERT INTO eva.uek_acdemic_class (id, name) VALUES (1, '17130101');
+INSERT INTO eva.uek_acdemic_class (id, name) VALUES (2, '17130102');
 
 select * from uek_acdemic_class;
 

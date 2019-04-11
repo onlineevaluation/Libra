@@ -26,7 +26,7 @@ class Page {
     lateinit var name: String
 
     override fun toString(): String {
-        return "Page(id=$id, num=$num, status='$status', directionId=$directionId, stageId=$stageId, courseId=$courseId, dayId=$dayId, createTime=$createTime, userMemberId=$userMemberId, totalscores=$totalscores, companyId=$companyId, name='$name')"
+        return "Page(id=$id, name=$num, status='$status', directionId=$directionId, stageId=$stageId, courseId=$courseId, dayId=$dayId, createTime=$createTime, userMemberId=$userMemberId, totalscores=$totalscores, companyId=$companyId, name='$name')"
     }
 
 

@@ -1,5 +1,6 @@
 package com.nuc.libra.service
 
+import com.nuc.libra.po.Class
 import com.nuc.libra.po.StudentScore
 import com.nuc.libra.vo.ClassInfo
 import com.nuc.libra.vo.ClassStudentCountInfo
@@ -21,7 +22,7 @@ interface ClassService {
     /**
      * 班级成绩分析
      */
-    fun scoreAnalytics(classId: Long,  pageId: Long):Map<Int, List<StudentScore>>
+    fun scoreAnalytics(classId: Long, pageId: Long): Map<Int, List<StudentScore>>
 
     /**
      * 获取班级前十名
@@ -45,5 +46,11 @@ interface ClassService {
      * 学生及格率
      * @return Double 及格率
      */
-    fun studentPassedInClass(classId: Long,pageId: Long):Double
+    fun studentPassedInClass(classId: Long, pageId: Long): Double
+
+
+    fun listStudentScoreByClassId(classId: Long, pageId: Long): List<StudentAndScoreInfo>
+
+    fun getAllClass(): MutableList<Class>
+
 }

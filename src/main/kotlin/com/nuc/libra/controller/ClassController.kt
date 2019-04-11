@@ -1,5 +1,6 @@
 package com.nuc.libra.controller
 
+import com.nuc.libra.po.Class
 import com.nuc.libra.result.Result
 import com.nuc.libra.service.ClassService
 import com.nuc.libra.util.ResultUtils
@@ -62,16 +63,42 @@ class ClassController {
         return ResultUtils.success(data = countByClass)
     }
 
+    /**
+     * 所教授学生总数
+     * @param teacherId ") teacherId: Long
+     * @return Result
+     */
     @GetMapping("/students/teacher/{teacherId}")
     fun allStudentCount(@PathVariable(name = "teacherId") teacherId: Long): Result {
         val count = classService.studentCount(teacherId)
         return ResultUtils.success(data = count)
     }
 
+    /**
+     * 及格率获取
+     * @param pageId ") pageId: Long
+     * @param classId ") classId: Long
+     * @return Result
+     */
     @GetMapping("/passed/{pageId}/{classId}")
     fun passedRate(@PathVariable(name = "pageId") pageId: Long, @PathVariable(name = "classId") classId: Long): Result {
         val passedRate = classService.studentPassedInClass(classId, pageId)
         return ResultUtils.success(message = "及格率", data = passedRate)
     }
 
+
+    /**
+     * 获取所有班级
+     *
+     * @return Result 返回结果集
+     */
+    @GetMapping("/getClass")
+    fun getClazz(): Result {
+        val clazz = Class()
+        clazz.id = 0
+        clazz.name = "全部"
+        val classes = classService.getAllClass()
+        classes.add(0, clazz)
+        return ResultUtils.success(200, "已经返回所有班级信息", classes)
+    }
 }

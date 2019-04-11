@@ -71,10 +71,20 @@ class ClassServiceImplTest {
         }
     }
 
+
+    @Test
+    fun listStudentByClassId() {
+        val list = classService.listStudentScoreByClassId(classId = 2L, pageId = 3L)
+        list.forEach {
+            logger.info("$it")
+        }
+        logger.info("size is ${list.size}")
+    }
+
+
     @After
     fun finish() {
         finishTime = System.currentTimeMillis()
         logger.info("执行所花费时间：${finishTime - startTime} 毫秒")
-
     }
 }

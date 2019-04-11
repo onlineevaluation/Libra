@@ -17,12 +17,12 @@ class Course {
 
     lateinit var name: String
 
-    var about: String? = null
+    var introduce: String? = null
 
     var coverImage: String? = null
 
     override fun toString(): String {
-        return "Course(id=$id, num=$num, name='$name', about=$about, coverImage=$coverImage)"
+        return "Course(id=$id, name=$num, name='$name', about=$introduce, coverImage=$coverImage)"
     }
 
 }

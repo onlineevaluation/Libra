@@ -1,5 +1,8 @@
 package com.nuc.libra.vo
 
+import com.nuc.libra.po.Course
+import com.nuc.libra.po.Knowledge
+
 /**
  * @author 杨晓辉 2019/4/8 12:00
  */
@@ -30,7 +33,8 @@ class StudentAndScoreInfo {
 
 
     override fun toString(): String {
-        return "StudentAndScoreInfo(studentId=$studentId, studentName='$studentName', studentNumber='$studentNumber', pageId=$pageId, score=$score)"
+        return "StudentAndScoreInfo(studentId=$studentId, studentName='$studentName', studentNumber='$studentNumber', " +
+                "pageId=$pageId, score=$score, index=$index)"
     }
 }
 
@@ -69,6 +73,18 @@ class ClassStudentCountInfo {
 
     override fun toString(): String {
         return "ClassStudentCountInfo(classNumber='$classNumber', classId=$classId, count=$membersCount)"
+    }
+}
+
+
+class ChapterAndKnowledgeInfo {
+    lateinit var course: Course
+
+    lateinit var knowledges: List<Knowledge>
+
+    override fun toString(): String {
+
+        return "ChapterAndKnowledgeInfo(course=$course, knowledges=$knowledges)"
     }
 
 

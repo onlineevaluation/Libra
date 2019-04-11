@@ -17,7 +17,7 @@ class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0
-    var name: String? = null
+    lateinit var name: String
     lateinit var studentNumber: String
     var proTeamId: Long? = 0
     var status: Long? = 0
