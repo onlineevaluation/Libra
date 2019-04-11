@@ -19,6 +19,10 @@ class CourseController {
     private lateinit var courseService: CourseService
 
 
+    /**
+     * 获取所有的课程
+     * @return Result
+     */
     @GetMapping("/getCourse")
     fun getCourse(): Result {
         val courseList = courseService.getAllCourse()
