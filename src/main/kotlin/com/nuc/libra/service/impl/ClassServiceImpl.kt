@@ -214,7 +214,7 @@ class ClassServiceImpl : ClassService {
      * 获取所有班级
      * @return List<Class>
      */
-    override fun getAllClass(): List<Class> {
+    override fun getAllClass(): MutableList<Class> {
         return classRepository.findAll()
     }
 

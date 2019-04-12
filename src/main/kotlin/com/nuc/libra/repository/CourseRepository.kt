@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository
  * @author 杨晓辉 2019-02-15 17:59
  */
 @Repository
-interface CourseRepository : JpaRepository<Course, Long>
+interface CourseRepository : JpaRepository<Course, Long> {
+
+}

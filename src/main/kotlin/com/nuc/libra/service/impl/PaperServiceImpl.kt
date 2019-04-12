@@ -11,6 +11,7 @@ import com.nuc.libra.po.Title
 import com.nuc.libra.repository.*
 import com.nuc.libra.service.PaperService
 import com.nuc.libra.util.NLPUtils
+import com.nuc.libra.util.PathUtils
 import com.nuc.libra.vo.PageDetailsParam
 import com.nuc.libra.vo.StudentAnswerSelect
 import com.nuc.libra.vo.StudentScoreParam
@@ -504,13 +505,16 @@ class PaperServiceImpl : PaperService {
         val outputPath: String
         val fileName = "${codeId}_${java.util.Date().time}_out"
         val osName = System.getProperty("os.name")
-        if (osName.contains("windows", true)) {
-            inputPath = "d:/page_$pageId/student_$studentId/${codeId}_${java.util.Date().time}.cpp"
-            outputPath = "d:/page_out_$pageId/student_$studentId"
-        } else {
-            inputPath = "~/page_$pageId/student_$studentId/${codeId}_${java.util.Date().time}.cpp"
-            outputPath = "~/page_out_$pageId/student_$studentId"
-        }
+//        if (osName.contains("windows", true)) {
+//            inputPath = "d:/page_$pageId/student_$studentId/${codeId}_${java.util.Date().time}.cpp"
+//            outputPath = "d:/page_out_$pageId/student_$studentId"
+//        } else {
+//            inputPath = "~/page_$pageId/student_$studentId/${codeId}_${java.util.Date().time}.cpp"
+//            outputPath = "~/page_out_$pageId/student_$studentId"
+//        }
+        val rootPath = PathUtils.rootPath()
+        inputPath = "$rootPath/page/code/page_$pageId/student_$studentId/${codeId}_${java.util.Date().time}.cpp"
+        outputPath = "$rootPath/page/code/page_$pageId/student_$studentId/${codeId}_${java.util.Date().time}.cpp"
         val outFile = File(outputPath)
         if (!outFile.exists()) {
             outFile.mkdirs()
@@ -526,7 +530,7 @@ class PaperServiceImpl : PaperService {
         }
 
         var resultScore = 0.0
-     
+
         codePath.writeText(studentAnswer, charset = Charsets.UTF_8)
         val result = Capricornus.INSTANCE.judgeCode(
             GoString.ByValue(inputPath),
