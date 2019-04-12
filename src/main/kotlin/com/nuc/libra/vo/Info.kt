@@ -76,7 +76,9 @@ class ClassStudentCountInfo {
     }
 }
 
-
+/**
+ * 章节和知识点的信息
+ */
 class ChapterAndKnowledgeInfo {
     lateinit var course: Course
 
