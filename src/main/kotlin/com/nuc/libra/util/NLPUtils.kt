@@ -1,6 +1,5 @@
 package com.nuc.libra.util
 
-import com.hankcs.hanlp.dictionary.CustomDictionary
 import com.hankcs.hanlp.mining.word2vec.DocVectorModel
 import com.hankcs.hanlp.mining.word2vec.WordVectorModel
 
@@ -18,11 +17,8 @@ object NLPUtils {
     init {
         val docPath: String
         val os = System.getProperty("os.name")
-        docPath = if (os.contains("Windows")) {
-            "C:/Users/young/Desktop/polyglot-zh.txt"
-        } else {
-            "~/data/polyglot-zh.txt"
-        }
+        val rootPath = PathUtils.rootPath()
+        docPath = "$rootPath\\data\\polyglot-zh.txt"
         wordVectorModel = WordVectorModel(docPath)
     }
 

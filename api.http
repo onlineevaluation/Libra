@@ -46,5 +46,25 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNzEzMDEwMTAxIiwiY2xhc3NJZ
 
 ###
 
+GET http://localhost:8081/class/getClass
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNzEzMDEwMTAxIiwiY2xhc3NJZCI6MSwidXNlcklkIjo4MTEsInJvbGVzIjpbInN0dWRlbnQiXSwiaWF0IjoxNTU0OTc3ODMxLCJleHAiOjE1NTU1ODI2MzF9.Qf-8NBDxoSZk8CEf1kOMdIJeV3vgvEJsBfA__t5sQRg
 
+###
 
+GET http://localhost:8081/course/getCourse
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNzEzMDEwMTAxIiwiY2xhc3NJZCI6MSwidXNlcklkIjo4MTEsInJvbGVzIjpbInN0dWRlbnQiXSwiaWF0IjoxNTU0OTc3ODMxLCJleHAiOjE1NTU1ODI2MzF9.Qf-8NBDxoSZk8CEf1kOMdIJeV3vgvEJsBfA__t5sQRg
+
+###
+
+GET http://localhost:8081/topic/getTopic
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNzEzMDEwMTAxIiwiY2xhc3NJZCI6MSwidXNlcklkIjo4MTEsInJvbGVzIjpbInN0dWRlbnQiXSwiaWF0IjoxNTU0OTc3ODMxLCJleHAiOjE1NTU1ODI2MzF9.Qf-8NBDxoSZk8CEf1kOMdIJeV3vgvEJsBfA__t5sQRg
+
+{
+  "id": 1,
+  "name": "Xxx"
+}
+
+###

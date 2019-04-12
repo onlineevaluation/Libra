@@ -78,17 +78,7 @@ class UserControllerTest {
             .andReturn()
     }
 
-    /**
-     * 成功登录测试
-     */
-    @Test()
-    fun successLoginTest() {
-        mockMvc.perform(
-            MockMvcRequestBuilders.post(LOGIN_URL)
-                .contentType(MediaType.APPLICATION_JSON_UTF8).content(JSON.toJSONString(successUserParam))
-        )
-            .andExpect(MockMvcResultMatchers.status().isOk)
-    }
+
 
     /**
      * 用户密码错误登录
