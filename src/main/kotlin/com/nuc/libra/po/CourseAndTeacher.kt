@@ -4,6 +4,7 @@ import javax.persistence.*
 
 /**
  * @author 杨晓辉 2019/4/12 20:20
+ * 课程教师对应中间表
  */
 @Entity
 @Table(

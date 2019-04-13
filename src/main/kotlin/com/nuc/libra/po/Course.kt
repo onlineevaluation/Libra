@@ -4,6 +4,7 @@ import javax.persistence.*
 
 /**
  * @author 杨晓辉 2019-02-15 17:55
+ * 课程 表
  */
 @Entity
 @Table(name = "uek_acdemic_course")

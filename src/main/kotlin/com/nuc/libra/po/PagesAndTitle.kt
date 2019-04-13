@@ -4,6 +4,7 @@ import javax.persistence.*
 
 /**
  * @author 杨晓辉 2018/2/3 11:08
+ * 试卷 试题 对应表
  */
 @Entity
 @Table(name = "uek_evaluate_pages_title")

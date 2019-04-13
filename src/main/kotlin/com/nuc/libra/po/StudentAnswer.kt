@@ -4,6 +4,7 @@ import javax.persistence.*
 
 /**
  * @author 杨晓辉 2018/2/7 11:03
+ * 学生答案表
  */
 @Entity
 @Table(name = "uek_evaluate_answer")

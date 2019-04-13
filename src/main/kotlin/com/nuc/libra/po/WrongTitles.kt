@@ -5,6 +5,7 @@ import javax.persistence.*
 
 /**
  * @author 杨晓辉 2019/3/23 16:43
+ * 错题表
  */
 @Entity
 @Table(name = "uek_evaluate_wrong_titles")

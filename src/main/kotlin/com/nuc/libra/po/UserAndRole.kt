@@ -4,6 +4,7 @@ import javax.persistence.*
 
 /**
  * @author 杨晓辉 2018/2/1 16:32
+ * 用户和角色中间表
  */
 @Entity
 @Table(name = "uek_privilege_user_role")
