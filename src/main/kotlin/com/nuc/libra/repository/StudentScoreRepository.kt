@@ -22,7 +22,7 @@ interface StudentScoreRepository : JpaRepository<StudentScore, Long> {
      * @param studentId 学生id
      * @param pageId 试卷id
      */
-    fun findStudentScoresByStudentIdAndPagesId(studentId: Long,pageId: Long): StudentScore?
+    fun findStudentScoresByStudentIdAndPagesId(studentId: Long, pageId: Long): StudentScore?
 
     /**
      * 通过试卷id和学生id查找
@@ -42,12 +42,4 @@ interface StudentScoreRepository : JpaRepository<StudentScore, Long> {
      * 通过 试卷 获取 分数最高的 10名 同学
      */
     fun findTop10ScoresByPagesIdOrderByScoreDesc(pageId: Long): List<StudentScore>?
-
-    /**
-     * 通过学生id和pageId 获取 所有的试卷
-     */
-    fun findAllByStudentIdAndPagesId(studentIds: Iterable<Long>, pagesId: Long): List<StudentScore>
-
-    fun findAllByStudentId(studentIds: Iterable<Long>): List<StudentScore>
-
 }
