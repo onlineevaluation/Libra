@@ -18,6 +18,9 @@ public class CodeServiceImplTest {
     @Autowired
     private CodeServiceImpl codeService = new CodeServiceImpl();
 
+    /**
+     * 代码运行测试
+     */
     @Test
     public void runCodeTest() {
 

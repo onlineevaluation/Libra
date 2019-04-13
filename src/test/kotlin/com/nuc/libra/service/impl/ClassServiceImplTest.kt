@@ -30,18 +30,26 @@ class ClassServiceImplTest {
     private var startTime: Long = 0L
     private var finishTime: Long = 0L
 
+    /**
+     * 获取开始时间
+     */
     @Before
     fun start() {
         startTime = System.currentTimeMillis()
     }
 
+    /**
+     * 获取学生总数
+     */
     @Test
     fun countStudentTest() {
         val count = classService.studentCount(teacherId = 31)
         logger.info("count is $count")
     }
 
-
+    /**
+     * 班级学生总数
+     */
     @Test
     fun classStudentCountTest() {
         val studentCount = classService.studentCountByClass(31)
@@ -50,6 +58,9 @@ class ClassServiceImplTest {
         }
     }
 
+    /**
+     * 班级前10测试
+     */
     @Test
     fun classTop10Test() {
         val classTop10 = classService.classTop10(classId = 2, pageId = 1, teacherId = 31)
@@ -63,15 +74,21 @@ class ClassServiceImplTest {
     }
 
 
+    /**
+     * 成绩分组测试
+     */
     @Test
     fun scoreAnalyticsTest() {
         val map = classService.scoreAnalytics(1, 1)
-        map.forEach { t, u ->
+        map.forEach { (t, u) ->
             logger.info("Group $t  count: ${u.size}")
         }
     }
 
 
+    /**
+     * 获取班级学生数量
+     */
     @Test
     fun listStudentByClassId() {
         val list = classService.listStudentScoreByClassId(classId = 2L, pageId = 3L)
@@ -82,6 +99,9 @@ class ClassServiceImplTest {
     }
 
 
+    /**
+     * 统计运行时间
+     */
     @After
     fun finish() {
         finishTime = System.currentTimeMillis()

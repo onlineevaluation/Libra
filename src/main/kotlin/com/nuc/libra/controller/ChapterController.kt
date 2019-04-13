@@ -20,6 +20,11 @@ class ChapterController {
     @Autowired
     private lateinit var chapterService: ChapterService
 
+    /**
+     * 获取 课程列表
+     * @param course Course 课程
+     * @return Result 课程列表
+     */
     // todo 只需要一个id 为什么要传入整个类的参数
     @GetMapping(value = ["/getTopic", "/getChapter"])
     fun getChapter(course: Course): Result {
@@ -28,6 +33,11 @@ class ChapterController {
     }
 
 
+    /**
+     * 获取 课程对应知识点列表
+     * @param course Course 课程
+     * @return Result 知识点列表
+     */
     @GetMapping(" /getKnowledge")
     fun getKnowledge(course: Course): Result {
         val list = chapterService.getKnowledgeByChapterId(course)

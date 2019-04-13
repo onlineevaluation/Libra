@@ -182,6 +182,12 @@ class ClassServiceImpl : ClassService {
         return (passedCount * 1.0 / classmateCount)
     }
 
+    /**
+     * 获取班级学生成绩
+     * @param classId Long 班级id
+     * @param pageId Long 学生id
+     * @return List<StudentAndScoreInfo>
+     */
     override fun listStudentScoreByClassId(classId: Long, pageId: Long): List<StudentAndScoreInfo> {
         val studentList = studentRepository.findStudentsByClassId(classId)
         var index = 0

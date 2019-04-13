@@ -26,15 +26,15 @@ class UserServiceImplTest {
     @Autowired
     private lateinit var userService: UserService
 
+    /**
+     * 获取用户详细信息
+     */
     @Test
     fun userProfile() {
 
-        val studentId = 811L
+//        val studentId = 811L
         val teacherId = 1555L
-
         val profile = userService.profile(teacherId)
-
-
         logger.info(profile.toString())
     }
 

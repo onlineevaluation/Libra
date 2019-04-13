@@ -19,6 +19,9 @@ class TeacherRepositoryTest {
     @Autowired
     private lateinit var teacherRepository: TeacherRepository
 
+    /**
+     * 通过工号查找教师测试
+     */
     @Test
     fun findByJobIdTest() {
         val teacher = teacherRepository.findTeacherByJobNumber("T1514010101")

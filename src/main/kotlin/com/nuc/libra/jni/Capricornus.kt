@@ -1,5 +1,6 @@
 package com.nuc.libra.jni
 
+import com.nuc.libra.exception.ResultException
 import com.nuc.libra.util.PathUtils
 import com.sun.jna.Library
 import com.sun.jna.Native
@@ -34,6 +35,7 @@ interface Capricornus : Library {
         private var path = File(ResourceUtils.getURL("classpath:").path)
         private val resourceFile = File(path.absolutePath, "bin/dll/")
         val INSTANCE =
-            Native.load("$resourceFile\\libCapricornus.so", Capricornus::class.java)!!
+            Native.load("$resourceFile\\libCapricornus.so", Capricornus::class.java)
+                    ?: throw ResultException("无法加载 so 文件", 500)
     }
 }

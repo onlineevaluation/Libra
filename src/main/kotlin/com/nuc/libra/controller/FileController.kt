@@ -16,6 +16,11 @@ import java.io.File
 class FileController {
 
 
+    /**
+     * 文件上传接口
+     * @param multipartFile MultipartFile 文件
+     * @return Result
+     */
     @PostMapping("/upload")
     fun upload(multipartFile: MultipartFile): Result {
         val path = "E:\\testData\\web.txt"

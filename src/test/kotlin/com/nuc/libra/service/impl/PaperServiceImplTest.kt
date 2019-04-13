@@ -18,6 +18,9 @@ class PaperServiceImplTest {
     @Autowired
     private lateinit var pageService: PaperServiceImpl
 
+    /**
+     * 获取排名
+     */
     @Test
     fun getRankList() {
         val studentId = 811L
