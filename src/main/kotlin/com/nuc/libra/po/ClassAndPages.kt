@@ -5,6 +5,7 @@ import javax.persistence.*
 
 /**
  * @author 杨晓辉 2018/2/3 15:59
+ * 班级 试卷 中卷表
  */
 @Entity
 @Table(name = "uek_evaluate_class_pages")

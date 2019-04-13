@@ -4,6 +4,7 @@ import javax.persistence.*
 
 /**
  * @author 杨晓辉 2019/4/3 18:16
+ * 班级
  */
 @Entity
 @Table(name = "uek_acdemic_class", indexes = [Index(name = "id", columnList = "id")])

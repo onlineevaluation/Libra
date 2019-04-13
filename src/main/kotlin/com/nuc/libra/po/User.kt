@@ -8,6 +8,7 @@ import javax.persistence.*
 
 /**
  * @author 杨晓辉 2019-01-02 14:29
+ * 用户登录表
  */
 @Entity
 @Table(

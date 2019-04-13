@@ -4,6 +4,7 @@ import javax.persistence.*
 
 /**
  * @author 杨晓辉 2019/4/3 16:45
+ * 教师表
  */
 @Entity
 @Table(

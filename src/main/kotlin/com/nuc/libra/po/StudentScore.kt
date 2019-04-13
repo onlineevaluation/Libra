@@ -6,6 +6,7 @@ import javax.persistence.*
 
 /**
  * @author 杨晓辉 2018/2/12 10:26
+ * 学生分数表
  */
 
 @Entity
