@@ -48,9 +48,18 @@ interface ClassService {
      */
     fun studentPassedInClass(classId: Long, pageId: Long): Double
 
-
+    /**
+     * 获取该班级单张试卷所有的学生成绩
+     * @param classId Long 班级id
+     * @param pageId Long 试卷id
+     * @return List<StudentAndScoreInfo>
+     */
     fun listStudentScoreByClassId(classId: Long, pageId: Long): List<StudentAndScoreInfo>
 
+    /**
+     * 获取所有的班级
+     * @return MutableList<Class>
+     */
     fun getAllClass(): MutableList<Class>
 
 }

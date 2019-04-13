@@ -31,6 +31,12 @@ data class UserParam(
     val password: String
 )
 
+/**
+ * 考试试卷信息
+ * @property classId Long 班级id
+ * @property pageId Long 试卷id
+ * @constructor
+ */
 @ApiModel("考试试卷信息")
 data class ExamParam(
     @ApiModelProperty(
@@ -100,7 +106,14 @@ class PageDetailsParam {
     var algorithm = ArrayList<StudentAnswer>()
 }
 
-
+/**
+ * 学生答案
+ * @property id Long 答案id
+ * @property answer String 答案
+ * @property score Double 分数
+ * @property standardAnswer String 标准答案
+ * @property title String 标题
+ */
 open class StudentAnswer {
     var id: Long = 0L
     var answer: String = ""
@@ -109,6 +122,13 @@ open class StudentAnswer {
     lateinit var title: String
 }
 
+/**
+ * 选项
+ * @property sectionA String
+ * @property sectionB String
+ * @property sectionC String
+ * @property sectionD String
+ */
 class StudentAnswerSelect : StudentAnswer() {
     var sectionA: String = ""
     var sectionB: String = ""

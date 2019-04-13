@@ -8,7 +8,10 @@ import java.io.File
  */
 object PathUtils {
 
-
+    /**
+     * 获取项目根路径
+     * @return String 根路径
+     */
     fun rootPath():String {
         var path = File(ResourceUtils.getURL("classpath:").path)
         if (!path.exists()) {

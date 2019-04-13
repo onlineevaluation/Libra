@@ -11,8 +11,18 @@ import org.springframework.stereotype.Service
 @Service
 interface ChapterService {
 
+    /**
+     * 通过课程获取章节
+     * @param course Course 课程
+     * @return List<Chapter> 知识点
+     */
     fun getTopicByCourseId(course: Course): List<Chapter>
 
 
+    /**
+     * 通过课程获取章节和知识点
+     * @param course Course 课程
+     * @return List<ChapterAndKnowledgeInfo> 章节和知识点的对应关系
+     */
     fun getKnowledgeByChapterId(course: Course): List<ChapterAndKnowledgeInfo>
 }
