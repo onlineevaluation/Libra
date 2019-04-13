@@ -18,6 +18,12 @@ import javax.tools.ToolProvider
  */
 object CompilerUtils {
 
+    /**
+     * 编译代码
+     * @param targetSource String 源码
+     * @param targetClassName String 源码类名
+     * @return CompilerMessage
+     */
     fun buildTargetSource(targetSource: String, targetClassName: String): CompilerMessage {
         // 1.获得JavaCompiler
         val compiler = ToolProvider.getSystemJavaCompiler()
@@ -64,6 +70,12 @@ object CompilerUtils {
     }
 
 
+    /**
+     * 运行编译完的类
+     * @param targetMethodName String 方法
+     * @param targetPackageName String 包名
+     * @param targetClassName String 类名
+     */
     fun runTargetClass(targetMethodName: String, targetPackageName: String, targetClassName: String) {
 
         // 10.创建ClassLoader，并设置目录为编译时的输出目录

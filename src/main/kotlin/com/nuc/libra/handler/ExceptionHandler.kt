@@ -31,7 +31,7 @@ class ExceptionHandler {
             is ResultException -> {
                 logger.info("发生了异常 $e")
                 val resultException: ResultException = e
-                ResultUtils.error(resultException.code, resultException.message!!)
+                ResultUtils.error(resultException.code, resultException.message)
             }
             is ExpiredJwtException -> {
                 logger.info("token失效")

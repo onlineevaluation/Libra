@@ -53,11 +53,8 @@ class PageController {
      */
     @GetMapping("/exam")
     fun getPage(examParam: ExamParam): Result {
-
         val titleList = paperService.getOnePage(examParam.classId, examParam.pageId)
-
-        val titleVOList: MutableList<TitleVO> = ArrayList()
-        titleList.forEach {
+        val titleVOList = titleList.map {
             val titleVO = TitleVO()
             BeanUtils.copyProperties(it, titleVO)
             var blankNumber = 0
@@ -73,7 +70,7 @@ class PageController {
                 blankNumber = titles.size - 1
             }
             titleVO.blankNum = blankNumber
-            titleVOList.add(titleVO)
+            titleVO
         }
 
         val pageVO = PageVO()

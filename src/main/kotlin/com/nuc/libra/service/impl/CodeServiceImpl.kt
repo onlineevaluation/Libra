@@ -13,12 +13,11 @@ import java.util.*
 
 /**
  * @author 杨晓辉 2019-02-11 10:34
+ * 该类暂时无用
  */
 @Service
 class CodeServiceImpl : CodeService {
 
-    @Autowired
-    private lateinit var studentScoreRepository: StudentScoreRepository
 
     @Autowired
     private lateinit var algorithmRepository: AlgorithmRepository
@@ -27,9 +26,6 @@ class CodeServiceImpl : CodeService {
      * 运行代码块
      */
     override fun runCode(code: Code, language: String, pageId: Long, studentId: Long): String {
-
-        // 判断系统
-        val os = System.getProperty("os.name")
 
         val inputPath = "d:/page_$pageId/student_$studentId/${code.id}_${Date().time}.cpp"
         val outputPath = "d:/page_out_$pageId/student_$studentId"
@@ -43,13 +39,9 @@ class CodeServiceImpl : CodeService {
         if (!codePath.exists()) {
             codePath.createNewFile()
         }
-
         codePath.writeText(code.codeString, charset = Charsets.UTF_8)
-
         //获取数据库答案
         val codeData = algorithmRepository.findById(code.id).get()
-
-
         val judgeCode = Capricornus.INSTANCE.judgeCode(
             GoString.ByValue(inputPath),
             GoString.ByValue(outputPath),
@@ -90,20 +82,9 @@ class CodeServiceImpl : CodeService {
 
             }
         }
-
-
-
-
         return ""
     }
 
-
-
-    fun addTestSets() {
-
-
-
-    }
 }
 
 

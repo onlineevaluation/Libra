@@ -8,9 +8,12 @@ import org.junit.Test
  */
 class JsonUtilsTest {
 
+    /**
+     * 试卷提交测试
+     */
     @Test
     fun jsonTest() {
-        var json: String =
+        val json: String =
             " {\n" +
                     "  studentId: 1,\n" +
                     "  pageId: 1,\n" +
@@ -29,7 +32,7 @@ class JsonUtilsTest {
                     "  ]\n" +
                     " }"
 
-        var ob = JSON.parseObject(json, com.nuc.libra.entity.result.Result::class.java)
+        val ob = JSON.parseObject(json, com.nuc.libra.entity.result.Result::class.java)
         println(ob)
 
 

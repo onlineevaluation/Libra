@@ -18,6 +18,10 @@ class CodeController {
     private val logger: Logger = LoggerFactory.getLogger(this.javaClass)
 
 
+    /**
+     * 提交代码 暂时没有用
+     * @param codeArray Array<Code>
+     */
     // todo 命名规范问题
     @PostMapping("/submit")
     fun submitCode(@RequestBody codeArray: Array<Code>) {

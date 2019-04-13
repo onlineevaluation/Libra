@@ -29,9 +29,9 @@ object ResultUtils {
      * @param code 错误状态码
      * @param message 错误信息
      */
-    fun error(code: Int, message: String): Result {
+    fun error(code: Int, message: String?): Result {
         result.code = code
-        result.message = message
+        result.message = message ?: "发生了错误"
         result.data = null
         return result
     }

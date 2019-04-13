@@ -22,6 +22,9 @@ class StudentScoreRepositoryTest {
     @Autowired
     private lateinit var studentRepository: StudentRepository
 
+    /**
+     * 获取 前 10 名 测试
+     */
     @Test
     fun top10Test() {
         val list = studentScoreRepository.findTop10ScoresByPagesIdOrderByScoreDesc(1)
@@ -33,7 +36,7 @@ class StudentScoreRepositoryTest {
     }
 
     /**
-     *
+     * 进行前 10 名 业务测试
      */
     @Test
     fun getAllStudentByStudentId() {

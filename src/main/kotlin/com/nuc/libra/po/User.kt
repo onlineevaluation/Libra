@@ -82,13 +82,6 @@ class User : UserDetails {
         return true
     }
 
-    /**
-     * 设置用户名
-     * @param username 学号
-     */
-    fun setUsername(username: String) {
-        this.username = username
-    }
 
     /**
      * 获取权限
@@ -104,18 +97,6 @@ class User : UserDetails {
         return password
     }
 
-
-    fun setAuthorities(roles: List<Role>) {
-        this.roles = roles
-    }
-
-    /**
-     * 设置密码
-     * @param password 密码
-     */
-    fun setPassword(password: String) {
-        this.password = password
-    }
 
     override fun toString(): String {
         return "UserParam(id=$id, username='$username', password='$password', status=$status, roles=$roles)"
