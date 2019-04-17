@@ -8,6 +8,9 @@ import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate
+import org.springframework.web.client.getForObject
 
 /**
  * @author 杨晓辉 2018/2/1 15:47
@@ -21,6 +24,8 @@ class UserController {
     @Autowired
     private lateinit var userService: UserService
 
+    @Autowired
+    private lateinit var restTemplate: RestTemplate
 
     /**
      * 用户登录
@@ -43,6 +48,17 @@ class UserController {
         val profile = userService.profile(id)
         return ResultUtils.success(data = profile)
     }
+
+    /**
+     * 通过学生id获取学生信息
+     * @return Result
+     */
+    @GetMapping("/profile/student/{studentId}")
+    fun studentProfile(@PathVariable("studentId") studentId: Long): Result {
+        val studentProfile = userService.studentProfile(studentId)
+        return ResultUtils.success(data = studentProfile)
+    }
+
 
 
 }

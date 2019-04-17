@@ -6,6 +6,7 @@ import javax.persistence.*
  * @author 杨晓辉 2019/4/12 20:20
  * 课程教师对应中间表
  */
+@Deprecated(message = "表关联规则错误")
 @Entity
 @Table(
     name = "nuc_libra_course_teacher",

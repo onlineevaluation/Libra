@@ -164,9 +164,9 @@ class ClassServiceImpl : ClassService {
 
     /**
      * 计算及格率
-     * @param classId Long
-     * @param pageId Long
-     * @return Double
+     * @param classId Long 班级id
+     * @param pageId Long 试卷id
+     * @return Double 保留三位小数
      */
     override fun studentPassedInClass(classId: Long, pageId: Long): Double {
 
@@ -179,7 +179,8 @@ class ClassServiceImpl : ClassService {
             it.score >= 60.0
         }.count()
 
-        return (passedCount * 1.0 / classmateCount)
+        val rateDouble = (passedCount * 1.0 / classmateCount).coerceIn(0.0, 1.0)
+        return String.format("%.3f", rateDouble).toDouble()
     }
 
     /**

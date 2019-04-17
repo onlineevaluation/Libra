@@ -88,6 +88,18 @@ class ChapterAndKnowledgeInfo {
 
         return "ChapterAndKnowledgeInfo(course=$course, knowledges=$knowledges)"
     }
+}
 
-
+/**
+ * 学生返回信息
+ * @property name String 学生姓名
+ * @property studentNumber String 学生学号
+ * @property `class` String 班级名词
+ * @property classId Long 班级id
+ */
+class StudentInfo {
+    lateinit var name: String
+    lateinit var studentNumber: String
+    lateinit var `class`: String
+    var classId: Long = 0L
 }

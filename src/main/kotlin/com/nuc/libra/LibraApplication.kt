@@ -3,8 +3,12 @@ package com.nuc.libra
 import com.nuc.libra.util.PathUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
+import org.springframework.boot.web.client.RestTemplateBuilder
+import org.springframework.context.annotation.Bean
+import org.springframework.web.client.RestTemplate
 import java.io.File
 
 /**
@@ -12,6 +16,7 @@ import java.io.File
  */
 @SpringBootApplication
 class LibraApplication
+
 private val logger: Logger = LoggerFactory.getLogger(LibraApplication::class.java)
 
 /**
@@ -35,8 +40,10 @@ fun main(args: Array<String>) {
     logger.info("请将语料文件 polyglot-zh.txt 存放到 $dataFile 下")
     logger.info("重要信息⬆")
     // 试卷存放地方
-    val pageFile = File(rootPath,"\\page\\code")
-    if (!pageFile.exists()){
+    val pageFile = File(rootPath, "\\page\\code")
+    if (!pageFile.exists()) {
         pageFile.mkdirs()
     }
 }
+
+
