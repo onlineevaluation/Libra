@@ -4,10 +4,7 @@ import com.nuc.libra.entity.result.Result
 import com.nuc.libra.exception.ResultException
 import com.nuc.libra.jni.Capricornus
 import com.nuc.libra.jni.GoString
-import com.nuc.libra.po.ClassAndPages
-import com.nuc.libra.po.StudentAnswer
-import com.nuc.libra.po.StudentScore
-import com.nuc.libra.po.Title
+import com.nuc.libra.po.*
 import com.nuc.libra.repository.*
 import com.nuc.libra.service.PaperService
 import com.nuc.libra.util.NLPUtils
@@ -61,6 +58,9 @@ class PaperServiceImpl : PaperService {
 
     @Autowired
     private lateinit var courseRepository: CourseRepository
+
+    @Autowired
+    private lateinit var knowledgeRepository: KnowledgeRepository
 
     /**
      * 获取该班级的所有考试
@@ -583,14 +583,27 @@ class PaperServiceImpl : PaperService {
      * @param typeIds IntArray
      * @return Map<String, List<Title>>
      */
-    override  fun getTitles(courseId: Long, typeIds: IntArray): List<List<Title>> {
-        var titlesMap: Map<String, List<Title>> = emptyMap()
-        val list = typeIds.map {
-             titleRepository.findByCategoryAndCourseId(it.toString(), courseId)
+    override fun getTitles(courseId: Long, typeIds: IntArray, chapterIds: IntArray): List<List<Title>> {
+
+        val knowledgeList = ArrayList<Knowledge>()
+
+        chapterIds.forEach { id ->
+            val knowledges = knowledgeRepository.findByChapterId(id.toLong())
+            knowledgeList.addAll(knowledges)
+        }
+
+        val titleKnow = knowledgeList.map { knowledge ->
+            titleRepository.findByKnowledgeIdAndCourseId(knowledge.id, courseId)
         }
 
 
-        return list
+        val titleCategory = typeIds.map {
+            titleRepository.findByCategoryAndCourseId(it.toString(), courseId)
+        }
+
+        titleCategory.toMutableList().retainAll(titleKnow)
+
+        return titleCategory
     }
 
 
@@ -599,8 +612,8 @@ class PaperServiceImpl : PaperService {
      * @param courseId Long
      * @param typeIds IntArray
      */
-    override fun artificial(courseId: Long, typeIds: IntArray) :Map<String, List<Title>>{
-      return emptyMap()
+    override fun artificial(courseId: Long, typeIds: IntArray): Map<String, List<Title>> {
+        return emptyMap()
     }
 
     /**
@@ -615,4 +628,20 @@ class PaperServiceImpl : PaperService {
 
 }
 
+fun main() {
+    var list1 = java.util.ArrayList<List<Int>>()
+    var list2 = java.util.ArrayList<List<Int>>()
 
+    val list11 = java.util.ArrayList<Int>()
+    val list12 = java.util.ArrayList<Int>()
+
+    list11.add(1)
+    list11.add(6)
+    list11.add(2)
+    list11.add(4)
+    list12.add(4)
+    list12.add(2)
+    list12.add(4)
+    list12.add(1)
+
+}

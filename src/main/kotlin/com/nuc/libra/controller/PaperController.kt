@@ -23,7 +23,7 @@ class PaperController {
     @PostMapping("/info")
     fun setPaperInfo(@RequestBody paperTitleTypeParam: PaperTitleTypeParam): Result {
         println(paperTitleTypeParam.toString())
-        val titles = paperService.getTitles(paperTitleTypeParam.courseId, paperTitleTypeParam.titleType)
+        val titles = paperService.getTitles(paperTitleTypeParam.courseId, paperTitleTypeParam.titleType,paperTitleTypeParam.chapterIds)
         return ResultUtils.success(data = titles)
     }
 

@@ -48,7 +48,7 @@ class ChapterController {
 
     /**
      *
-     * @param courseId ")courseId:Long
+     * @param courseId  courseId:Long
      * @return Result
      */
     @GetMapping("/course/{courseId}")

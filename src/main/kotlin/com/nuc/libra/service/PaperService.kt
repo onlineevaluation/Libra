@@ -65,5 +65,5 @@ interface PaperService {
      * @param typeIds IntArray
      * @return Map<String, List<Title>>
      */
-    fun getTitles(courseId: Long, typeIds: IntArray): List<List<Title>>
+    fun getTitles(courseId: Long, typeIds: IntArray,chapterIds:IntArray): List<List<Title>>
 }

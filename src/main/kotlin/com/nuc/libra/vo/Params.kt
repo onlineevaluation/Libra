@@ -173,10 +173,13 @@ data class ClassAndPageParam(val teacherId: Long, val pageId: Long, val classId:
  * 试卷信息
  * @property courseId Long 课程编号
  * @property titleType IntArray 试题类型
+ * @property chapterIds 章节id
  * @constructor
  */
-data class PaperTitleTypeParam(val courseId:Long,val titleType:IntArray) {
+data class PaperTitleTypeParam(val courseId:Long,val titleType:IntArray,val chapterIds:IntArray) {
     override fun toString(): String {
-        return "PaperTitleTypeParam(courseId=$courseId, titleType=${Arrays.toString(titleType)})"
+        return "PaperTitleTypeParam(courseId=$courseId, titleType=${Arrays.toString(titleType)}, chapterIds=${Arrays.toString(
+            chapterIds
+        )})"
     }
 }
