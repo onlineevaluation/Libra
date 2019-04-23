@@ -44,6 +44,17 @@ class ChapterServiceImpl : ChapterService {
                 this.course = course
             }
         }
-
     }
+
+    /**
+     * 通过课程获取章节id
+     * @param courseId Long
+     * @return List<Chapter>
+     */
+    override fun getChapterByCourseId(courseId: Long): List<Chapter> {
+        val chapterList = chapterRepository.findByCourseId(courseId)
+        return chapterList
+    }
+
+
 }

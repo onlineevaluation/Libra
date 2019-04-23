@@ -25,4 +25,13 @@ interface ChapterService {
      * @return List<ChapterAndKnowledgeInfo> 章节和知识点的对应关系
      */
     fun getKnowledgeByChapterId(course: Course): List<ChapterAndKnowledgeInfo>
+
+
+    /**
+     * 获取所有的知识点通过课程
+     * @param courseId Long
+     * @return List<Chapter>
+     */
+    fun getChapterByCourseId(courseId:Long):List<Chapter>
+
 }

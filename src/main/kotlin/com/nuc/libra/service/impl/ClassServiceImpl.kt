@@ -2,11 +2,9 @@ package com.nuc.libra.service.impl
 
 import com.nuc.libra.exception.ResultException
 import com.nuc.libra.po.Class
+import com.nuc.libra.po.CourseClass
 import com.nuc.libra.po.StudentScore
-import com.nuc.libra.repository.ClassAndTeacherRepository
-import com.nuc.libra.repository.ClassRepository
-import com.nuc.libra.repository.StudentRepository
-import com.nuc.libra.repository.StudentScoreRepository
+import com.nuc.libra.repository.*
 import com.nuc.libra.service.ClassService
 import com.nuc.libra.vo.ClassInfo
 import com.nuc.libra.vo.ClassStudentCountInfo
@@ -25,8 +23,6 @@ class ClassServiceImpl : ClassService {
 
     private val logger: Logger = LoggerFactory.getLogger(this.javaClass)
 
-    @Autowired
-    private lateinit var classAndTeacherRepository: ClassAndTeacherRepository
 
     @Autowired
     private lateinit var classRepository: ClassRepository
@@ -37,20 +33,21 @@ class ClassServiceImpl : ClassService {
     @Autowired
     private lateinit var studentRepository: StudentRepository
 
+    @Autowired
+    private lateinit var courseClassRepository: CourseClassRepository
+
     /**
      * 通过教师 id 获取该教师所教授班级
      * @param teacherId 教师 id
      */
     override fun listAllClassByTeacherId(teacherId: Long): List<ClassInfo> {
-        val classList = ArrayList<ClassInfo>()
-        val list =
-            classAndTeacherRepository.findByTeacherId(teacherId)
-
-        list.forEach {
+        val list = courseClassRepository.findByTeacherId(teacherId)
+        val classInfoList = list.distinctBy { it.classId }.map {
             val `class` = classRepository.findById(it.classId).get()
-            classList.add(ClassInfo(`class`.id, `class`.name))
+            ClassInfo(`class`.id, `class`.name)
         }
-        return classList
+        logger.info("class list is $classInfoList")
+        return classInfoList
     }
 
     /**
@@ -101,7 +98,7 @@ class ClassServiceImpl : ClassService {
      */
     override fun classTop10(classId: Long, teacherId: Long, pageId: Long): List<StudentAndScoreInfo> {
         // 检查合法性
-        classAndTeacherRepository.findClassAndTeacherByTeacherIdAndClassId(teacherId, classId)
+        courseClassRepository.findByTeacherIdAndClassId(teacherId, classId)
                 ?: throw ResultException("该教师不教授该班级", 500)
         // 获取该班级所有学生
         val studentList = studentRepository.findStudentsByClassId(classId)
@@ -138,8 +135,8 @@ class ClassServiceImpl : ClassService {
      * @return Long 学生总数
      */
     override fun studentCount(teacherId: Long): Long {
-        val classAndTeachers = classAndTeacherRepository.findByTeacherId(teacherId)
-        return classAndTeachers.map {
+        val classAndTeachers = courseClassRepository.findByTeacherId(teacherId)
+        return classAndTeachers.distinctBy { it.classId}.map {
             studentRepository.countByClassId(classId = it.classId)
         }.reduce { sum, count -> sum + count }
     }
@@ -152,7 +149,7 @@ class ClassServiceImpl : ClassService {
      */
     override fun studentCountByClass(teacherId: Long): List<ClassStudentCountInfo> {
 
-        return classAndTeacherRepository.findByTeacherId(teacherId).map {
+        return courseClassRepository.findByTeacherId(teacherId).distinctBy { it.classId }.map {
             val count = studentRepository.countByClassId(it.classId)
             return@map ClassStudentCountInfo().apply {
                 this.classId = it.classId

@@ -76,3 +76,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNzEzMDEwMTAxIiwiY2xhc3NJZ
 
 
 ###
+#/teacher/{teacherId}
+GET http://106.12.195.114:8081/course/teacher/31
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJUMTUxNDAxMDEwMSIsInBvc2l0aW9uSWQiOjEsInVzZXJJZCI6MTU1NSwicm9sZXMiOlsidGVhY2hlciJdLCJpYXQiOjE1NTU1NTc1ODUsImV4cCI6MTU1NjE2MjM4NX0.J4xWfDxYTeBDn0zY3NwqJi5AKmXMVzZfs_qv6X0OZnY
+
+###

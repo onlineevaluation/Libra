@@ -105,8 +105,8 @@ class ClassController {
 
     /**
      * 通过试卷id和班级id获取本次考试所有考生信息
-     * @param classId ") classId: Long
-     * @param pageId ") pageId: Long
+     * @param classId classId: Long
+     * @param pageId pageId: Long
      */
     @GetMapping("/students/{classId}/{pageId}")
     fun classStudentsScore(@PathVariable("classId") classId: Long, @PathVariable("pageId") pageId: Long): Result {
@@ -115,4 +115,5 @@ class ClassController {
         return ResultUtils.success(data = list)
 
     }
+
 }

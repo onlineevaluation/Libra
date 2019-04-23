@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service
 import java.io.File
 import java.sql.Date
 import java.sql.Timestamp
+import java.util.HashMap
 import javax.transaction.Transactional
 
 /**
@@ -504,7 +505,7 @@ class PaperServiceImpl : PaperService {
         val inputPath: String
         val outputPath: String
         val fileName = "${codeId}_${java.util.Date().time}_out"
-        val osName = System.getProperty("os.name")
+//        val osName = System.getProperty("os.name")
 //        if (osName.contains("windows", true)) {
 //            inputPath = "d:/page_$pageId/student_$studentId/${codeId}_${java.util.Date().time}.cpp"
 //            outputPath = "d:/page_out_$pageId/student_$studentId"
@@ -572,6 +573,46 @@ class PaperServiceImpl : PaperService {
         }
         return resultScore
     }
+// 教师组卷算法
+//
+//
+
+    /**
+     * 获取相应试卷试题
+     * @param courseId Long
+     * @param typeIds IntArray
+     * @return Map<String, List<Title>>
+     */
+    override  fun getTitles(courseId: Long, typeIds: IntArray): List<List<Title>> {
+        var titlesMap: Map<String, List<Title>> = emptyMap()
+        val list = typeIds.map {
+             titleRepository.findByCategoryAndCourseId(it.toString(), courseId)
+        }
+
+
+        return list
+    }
+
+
+    /**
+     * 人工组卷
+     * @param courseId Long
+     * @param typeIds IntArray
+     */
+    override fun artificial(courseId: Long, typeIds: IntArray) :Map<String, List<Title>>{
+      return emptyMap()
+    }
+
+    /**
+     *
+     * @param courseId Long
+     * @param typeIds IntArray
+     */
+    override fun ai(courseId: Long, typeIds: IntArray) {
+
+    }
+
+
 }
 
 
