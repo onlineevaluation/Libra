@@ -14,6 +14,7 @@ buildscript {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
         classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
         classpath "org.jetbrains.dokka:dokka-gradle-plugin:${dokka_version}"
+        classpath('gradle.plugin.com.palantir.gradle.docker:gradle-docker:0.13.0')
     }
 }
 
@@ -28,10 +29,16 @@ apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'org.jetbrains.dokka'
 apply plugin: 'jacoco'
+apply plugin: 'com.palantir.docker'
+
+jar {
+    baseName = "libra"
+    version = '2.0.0'
+}
 
 group = 'com.nuc'
 version = '2.0.0'
-sourceCompatibility = 11
+sourceCompatibility = 1.8
 
 compileKotlin {
     kotlinOptions {
@@ -52,6 +59,7 @@ repositories {
     maven {
         url "https://plugins.gradle.org/m2/"
     }
+
 }
 
 
@@ -90,11 +98,22 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-devtools'
     // test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    
+
 }
 
 dokka {
     outputFormat = 'html'
     outputDirectory = "$buildDir/javadoc"
+}
+
+task unpack(type: Copy) {
+    dependsOn bootJar
+    from(zipTree(tasks.bootJar.outputs.files.singleFile))
+    into("build/dependency")
+}
+docker {
+    name "${project.group}/${bootJar.baseName}"
+    copySpec.from(tasks.unpack.outputs).into("dependency")
+    buildArgs(['DEPENDENCY': "dependency"])
 }
 

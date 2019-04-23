@@ -6,6 +6,7 @@ import com.nuc.libra.po.User
 import com.nuc.libra.repository.*
 import com.nuc.libra.security.JwtTokenProvider
 import com.nuc.libra.service.UserService
+import com.nuc.libra.vo.StudentInfo
 import com.nuc.libra.vo.UserProfileInfo
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -48,6 +49,9 @@ class UserServiceImpl : UserService, UserDetailsService {
 
     @Autowired
     private lateinit var teacherRepository: TeacherRepository
+
+    @Autowired
+    private lateinit var classRepository: ClassRepository
 
     /**
      * 获得所有的用户
@@ -122,17 +126,13 @@ class UserServiceImpl : UserService, UserDetailsService {
     override fun profile(id: Long): UserProfileInfo {
         val user = userRepository.findById(id).get()
 
-        val auth = user.authorities.joinToString {
-            it.authority
-        }
-
+        val auth = user.authorities.joinToString { it.authority }
         val userProfileInfo = UserProfileInfo()
         when {
             auth.contains("student") -> {
                 val student = studentRepository.findByStudentNumber(user.username)
                         ?: throw ResultException("没有该用户", 500)
                 BeanUtils.copyProperties(student, userProfileInfo)
-
                 userProfileInfo.number = student.studentNumber
                 userProfileInfo.identity = student.id
             }
@@ -147,8 +147,20 @@ class UserServiceImpl : UserService, UserDetailsService {
 
             }
         }
-
         return userProfileInfo
+    }
+
+
+    override fun studentProfile(studentId: Long):StudentInfo {
+        val student = studentRepository.findById(studentId).get()
+        val studentInfo = StudentInfo()
+        BeanUtils.copyProperties(student, studentInfo)
+        studentInfo.`class` = classRepository.findById(student.classId).get().name
+        return studentInfo
+    }
+
+    override fun teacherProfile(teacherId: Long) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }
 

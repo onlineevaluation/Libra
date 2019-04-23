@@ -44,4 +44,26 @@ interface PaperService {
      * @param studentId 学生id
      */
     fun getPageScore(pageId: Long, studentId: Long): PageDetailsParam
+
+    /**
+     * 人工组卷
+     * @param courseId Long
+     * @param typeIds IntArray
+     */
+    fun artificial(courseId:Long,typeIds:IntArray): Map<String, List<Title>>
+
+    /**
+     *
+     * @param courseId Long
+     * @param typeIds IntArray
+     */
+    fun ai(courseId:Long,typeIds:IntArray)
+
+    /**
+     * 获取对应试题
+     * @param courseId Long
+     * @param typeIds IntArray
+     * @return Map<String, List<Title>>
+     */
+    fun getTitles(courseId: Long, typeIds: IntArray): List<List<Title>>
 }

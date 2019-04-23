@@ -1,15 +1,17 @@
 spring:
   rabbitmq:
-    host: localhost
+    host: 106.12.195.114
     port: 5672
     username: guest
     password: guest
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/eva?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
+    url: jdbc:mysql://106.12.195.114:3306/eva?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8&useSSL=false
     username: root
     password: 1234
     type: com.alibaba.druid.pool.DruidDataSource
+
+
     initialSize: 10   #初始化连接个数
     minIdle: 10       #最小空闲连接个数
     maxActive: 100    #最大连接个数
@@ -25,7 +27,8 @@ spring:
     filters: stat,wall #通过别名的方式配置扩展插件，常用的插件有：监控统计用的filter:stat，日志用的filter:log4j，防御sql注入的filter:wall
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000 # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
     useGlobalDataSourceStat: false # 合并多个DruidDataSource的监控数据
-
+    test-on-borrow: true
+    test-while-idle: true
   #  spring.datasource.filters=stat,wall,log4j
 
 

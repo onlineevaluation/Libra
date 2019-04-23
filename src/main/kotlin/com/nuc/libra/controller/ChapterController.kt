@@ -6,6 +6,7 @@ import com.nuc.libra.service.ChapterService
 import com.nuc.libra.util.ResultUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -43,6 +44,17 @@ class ChapterController {
         val list = chapterService.getKnowledgeByChapterId(course)
         return ResultUtils.success(data = list)
 
+    }
+
+    /**
+     *
+     * @param courseId ")courseId:Long
+     * @return Result
+     */
+    @GetMapping("/course/{courseId}")
+    fun listChapterByCourse(@PathVariable("courseId")courseId:Long) :Result{
+       val chapterList =  chapterService.getChapterByCourseId(courseId)
+        return ResultUtils.success(data = chapterList)
     }
 
 }

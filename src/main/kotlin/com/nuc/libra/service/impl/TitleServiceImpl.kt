@@ -1,6 +1,8 @@
 package com.nuc.libra.service.impl
 
+import com.nuc.libra.po.Title
 import com.nuc.libra.po.WrongTitles
+import com.nuc.libra.repository.TitleRepository
 import com.nuc.libra.repository.WrongTitlesRepository
 import com.nuc.libra.service.TitleService
 import com.nuc.libra.vo.WrongTitleParam
@@ -20,6 +22,8 @@ class TitleServiceImpl :TitleService {
     private lateinit var wrongTitleRepository:WrongTitlesRepository
 
 
+    @Autowired
+    private lateinit var titleRepository:TitleRepository
     /**
      * 添加错误试题
      */
@@ -30,5 +34,19 @@ class TitleServiceImpl :TitleService {
         wrongTitles.time = Timestamp(Date().time)
 
         wrongTitleRepository.saveAndFlush(wrongTitles)
+    }
+
+    /**
+     * 根据 类型返回试题
+     * @param typeIds Array<String>
+     * @return List<List<Title>>
+     */
+    override fun getTitleByTypes(typeIds: Array<String>,courseId:Long): List<List<Title>> {
+
+        val titleList = typeIds.map {
+            titleRepository.findByCategoryAndCourseId(it,courseId)
+        }
+
+        return titleList
     }
 }

@@ -10,4 +10,13 @@ import org.springframework.stereotype.Repository
  */
 @Repository
 interface TitleRepository : JpaRepository<Title, Long> {
+
+    /**
+     * 通过课程id和
+     * @param category String
+     * @param courseId Long
+     * @return List<Title>
+     */
+    fun findByCategoryAndCourseId(category:String,courseId:Long):List<Title>
+
 }

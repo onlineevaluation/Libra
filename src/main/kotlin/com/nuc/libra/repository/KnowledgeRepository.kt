@@ -10,5 +10,10 @@ import org.springframework.stereotype.Repository
 @Repository
 interface KnowledgeRepository : JpaRepository<Knowledge, Long> {
 
+    /**
+     * 通过章节id查找知识点
+     * @param chapterId Long 章节id
+     * @return List<Knowledge>
+     */
     fun findByChapterId(chapterId: Long): List<Knowledge>
 }

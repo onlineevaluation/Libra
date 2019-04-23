@@ -4,6 +4,8 @@ import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import java.sql.Date
 import java.sql.Timestamp
+import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * @author 杨晓辉 2018-12-29 16:06
@@ -167,3 +169,14 @@ data class VerifyPageParam(val studentId: Long, val pageId: Long)
  */
 data class ClassAndPageParam(val teacherId: Long, val pageId: Long, val classId: Long)
 
+/**
+ * 试卷信息
+ * @property courseId Long 课程编号
+ * @property titleType IntArray 试题类型
+ * @constructor
+ */
+data class PaperTitleTypeParam(val courseId:Long,val titleType:IntArray) {
+    override fun toString(): String {
+        return "PaperTitleTypeParam(courseId=$courseId, titleType=${Arrays.toString(titleType)})"
+    }
+}

@@ -1,5 +1,6 @@
 package com.nuc.libra.service
 
+import com.nuc.libra.po.Title
 import com.nuc.libra.vo.WrongTitleParam
 import org.springframework.stereotype.Service
 
@@ -13,5 +14,8 @@ interface TitleService {
      * 添加错误试题
      */
     fun addWrongTitle(wrongTitleParam: WrongTitleParam)
+
+
+    fun getTitleByTypes(typeIds: Array<String>,courseId:Long): List<List<Title>>
 
 }

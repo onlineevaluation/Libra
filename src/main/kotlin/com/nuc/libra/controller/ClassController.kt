@@ -101,4 +101,19 @@ class ClassController {
         classes.add(0, clazz)
         return ResultUtils.success(200, "已经返回所有班级信息", classes)
     }
+
+
+    /**
+     * 通过试卷id和班级id获取本次考试所有考生信息
+     * @param classId classId: Long
+     * @param pageId pageId: Long
+     */
+    @GetMapping("/students/{classId}/{pageId}")
+    fun classStudentsScore(@PathVariable("classId") classId: Long, @PathVariable("pageId") pageId: Long): Result {
+        val list = classService.listStudentScoreByClassId(classId, pageId)
+
+        return ResultUtils.success(data = list)
+
+    }
+
 }
