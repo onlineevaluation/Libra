@@ -574,7 +574,7 @@ class PaperServiceImpl : PaperService {
         return resultScore
     }
 // 教师组卷算法
-//
+// 手动组卷和自动组卷算法
 //
 
     /**
@@ -591,16 +591,16 @@ class PaperServiceImpl : PaperService {
             val knowledges = knowledgeRepository.findByChapterId(id.toLong())
             knowledgeList.addAll(knowledges)
         }
-
+        // 通过知识点和课程查找试题
         val titleKnow = knowledgeList.map { knowledge ->
             titleRepository.findByKnowledgeIdAndCourseId(knowledge.id, courseId)
         }
 
-
+        // 通过试题类型和课程查找试题
         val titleCategory = typeIds.map {
             titleRepository.findByCategoryAndCourseId(it.toString(), courseId)
         }
-
+        // 将上面的两个集合做交集 -> 通过知识点，试题类型，课程查找出来的试题
         titleCategory.toMutableList().retainAll(titleKnow)
 
         return titleCategory
@@ -625,23 +625,5 @@ class PaperServiceImpl : PaperService {
 
     }
 
-
-}
-
-fun main() {
-    var list1 = java.util.ArrayList<List<Int>>()
-    var list2 = java.util.ArrayList<List<Int>>()
-
-    val list11 = java.util.ArrayList<Int>()
-    val list12 = java.util.ArrayList<Int>()
-
-    list11.add(1)
-    list11.add(6)
-    list11.add(2)
-    list11.add(4)
-    list12.add(4)
-    list12.add(2)
-    list12.add(4)
-    list12.add(1)
 
 }

@@ -9,7 +9,9 @@ import kotlin.collections.ArrayList
 
 /**
  * @author 杨晓辉 2018-12-29 16:06
- * 所有的 `vo` 类
+ * 用于接收前端参数的类
+ * 所有的类采用data class
+ * 所有的后缀采用 **param**
  */
 
 /**
@@ -176,10 +178,35 @@ data class ClassAndPageParam(val teacherId: Long, val pageId: Long, val classId:
  * @property chapterIds 章节id
  * @constructor
  */
-data class PaperTitleTypeParam(val courseId:Long,val titleType:IntArray,val chapterIds:IntArray) {
+data class PaperTitleTypeParam(val courseId: Long, val titleType: IntArray, val chapterIds: IntArray) {
     override fun toString(): String {
         return "PaperTitleTypeParam(courseId=$courseId, titleType=${Arrays.toString(titleType)}, chapterIds=${Arrays.toString(
             chapterIds
         )})"
     }
 }
+
+/**
+ * 手工组卷时收到的参数
+ * @property courseId Long
+ * @property teacherId Long
+ * @property paperTitle String
+ * @property titleIds LongArray
+ * @property choiceScore Double
+ * @property blankScore Double
+ * @property answerScore Double
+ * @property codeScore Double
+ * @property algorithmScore Double
+ * @constructor
+ */
+data class ArtificialPaperParam(
+    val courseId: Long,
+    val teacherId: Long,
+    val paperTitle: String,
+    val titleIds: LongArray,
+    val choiceScore: Double,
+    val blankScore: Double,
+    val answerScore: Double,
+    val codeScore: Double,
+    val algorithmScore: Double
+)
