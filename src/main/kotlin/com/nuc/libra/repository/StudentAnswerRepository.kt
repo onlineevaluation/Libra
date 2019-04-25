@@ -1,6 +1,7 @@
 package com.nuc.libra.repository
 
 import com.nuc.libra.po.StudentAnswer
+import com.nuc.libra.po.Title
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
@@ -16,4 +17,12 @@ interface StudentAnswerRepository : JpaRepository<StudentAnswer, Long> {
      * @param pagesId 试卷id
      */
     fun findByStudentIdAndPagesId(studentId: Long, pagesId: Long): List<StudentAnswer>
+
+
+    /**
+     * 通过试题id查找答案
+     * @param titleId Long
+     * @return List<StudentAnswer> 返回学生答案
+     */
+    fun findByTitleId(titleId: Long): List<StudentAnswer>
 }

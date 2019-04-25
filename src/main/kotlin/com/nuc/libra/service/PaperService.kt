@@ -2,7 +2,9 @@ package com.nuc.libra.service
 
 import com.nuc.libra.po.ClassAndPages
 import com.nuc.libra.po.Title
+import com.nuc.libra.vo.ArtificialPaperParam
 import com.nuc.libra.vo.PageDetailsParam
+import com.nuc.libra.vo.PageInfo
 import com.nuc.libra.vo.StudentScoreParam
 
 /**
@@ -50,14 +52,14 @@ interface PaperService {
      * @param courseId Long
      * @param typeIds IntArray
      */
-    fun artificial(courseId:Long,typeIds:IntArray): Map<String, List<Title>>
+    fun artificial(artificialPaperParam: ArtificialPaperParam): PageInfo
 
     /**
      *
      * @param courseId Long
      * @param typeIds IntArray
      */
-    fun ai(courseId:Long,typeIds:IntArray)
+    fun ai(courseId: Long, typeIds: IntArray)
 
     /**
      * 获取对应试题
@@ -65,5 +67,5 @@ interface PaperService {
      * @param typeIds IntArray
      * @return Map<String, List<Title>>
      */
-    fun getTitles(courseId: Long, typeIds: IntArray,chapterIds:IntArray): List<List<Title>>
+    fun getTitles(courseId: Long, typeIds: IntArray, chapterIds: IntArray): List<List<Title>>
 }

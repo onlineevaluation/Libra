@@ -11,7 +11,7 @@ import javax.persistence.*
 class PagesAndTitle {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long = 0L
+    var id: Long = 67L
 
     @Column(name = "pages_id")
     var pagesId: Long = 0L

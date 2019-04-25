@@ -42,8 +42,7 @@ class PaperController {
      */
     @PostMapping("/artificial")
     fun artificialPaper(@RequestBody artificialPaperParam: ArtificialPaperParam): Result {
-        println("artificial is $artificialPaperParam")
-
-        return ResultUtils.success()
+        val pageInfo = paperService.artificial(artificialPaperParam)
+        return ResultUtils.success(data = pageInfo)
     }
 }

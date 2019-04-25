@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.boot.web.client.RestTemplateBuilder
 import org.springframework.context.annotation.Bean
+import org.springframework.scheduling.annotation.EnableScheduling
 import org.springframework.web.client.RestTemplate
 import java.io.File
 
@@ -15,6 +16,7 @@ import java.io.File
  * spring boot 启动入口
  */
 @SpringBootApplication
+@EnableScheduling
 class LibraApplication
 
 private val logger: Logger = LoggerFactory.getLogger(LibraApplication::class.java)

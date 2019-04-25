@@ -2,6 +2,7 @@ package com.nuc.libra.vo
 
 import com.nuc.libra.po.Course
 import com.nuc.libra.po.Knowledge
+import com.nuc.libra.po.Title
 
 /**
  * @author 杨晓辉 2019/4/8 12:00
@@ -102,4 +103,21 @@ class StudentInfo {
     lateinit var studentNumber: String
     lateinit var `class`: String
     var classId: Long = 0L
+}
+
+/**
+ * 试卷详细信息
+ * @property totalScore Float
+ * @property teacherName String
+ * @property courseName String
+ * @property titles List<Title>
+ * @property difficulty Float
+ */
+class PageInfo {
+    var totalScore: Float = 0f
+    lateinit var teacherName: String
+    lateinit var courseName: String
+    lateinit var titles: List<Title>
+    lateinit var paperTitle: String
+    var difficulty: Float = 0f
 }

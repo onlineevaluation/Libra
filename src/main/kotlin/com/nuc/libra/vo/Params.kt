@@ -188,15 +188,15 @@ data class PaperTitleTypeParam(val courseId: Long, val titleType: IntArray, val 
 
 /**
  * 手工组卷时收到的参数
- * @property courseId Long
- * @property teacherId Long
- * @property paperTitle String
- * @property titleIds LongArray
- * @property choiceScore Double
- * @property blankScore Double
- * @property answerScore Double
- * @property codeScore Double
- * @property algorithmScore Double
+ * @property courseId Long 课程id
+ * @property teacherId Long 教师id
+ * @property paperTitle String 试卷标题
+ * @property titleIds LongArray 试题编号
+ * @property choiceScore Double 选择题单项分值
+ * @property blankScore Double 填空题单项分值
+ * @property answerScore Double 简答题单项分值
+ * @property codeScore Double 代码题单项分值
+ * @property algorithmScore Double 算法题单项分值
  * @constructor
  */
 data class ArtificialPaperParam(
@@ -204,9 +204,10 @@ data class ArtificialPaperParam(
     val teacherId: Long,
     val paperTitle: String,
     val titleIds: LongArray,
-    val choiceScore: Double,
-    val blankScore: Double,
-    val answerScore: Double,
-    val codeScore: Double,
-    val algorithmScore: Double
+    val choiceScore: Float,
+    val blankScore: Float,
+    val answerScore: Float,
+    val codeScore: Float,
+    val algorithmScore: Float,
+    val totalScore: Float
 )

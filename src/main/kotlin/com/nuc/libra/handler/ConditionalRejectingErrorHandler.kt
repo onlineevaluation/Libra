@@ -32,7 +32,6 @@ class ConditionalRejectingErrorHandler : ErrorHandler {
         if (!this.causeChainContainsARADRE(t) && this.exceptionStrategy.isFatal(t)) {
             throw AmqpRejectAndDontRequeueException("Error Handler converted exception to fatal", t)
         }
-
     }
 
     private fun causeChainContainsARADRE(t: Throwable): Boolean {
