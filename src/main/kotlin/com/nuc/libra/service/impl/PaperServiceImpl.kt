@@ -18,6 +18,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.BeanUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.awt.print.Paper
 import java.io.File
 import java.sql.Date
 import java.sql.Timestamp
@@ -638,6 +639,13 @@ class PaperServiceImpl : PaperService {
             titleRepository.findById(pageAndTitle.titleId).get()
         }
         val diff = calDifficulty(titleList, page.id)
+
+//        knowledgeRepository.findById()
+
+        val knowledgeList = titleList.map {
+            knowledgeRepository.getOne(it.knowledgeId).name
+        }
+
         return PageInfo().apply {
             this.titles = titleList
             this.difficulty = diff
@@ -645,6 +653,13 @@ class PaperServiceImpl : PaperService {
             this.teacherName = teacherRepository.findById(page.createId).get().name
             this.paperTitle = page.paperTitle
             this.totalScore = page.totalScores
+            this.selectScore = page.choiceScore
+            this.blankScore = page.blankScore
+            this.answerScore = page.answerScore
+            this.codeScore = page.codeScore
+            this.algorithmScore = page.algorithmScore
+            this.knowledgeList = knowledgeList
+            this.createTime = page.createTime.toString()
         }
     }
 
@@ -694,5 +709,60 @@ class PaperServiceImpl : PaperService {
         return diff
     }
 
+    override fun getAllPapers(): List<PageInfo> {
+        val paperList = pagesRepository.findAll()
+
+
+        val list = paperList.mapNotNull { page ->
+
+
+            PageInfo().apply {
+                this.difficulty = calDifficulty(page)
+                this.courseName = courseRepository.findById(page.courseId).get().name
+                this.teacherName = teacherRepository.findById(page.createId).get().name
+                this.paperTitle = page.paperTitle
+                this.totalScore = page.totalScores
+                this.selectScore = page.choiceScore
+                this.blankScore = page.blankScore
+                this.answerScore = page.answerScore
+                this.codeScore = page.codeScore
+                this.algorithmScore = page.algorithmScore
+//                this.knowledgeList = knowledgeList
+                this.createTime = page.createTime.toString()
+            }
+        }
+        return list
+    }
+
+
+    private fun calDifficulty(page: Page): Float {
+
+        val pageAndTitle = pagesAndTitleRepository.findByPagesId(page.id)
+        var diff = 0.0
+        pageAndTitle.map {
+            titleRepository.findById(it.titleId).get()
+        }.forEach {
+            when (it.category) {
+                "1" -> {
+                    diff += it.difficulty * page.choiceScore
+                }
+                "2" -> {
+                    diff += it.difficulty * page.blankScore
+                }
+                "3" -> {
+                    diff += it.difficulty * page.answerScore
+                }
+                "4" -> {
+                    diff += it.difficulty * page.codeScore
+                }
+                "5" -> {
+                    diff += it.difficulty * page.algorithmScore
+                }
+            }
+        }
+
+        return diff.toFloat()
+
+    }
 
 }

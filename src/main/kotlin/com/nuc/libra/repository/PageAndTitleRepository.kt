@@ -15,4 +15,11 @@ interface PageAndTitleRepository : JpaRepository<PagesAndTitle, Long> {
      * @return 查询的list集合
      */
     fun findByPagesId(pageId: Long): MutableList<PagesAndTitle>
+
+    /**
+     * 通过 titleId 查询
+     * @param titleId Long
+     * @return MutableList<PagesAndTitle>
+     */
+    fun findByTitleId(titleId: Long): MutableList<PagesAndTitle>
 }

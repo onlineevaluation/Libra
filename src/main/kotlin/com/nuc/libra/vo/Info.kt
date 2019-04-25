@@ -117,7 +117,14 @@ class PageInfo {
     var totalScore: Float = 0f
     lateinit var teacherName: String
     lateinit var courseName: String
-    lateinit var titles: List<Title>
+    var titles: List<Title> = emptyList()
     lateinit var paperTitle: String
     var difficulty: Float = 0f
+    var selectScore: Float = 0f
+    var blankScore: Float = 0f
+    var answerScore: Float = 0f
+    var codeScore: Float = 0f
+    var algorithmScore: Float = 0f
+    lateinit var createTime: String
+    var knowledgeList: List<String> = emptyList()
 }

@@ -6,6 +6,7 @@ import com.nuc.libra.vo.ArtificialPaperParam
 import com.nuc.libra.vo.PageDetailsParam
 import com.nuc.libra.vo.PageInfo
 import com.nuc.libra.vo.StudentScoreParam
+import java.awt.print.Paper
 
 /**
  * @author 杨晓辉 2018/2/3 15:55
@@ -68,4 +69,6 @@ interface PaperService {
      * @return Map<String, List<Title>>
      */
     fun getTitles(courseId: Long, typeIds: IntArray, chapterIds: IntArray): List<List<Title>>
+
+    fun getAllPapers():List<PageInfo>
 }

@@ -6,10 +6,7 @@ import com.nuc.libra.util.ResultUtils
 import com.nuc.libra.vo.ArtificialPaperParam
 import com.nuc.libra.vo.PaperTitleTypeParam
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 /**
  * @author 杨晓辉 2019/4/18 11:37
@@ -45,4 +42,11 @@ class PaperController {
         val pageInfo = paperService.artificial(artificialPaperParam)
         return ResultUtils.success(data = pageInfo)
     }
+
+    @GetMapping("/p")
+    fun allPaper():Result {
+        val allPapers = paperService.getAllPapers()
+        return ResultUtils.success(data = allPapers)
+    }
+
 }
