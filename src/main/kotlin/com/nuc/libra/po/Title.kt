@@ -18,8 +18,8 @@ class Title {
     lateinit var title: String
     @Column(columnDefinition = "ENUM")
     lateinit var category: String
-    @Column(columnDefinition = "ENUM")
-    var difficulty: String? = null
+
+    var difficulty: Double = 0.0
     @Column(columnDefinition = "TEXT")
     lateinit var answer: String
     @Column(columnDefinition = "TEXT")
@@ -36,6 +36,9 @@ class Title {
     var sectionC: String? = null
     @Column(name = "sectiond")
     var sectionD: String? = null
+    /**
+     * 填空题答案是否有序
+     */
     var orderd: Boolean = true
     var knowledgeId: Long = 0
 
@@ -43,6 +46,7 @@ class Title {
      * 对应的课程id
      */
     var courseId: Long = 0
+
     override fun toString(): String {
         return "Title(id=$id, num='$num', title='$title', category='$category', difficulty=$difficulty, answer='$answer', analysis=$analysis, teacherId=$teacherId, addTime=$addTime, sectionA=$sectionA, sectionB=$sectionB, sectionC=$sectionC, sectionD=$sectionD, orderd=$orderd, knowledgeId=$knowledgeId, courseId=$courseId)"
     }

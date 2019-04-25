@@ -19,4 +19,6 @@ interface TitleRepository : JpaRepository<Title, Long> {
      */
     fun findByCategoryAndCourseId(category:String,courseId:Long):List<Title>
 
+    fun findByKnowledgeIdAndCourseId(knowledgeId:Long,courseId: Long):List<Title>
+
 }

@@ -4,17 +4,13 @@ import com.nuc.libra.entity.result.Result
 import com.nuc.libra.exception.ResultException
 import com.nuc.libra.jni.Capricornus
 import com.nuc.libra.jni.GoString
-import com.nuc.libra.po.ClassAndPages
+import com.nuc.libra.po.*
 import com.nuc.libra.po.StudentAnswer
-import com.nuc.libra.po.StudentScore
-import com.nuc.libra.po.Title
 import com.nuc.libra.repository.*
 import com.nuc.libra.service.PaperService
 import com.nuc.libra.util.NLPUtils
 import com.nuc.libra.util.PathUtils
-import com.nuc.libra.vo.PageDetailsParam
-import com.nuc.libra.vo.StudentAnswerSelect
-import com.nuc.libra.vo.StudentScoreParam
+import com.nuc.libra.vo.*
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.RabbitHandler
@@ -25,7 +21,6 @@ import org.springframework.stereotype.Service
 import java.io.File
 import java.sql.Date
 import java.sql.Timestamp
-import java.util.HashMap
 import javax.transaction.Transactional
 
 /**
@@ -61,6 +56,12 @@ class PaperServiceImpl : PaperService {
 
     @Autowired
     private lateinit var courseRepository: CourseRepository
+
+    @Autowired
+    private lateinit var knowledgeRepository: KnowledgeRepository
+
+    @Autowired
+    private lateinit var teacherRepository: TeacherRepository
 
     /**
      * 获取该班级的所有考试
@@ -286,7 +287,7 @@ class PaperServiceImpl : PaperService {
             val studentScoreParam = StudentScoreParam()
             BeanUtils.copyProperties(list[i], studentScoreParam)
             val page = pagesRepository.findById(list[i].pagesId).get()
-            studentScoreParam.pageTitle = page.name
+            studentScoreParam.pageTitle = page.paperTitle
             studentScoreParam.classRank = String.format("%.2f", (classRank.toDouble() / classmate.size) * 100)
             studentScoreParam.gradeRank = String.format("%.2f", (gradeRank.toDouble() / studentScores.size) * 100)
             studentScoreList.add(studentScoreParam)
@@ -319,7 +320,7 @@ class PaperServiceImpl : PaperService {
             throw ResultException("该学生没有参加该考试", 500)
         }
         val page = pagesRepository.findById(pageId).get()
-        pageDetails.pageTitle = page.name
+        pageDetails.pageTitle = page.paperTitle
         logger.info("page is $page")
         pageDetails.course = courseRepository.findById(page.courseId).get().name
 
@@ -573,9 +574,9 @@ class PaperServiceImpl : PaperService {
         }
         return resultScore
     }
-// 教师组卷算法
-//
-//
+    // 教师组卷算法
+    // 手动组卷和自动组卷算法
+    //
 
     /**
      * 获取相应试卷试题
@@ -583,24 +584,68 @@ class PaperServiceImpl : PaperService {
      * @param typeIds IntArray
      * @return Map<String, List<Title>>
      */
-    override  fun getTitles(courseId: Long, typeIds: IntArray): List<List<Title>> {
-        var titlesMap: Map<String, List<Title>> = emptyMap()
-        val list = typeIds.map {
-             titleRepository.findByCategoryAndCourseId(it.toString(), courseId)
+    override fun getTitles(courseId: Long, typeIds: IntArray, chapterIds: IntArray): List<List<Title>> {
+
+        val knowledgeList = ArrayList<Knowledge>()
+
+        chapterIds.forEach { id ->
+            val knowledges = knowledgeRepository.findByChapterId(id.toLong())
+            knowledgeList.addAll(knowledges)
+        }
+        // 通过知识点和课程查找试题
+        val titleKnow = knowledgeList.map { knowledge ->
+            titleRepository.findByKnowledgeIdAndCourseId(knowledge.id, courseId)
         }
 
+        // 通过试题类型和课程查找试题
+        val titleCategory = typeIds.map {
+            titleRepository.findByCategoryAndCourseId(it.toString(), courseId)
+        }
+        // 将上面的两个集合做交集 -> 通过知识点，试题类型，课程查找出来的试题
+        titleCategory.toMutableList().retainAll(titleKnow)
 
-        return list
+        return titleCategory
     }
 
 
     /**
-     * 人工组卷
-     * @param courseId Long
-     * @param typeIds IntArray
+     * 人工组卷方式
+     * @param artificialPaperParam ArtificialPaperParam 人工组卷参数
+     * @return PageInfo 组卷信息
      */
-    override fun artificial(courseId: Long, typeIds: IntArray) :Map<String, List<Title>>{
-      return emptyMap()
+    @Transactional
+    override fun artificial(artificialPaperParam: ArtificialPaperParam): PageInfo {
+        var page = Page()
+        BeanUtils.copyProperties(artificialPaperParam, page)
+        page.status = "1"
+        page.totalScores = artificialPaperParam.totalScore
+        page.createId = artificialPaperParam.teacherId
+        page.createTime = Timestamp(System.currentTimeMillis())
+        logger.info(page.toString())
+        val newPage = pagesRepository.saveAndFlush(page)
+        var pageTitlesList = artificialPaperParam.titleIds.map { titleId ->
+            PagesAndTitle().apply {
+                this.pagesId = newPage.id
+                this.titleId = titleId
+            }
+        }
+        val allTitles = pagesAndTitleRepository.saveAll(pageTitlesList)
+        if (allTitles.isNullOrEmpty()) {
+            throw ResultException("组卷失败", 500)
+        }
+
+        val titleList = allTitles.map { pageAndTitle ->
+            titleRepository.findById(pageAndTitle.titleId).get()
+        }
+        val diff = calDifficulty(titleList, page.id)
+        return PageInfo().apply {
+            this.titles = titleList
+            this.difficulty = diff
+            this.courseName = courseRepository.findById(page.courseId).get().name
+            this.teacherName = teacherRepository.findById(page.createId).get().name
+            this.paperTitle = page.paperTitle
+            this.totalScore = page.totalScores
+        }
     }
 
     /**
@@ -612,7 +657,42 @@ class PaperServiceImpl : PaperService {
 
     }
 
+    /**
+     * 计算试题难度
+     * @param titlesList List<Title> 试题集合
+     * @param pageId Long 试卷id
+     * @return Float 难度
+     */
+    private fun calDifficulty(titlesList: List<Title>, pageId: Long): Float {
+
+        val page = pagesRepository.findById(pageId).get()
+        var diff = 0f
+        titlesList.forEach { title ->
+            when (title.category) {
+                "1" -> {
+                    diff += (title.difficulty * page.choiceScore).toFloat()
+                }
+                "2" -> {
+                    diff += (title.difficulty * page.blankScore).toFloat()
+
+                }
+                "3" -> {
+                    diff += (title.difficulty * page.answerScore).toFloat()
+
+                }
+                "4" -> {
+                    diff += (title.difficulty * page.codeScore).toFloat()
+
+                }
+                "5" -> {
+                    diff += (title.difficulty * page.algorithmScore).toFloat()
+                }
+            }
+
+
+        }
+        return diff
+    }
+
 
 }
-
-

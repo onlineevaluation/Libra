@@ -24,7 +24,7 @@ public class CodeServiceImplTest {
     @Test
     public void runCodeTest() {
 
-        var code = new Code(1L, "#include <stdio.h>\n" +
+        Code code = new Code(1L, "#include <stdio.h>\n" +
                 "\n" +
                 "int main() {\n" +
                 "    int a;\n" +

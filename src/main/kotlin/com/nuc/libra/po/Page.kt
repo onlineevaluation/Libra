@@ -12,22 +12,22 @@ import javax.persistence.*
 class Page {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long = 0L
-    var num: Int = 0
-    lateinit var status: String
-    var directionId: Long = 0
-    var stageId: Long = 0
+    var id: Long = 0
+    var status: String? = null
     var courseId: Long = 0
-    var dayId: Long = 0
     @Column(columnDefinition = "DATETIME")
     var createTime: Timestamp? = null
-    var userMemberId: Long = 0
-    var totalscores: Long = 0
-    var companyId: Long = 0
-    lateinit var name: String
+    var totalScores: Float = 0f
+    lateinit var paperTitle: String
+    var choiceScore: Float = 0.0f
+    var blankScore: Float = 0.0f
+    var answerScore: Float = 0.0f
+    var codeScore: Float = 0.0f
+    var algorithmScore: Float = 0.0f
+    var createId: Long = 0L
 
     override fun toString(): String {
-        return "Page(id=$id, name=$num, status='$status', directionId=$directionId, stageId=$stageId, courseId=$courseId, dayId=$dayId, createTime=$createTime, userMemberId=$userMemberId, totalscores=$totalscores, companyId=$companyId, name='$name')"
+        return "Page(id=$id, status=$status, courseId=$courseId, createTime=$createTime, totalscores=$totalScores, paperTitle='$paperTitle', choiceScore=$choiceScore, blankScore=$blankScore, answerScore=$answerScore, codeScore=$codeScore, algorithmScore=$algorithmScore, createId=$createId)"
     }
 
 

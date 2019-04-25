@@ -9,7 +9,9 @@ import kotlin.collections.ArrayList
 
 /**
  * @author 杨晓辉 2018-12-29 16:06
- * 所有的 `vo` 类
+ * 用于接收前端参数的类
+ * 所有的类采用data class
+ * 所有的后缀采用 **param**
  */
 
 /**
@@ -173,10 +175,39 @@ data class ClassAndPageParam(val teacherId: Long, val pageId: Long, val classId:
  * 试卷信息
  * @property courseId Long 课程编号
  * @property titleType IntArray 试题类型
+ * @property chapterIds 章节id
  * @constructor
  */
-data class PaperTitleTypeParam(val courseId:Long,val titleType:IntArray) {
+data class PaperTitleTypeParam(val courseId: Long, val titleType: IntArray, val chapterIds: IntArray) {
     override fun toString(): String {
-        return "PaperTitleTypeParam(courseId=$courseId, titleType=${Arrays.toString(titleType)})"
+        return "PaperTitleTypeParam(courseId=$courseId, titleType=${Arrays.toString(titleType)}, chapterIds=${Arrays.toString(
+            chapterIds
+        )})"
     }
 }
+
+/**
+ * 手工组卷时收到的参数
+ * @property courseId Long 课程id
+ * @property teacherId Long 教师id
+ * @property paperTitle String 试卷标题
+ * @property titleIds LongArray 试题编号
+ * @property choiceScore Double 选择题单项分值
+ * @property blankScore Double 填空题单项分值
+ * @property answerScore Double 简答题单项分值
+ * @property codeScore Double 代码题单项分值
+ * @property algorithmScore Double 算法题单项分值
+ * @constructor
+ */
+data class ArtificialPaperParam(
+    val courseId: Long,
+    val teacherId: Long,
+    val paperTitle: String,
+    val titleIds: LongArray,
+    val choiceScore: Float,
+    val blankScore: Float,
+    val answerScore: Float,
+    val codeScore: Float,
+    val algorithmScore: Float,
+    val totalScore: Float
+)

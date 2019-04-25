@@ -48,11 +48,11 @@ class ChapterController {
 
     /**
      *
-     * @param courseId ")courseId:Long
+     * @param courseId  courseId:Long
      * @return Result
      */
     @GetMapping("/course/{courseId}")
-    fun listChapterByCourse(@PathVariable("courseId")courseId:Long) :Result{
+    fun listChapterByCourse(@PathVariable("courseId") courseId:Long) :Result{
        val chapterList =  chapterService.getChapterByCourseId(courseId)
         return ResultUtils.success(data = chapterList)
     }
