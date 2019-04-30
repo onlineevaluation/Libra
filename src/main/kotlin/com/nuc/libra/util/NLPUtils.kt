@@ -18,7 +18,7 @@ object NLPUtils {
         val docPath: String
         val os = System.getProperty("os.name")
         val rootPath = PathUtils.rootPath()
-        docPath = "$rootPath\\data\\polyglot-zh.txt"
+        docPath = "$rootPath/data/polyglot-zh.txt"
         wordVectorModel = WordVectorModel(docPath)
     }
 

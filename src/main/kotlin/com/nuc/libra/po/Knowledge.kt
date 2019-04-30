@@ -8,7 +8,7 @@ import javax.persistence.*
  */
 @Entity
 @Table(
-    name = "uek_acdemic_chapter",
+    name = "uek_acdemic_knowledge",
     indexes = [Index(name = "id", columnList = "id"),
         Index(name = "course_id", columnList = "courseId"),
         Index(name = "chapter_id", columnList = "chapterId")]

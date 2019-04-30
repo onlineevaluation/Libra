@@ -21,17 +21,7 @@ import kotlin.collections.ArrayList
  */
 @ApiModel("登录接收数据")
 data class UserParam(
-    @ApiModelProperty(
-        name = "username",
-        value = "学号",
-        required = true
-    ) val username: String,
-
-    @ApiModelProperty(
-        name = "password",
-        value = "密码",
-        required = true
-    )
+    val username: String,
     val password: String
 )
 
@@ -210,4 +200,21 @@ data class ArtificialPaperParam(
     val codeScore: Float,
     val algorithmScore: Float,
     val totalScore: Float
+)
+
+/**
+ * 试卷和班级关系
+ * @property classIds LongArray
+ * @property teacherId Long
+ * @property startTime Long
+ * @property endTime Long
+ * @property pageId Long
+ * @constructor
+ */
+data class PageClassParam(
+    val classIds: LongArray,
+    val teacherId: Long,
+    val startTime: Long,
+    val endTime: Long,
+    val pageId: Long
 )

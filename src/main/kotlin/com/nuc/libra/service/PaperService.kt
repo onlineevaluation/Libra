@@ -2,10 +2,7 @@ package com.nuc.libra.service
 
 import com.nuc.libra.po.ClassAndPages
 import com.nuc.libra.po.Title
-import com.nuc.libra.vo.ArtificialPaperParam
-import com.nuc.libra.vo.PageDetailsParam
-import com.nuc.libra.vo.PageInfo
-import com.nuc.libra.vo.StudentScoreParam
+import com.nuc.libra.vo.*
 import java.awt.print.Paper
 
 /**
@@ -17,7 +14,7 @@ interface PaperService {
      * 获取该班级所有的试卷
      * @param classId 班级id
      */
-    fun listClassPage(classId: Long): List<ClassAndPages>
+    fun listClassPage(classId: Long): List<PageAndClassInfo>
 
     /**
      *
@@ -70,5 +67,26 @@ interface PaperService {
      */
     fun getTitles(courseId: Long, typeIds: IntArray, chapterIds: IntArray): List<List<Title>>
 
-    fun getAllPapers():List<PageInfo>
+    /**
+     * 获取所有的试卷
+     * @return List<PageInfo>
+     */
+    fun getAllPapers(): List<PageInfo>
+
+
+    /**
+     * 获取单张试卷信息
+     * @param paperId Long
+     * @return PageInfo
+     */
+    fun getOnePaper(paperId: Long): PageInfo
+
+
+    /**
+     * 保存班级关系试卷
+     * @param pageClassParam PageClassParam
+     */
+    fun savePageAndClass(pageClassParam: PageClassParam)
+
+    fun getCreateName(pageId: Long): String
 }

@@ -8,7 +8,13 @@ import javax.persistence.*
  * 班级 试卷 中卷表
  */
 @Entity
-@Table(name = "uek_evaluate_class_pages")
+@Table(
+    name = "uek_evaluate_class_pages", indexes = [
+        Index(name = "page_id", columnList = "pagesId"),
+        Index(name = "class_id", columnList = "classId"),
+        Index(name = "id", columnList = "id")
+    ]
+)
 class ClassAndPages {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +28,7 @@ class ClassAndPages {
     var invigilator: Long? = 0
     var comment: String? = null
     @Column(columnDefinition = "TIMESTAMP")
-    var addTime: String? = null
+    var addTime: Timestamp? = null
     var employeeId: Long? = 0
 //    lateinit var title: String
 }

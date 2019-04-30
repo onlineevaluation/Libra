@@ -27,5 +27,7 @@ class PageVO {
     /**
      * 算法题
      */
-    var algorithm:ArrayList<TitleVO> = ArrayList()
+    var algorithm: ArrayList<TitleVO> = ArrayList()
+
+    lateinit var studentPageInfo: StudentPageInfo
 }

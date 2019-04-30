@@ -2,8 +2,6 @@ package com.nuc.libra.service.impl
 
 import com.nuc.libra.entity.result.Result
 import com.nuc.libra.exception.ResultException
-import com.nuc.libra.jni.Capricornus
-import com.nuc.libra.jni.GoString
 import com.nuc.libra.po.*
 import com.nuc.libra.po.StudentAnswer
 import com.nuc.libra.repository.*
@@ -18,7 +16,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.beans.BeanUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.awt.print.Paper
+import org.springframework.web.client.RestTemplate
 import java.io.File
 import java.sql.Date
 import java.sql.Timestamp
@@ -64,17 +62,31 @@ class PaperServiceImpl : PaperService {
     @Autowired
     private lateinit var teacherRepository: TeacherRepository
 
+    @Autowired
+    private lateinit var restTemplate: RestTemplate
+
+
     /**
      * 获取该班级的所有考试
      * @param classId 班级id
      * @return list 班级考试试卷和考试名称
      */
-    override fun listClassPage(classId: Long): List<ClassAndPages> {
+    override fun listClassPage(classId: Long): List<PageAndClassInfo> {
         val classAndPages = classAndPagesRepository.findByClassId(classId)
         if (classAndPages.isNullOrEmpty()) {
             throw ResultException("没有该班级/该班级没有考试", 500)
         }
-        return classAndPages
+        return classAndPages.map {
+            val page = pagesRepository.findById(it.pagesId).get()
+            val pageAndClassInfo = PageAndClassInfo()
+            BeanUtils.copyProperties(it, pageAndClassInfo)
+            pageAndClassInfo.pageTitle = page.paperTitle
+            pageAndClassInfo.pageId = it.pagesId
+            pageAndClassInfo.course = courseRepository.getOne(page.courseId).name
+            return@map pageAndClassInfo
+        }
+
+
     }
 
     /**
@@ -90,6 +102,7 @@ class PaperServiceImpl : PaperService {
             throw ResultException("没有该考试", 500)
         }
         val nowTime = Timestamp(System.currentTimeMillis())
+        logger.info("now $nowTime   before ${classAndPages[0].endTime}  start ${classAndPages[0].startTime}")
         if (nowTime.after(classAndPages[0].endTime) || nowTime.before(classAndPages[0].startTime)) {
             throw ResultException("该时间段内没有该考试", 500)
         }
@@ -109,15 +122,19 @@ class PaperServiceImpl : PaperService {
     @RabbitListener(queues = ["check"])
     @RabbitHandler
     fun addPages(result: Result) {
-        val ansListInDb =
+
+        var ansListInDb =
             studentAnswerRepository.findByStudentIdAndPagesId(result.studentId, result.pageId)
         // 该学生是否已经提交过答案
         if (ansListInDb.isNotEmpty()) {
+            logger.info("已经提交答案")
             return
         }
+        logger.info("准备开始评测")
+        val page = pagesRepository.getOne(result.pageId)
         val ansList = ArrayList<StudentAnswer>()
         for (studentAns in result.answer) {
-            val standardAnswer = titleRepository.findById(studentAns.id).get()
+            val standardAnswer = titleRepository.getOne(studentAns.id)
             val studentAnswer = StudentAnswer()
             studentAnswer.pagesId = result.pageId
             studentAnswer.studentId = result.studentId
@@ -129,20 +146,22 @@ class PaperServiceImpl : PaperService {
             when (standardAnswer.category) {
                 // 单选题
                 "1" -> {
-                    studentAnswer.score = checkChoice(studentAns.ans, standardAnswer.answer, 5.0)
+                    studentAnswer.score =
+                        checkChoice(studentAns.ans, standardAnswer.answer, page.choiceScore.toDouble())
                     ansList.add(studentAnswer)
                 }
-                // 填空题
+                //  填空题
                 "2" -> {
-                    logger.info("填空题")
-                    studentAnswer.score = checkBlank(studentAns.ans, standardAnswer.answer, 5.0, isOrder)
+                    logger.info("blank")
+                    studentAnswer.score =
+                        checkBlank(studentAns.ans, standardAnswer.answer, page.blankScore.toDouble(), isOrder)
                     ansList.add(studentAnswer)
                 }
                 // 简答题
                 "3" -> {
-                    val ansTitleScore = 10.0
-                    logger.info("解答题")
-                    studentAnswer.score = checkQuestion(studentAns.ans, standardAnswer.answer, ansTitleScore)
+                    logger.info("answer and question")
+                    studentAnswer.score =
+                        checkQuestion(studentAns.ans, standardAnswer.answer, page.answerScore.toDouble())
                     ansList.add(studentAnswer)
                 }
                 "4" -> {
@@ -150,9 +169,7 @@ class PaperServiceImpl : PaperService {
                 }
                 // 算法试题
                 "5" -> {
-                    logger.info("算法试题")
-                    logger.info("student ans is ${studentAns.ans}")
-                    val algorithmScore = 10.0
+                    logger.info("alg")
                     studentAnswer.score = checkAlgorithm(
                         studentAnswer.titleId,
                         studentAnswer.pagesId,
@@ -160,7 +177,7 @@ class PaperServiceImpl : PaperService {
                         studentAns.ans,
                         // 测试数据集
                         standardAnswer.sectionC!!,
-                        algorithmScore,
+                        page.algorithmScore.toDouble(),
                         standardAnswer.sectionA!!.toInt(),// 限制时间
                         standardAnswer.sectionB!!.toInt() // 限制内存
                     )
@@ -173,16 +190,21 @@ class PaperServiceImpl : PaperService {
             }
         }
 
-
+        // 下面逻辑 将学生没有作答的试题也存入数据库
+        // 查询试题和试卷
         val titleList = pagesAndTitleRepository.findByPagesId(result.pageId)
+        // 试题 id 集合
         val titleId = ArrayList<Long>()
+        // 将试题 id 存入集合
         titleList.forEach {
             titleId.add(it.titleId)
         }
+
         val studentTitleId = ArrayList<Long>()
         ansList.forEach {
             studentTitleId.add(it.titleId)
         }
+        // 集合做差 计算出学生并没有提交的试题答案
         titleId.removeAll(studentTitleId)
         for (i in 0 until titleId.size) {
             val ans = StudentAnswer()
@@ -194,14 +216,18 @@ class PaperServiceImpl : PaperService {
             ans.time = Timestamp(System.currentTimeMillis())
             ansList.add(ans)
         }
-        studentAnswerRepository.saveAll(ansList)
-        // todo 2019年2月4日 为什么要存了再去取？ 不矛盾吗？ 为什么不直接算分数
-        // 计算总分
-        val scoreList =
+
+        // 保存之前要检查是否有成绩
+        ansListInDb =
             studentAnswerRepository.findByStudentIdAndPagesId(result.studentId, result.pageId)
+        // 该学生是否已经提交过答案
+        if (ansListInDb.isNotEmpty()) {
+            return
+        }
+        studentAnswerRepository.saveAll(ansList)
 
         var sumScore = 0.0
-        scoreList.forEach {
+        ansList.forEach {
             sumScore += it.score
         }
 
@@ -214,8 +240,6 @@ class PaperServiceImpl : PaperService {
         studentScore.dotime = Date(System.currentTimeMillis())
         logger.info("student score is ${studentScore.score}")
         studentScoreRepository.save(studentScore)
-
-
     }
 
     /**
@@ -345,6 +369,7 @@ class PaperServiceImpl : PaperService {
                 }
 
                 "2" -> {
+
                     val blankAnswer = com.nuc.libra.vo.StudentAnswer()
                     blankAnswer.id = studentAnswer[i].titleId
                     blankAnswer.answer = studentAnswer[i].answer
@@ -507,43 +532,37 @@ class PaperServiceImpl : PaperService {
         val inputPath: String
         val outputPath: String
         val fileName = "${codeId}_${java.util.Date().time}_out"
-//        val osName = System.getProperty("os.name")
-//        if (osName.contains("windows", true)) {
-//            inputPath = "d:/page_$pageId/student_$studentId/${codeId}_${java.util.Date().time}.cpp"
-//            outputPath = "d:/page_out_$pageId/student_$studentId"
-//        } else {
-//            inputPath = "~/page_$pageId/student_$studentId/${codeId}_${java.util.Date().time}.cpp"
-//            outputPath = "~/page_out_$pageId/student_$studentId"
-//        }
-        val rootPath = PathUtils.rootPath()
-        inputPath = "$rootPath/page/code/page_$pageId/student_$studentId/${codeId}_${java.util.Date().time}.cpp"
-        outputPath = "$rootPath/page/code/page_$pageId/student_$studentId/${codeId}_${java.util.Date().time}.cpp"
+        val rootPath = PathUtils.rootPath() + "/page/code/page_$pageId/student_$studentId/"
+
+        inputPath = "$rootPath/${codeId}_${java.util.Date().time}.cpp"
+        outputPath = "$rootPath/out/${codeId}_${java.util.Date().time}.cpp"
+
+
+        val rootFile = File(rootPath)
+        if (!rootFile.exists()) {
+            rootFile.mkdirs()
+        }
         val outFile = File(outputPath)
         if (!outFile.exists()) {
             outFile.mkdirs()
         }
-        val codePath = File(inputPath)
-        if (!codePath.exists()) {
-            val parent = codePath.parent
-            val parentFile = File(parent)
-            if (!parentFile.exists()) {
-                parentFile.mkdirs()
-            }
-            codePath.createNewFile()
-        }
+        val inputFile = File(inputPath)
 
         var resultScore = 0.0
+        inputFile.writeText(studentAnswer, charset = Charsets.UTF_8)
+        val paramMap = HashMap<String, Any>()
+        paramMap["filepath"] = inputPath
+        paramMap["outpath"] = outputPath
+        paramMap["filename"] = fileName
+        paramMap["testSet"] = standardAnswer
+        paramMap["limitetime"] = limitTime
 
-        codePath.writeText(studentAnswer, charset = Charsets.UTF_8)
-        val result = Capricornus.INSTANCE.judgeCode(
-            GoString.ByValue(inputPath),
-            GoString.ByValue(outputPath),
-            GoString.ByValue(fileName),
-            GoString.ByValue(standardAnswer),
-            limitTime
-        )
-
-        when (result.substring(5, 6)) {
+        logger.info("post code to gooooooog")
+//        code:8
+        val message = restTemplate.postForObject("http://106.12.195.114:9000/code", paramMap, String::class.java)!!
+        logger.info("message is ${message.toString()}")
+        logger.info("code is ${message.substring(5, 6)}")
+        when (message.substring(5, 6)) {
             "9" -> {
                 resultScore = score
             }
@@ -616,7 +635,7 @@ class PaperServiceImpl : PaperService {
      */
     @Transactional
     override fun artificial(artificialPaperParam: ArtificialPaperParam): PageInfo {
-        var page = Page()
+        val page = Page()
         BeanUtils.copyProperties(artificialPaperParam, page)
         page.status = "1"
         page.totalScores = artificialPaperParam.totalScore
@@ -624,7 +643,7 @@ class PaperServiceImpl : PaperService {
         page.createTime = Timestamp(System.currentTimeMillis())
         logger.info(page.toString())
         val newPage = pagesRepository.saveAndFlush(page)
-        var pageTitlesList = artificialPaperParam.titleIds.map { titleId ->
+        val pageTitlesList = artificialPaperParam.titleIds.map { titleId ->
             PagesAndTitle().apply {
                 this.pagesId = newPage.id
                 this.titleId = titleId
@@ -652,7 +671,7 @@ class PaperServiceImpl : PaperService {
             this.courseName = courseRepository.findById(page.courseId).get().name
             this.teacherName = teacherRepository.findById(page.createId).get().name
             this.paperTitle = page.paperTitle
-            this.totalScore = page.totalScores
+            this.totalScores = page.totalScores
             this.selectScore = page.choiceScore
             this.blankScore = page.blankScore
             this.answerScore = page.answerScore
@@ -679,7 +698,6 @@ class PaperServiceImpl : PaperService {
      * @return Float 难度
      */
     private fun calDifficulty(titlesList: List<Title>, pageId: Long): Float {
-
         val page = pagesRepository.findById(pageId).get()
         var diff = 0f
         titlesList.forEach { title ->
@@ -703,40 +721,35 @@ class PaperServiceImpl : PaperService {
                     diff += (title.difficulty * page.algorithmScore).toFloat()
                 }
             }
-
-
         }
         return diff
     }
 
+    /**
+     * 获取所有的试卷
+     * @return List<PageInfo>
+     */
     override fun getAllPapers(): List<PageInfo> {
         val paperList = pagesRepository.findAll()
 
-
-        val list = paperList.mapNotNull { page ->
-
-
-            PageInfo().apply {
-                this.difficulty = calDifficulty(page)
-                this.courseName = courseRepository.findById(page.courseId).get().name
-                this.teacherName = teacherRepository.findById(page.createId).get().name
-                this.paperTitle = page.paperTitle
-                this.totalScore = page.totalScores
-                this.selectScore = page.choiceScore
-                this.blankScore = page.blankScore
-                this.answerScore = page.answerScore
-                this.codeScore = page.codeScore
-                this.algorithmScore = page.algorithmScore
-//                this.knowledgeList = knowledgeList
-                this.createTime = page.createTime.toString()
-            }
+        return paperList.map { page ->
+            val pageInfo = PageInfo()
+            BeanUtils.copyProperties(page, pageInfo)
+            pageInfo.courseName = courseRepository.findById(page.courseId).get().name
+            pageInfo.createTime = page.createTime.toString()
+            pageInfo.pageId = page.id
+            return@map pageInfo
         }
-        return list
+
     }
 
 
+    /**
+     * 通过试卷计算难度
+     * @param page Page
+     * @return Float
+     */
     private fun calDifficulty(page: Page): Float {
-
         val pageAndTitle = pagesAndTitleRepository.findByPagesId(page.id)
         var diff = 0.0
         pageAndTitle.map {
@@ -760,9 +773,52 @@ class PaperServiceImpl : PaperService {
                 }
             }
         }
-
         return diff.toFloat()
-
     }
 
+
+    /**
+     * 获取单张试卷信息
+     * @param paperId Long
+     * @return PageInfo
+     */
+    override fun getOnePaper(paperId: Long): PageInfo {
+        val page = pagesRepository.findById(paperId).get()
+        val pageInfo = PageInfo()
+        BeanUtils.copyProperties(page, pageInfo)
+        pageInfo.difficulty = calDifficulty(page)
+        pageInfo.teacherName = teacherRepository.findById(page.createId).get().name
+        pageInfo.courseName = courseRepository.findById(page.courseId).get().name
+        val titleList = pagesAndTitleRepository.findByPagesId(page.id).map {
+            titleRepository.findById(it.titleId).get()
+        }
+        pageInfo.createTime = page.createTime.toString()
+        pageInfo.titles = titleList
+
+        return pageInfo
+    }
+
+
+    @Transactional
+    override fun savePageAndClass(pageClassParam: PageClassParam) {
+        val pageClassList = pageClassParam.classIds.map {
+            val classAndPages = ClassAndPages()
+            classAndPages.addTime = Timestamp(System.currentTimeMillis())
+            classAndPages.startTime = Timestamp(pageClassParam.startTime)
+            classAndPages.endTime = Timestamp(pageClassParam.endTime)
+            classAndPages.classId = it
+            classAndPages.pagesId = pageClassParam.pageId
+            classAndPages.employeeId = pageClassParam.teacherId
+            return@map classAndPages
+        }
+
+        classAndPagesRepository.saveAll(pageClassList)
+    }
+
+    override fun getCreateName(pageId: Long): String {
+        val page = pagesRepository.findById(pageId).get()
+        val teacher = teacherRepository.findById(page.createId).get()
+        return teacher.name
+
+    }
 }
