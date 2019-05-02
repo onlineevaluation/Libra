@@ -55,6 +55,7 @@ class CalTitleDifficulty {
             }
             diff = String.format("%.2f", diff).toDouble()
             it.difficulty = diff
+
             // update
             titleRepository.save(it)
         }

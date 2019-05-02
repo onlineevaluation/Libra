@@ -37,15 +37,20 @@ fun main(args: Array<String>) {
     if (!dataFile.exists()) {
         dataFile.mkdirs()
     }
-    logger.info("重要信息⬇")
-    logger.info("请将DLL文件 libCapricornus.so 存放到 $binFile 下")
-    logger.info("请将语料文件 polyglot-zh.txt 存放到 $dataFile 下")
-    logger.info("重要信息⬆")
+    logger.info("import")
+    logger.info("please copy file libCapricornus.so to $binFile ")
+    logger.info("please copy file polyglot-zh.txt to $dataFile ")
+    logger.info("import")
     // 试卷存放地方
-    val pageFile = File(rootPath, "\\page\\code")
+    val pageFile = File(rootPath, "/page/code")
     if (!pageFile.exists()) {
         pageFile.mkdirs()
     }
+
+    System.setProperty("jna.library.path","/libra/lib")
+    System.setProperty("jna.platform.library.path ","/libra/lib")
+    val sts = System.getProperty("java.library.path")
+    logger.info("System lib path is $sts")
 }
 
 

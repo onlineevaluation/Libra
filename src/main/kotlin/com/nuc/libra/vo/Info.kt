@@ -3,6 +3,7 @@ package com.nuc.libra.vo
 import com.nuc.libra.po.Course
 import com.nuc.libra.po.Knowledge
 import com.nuc.libra.po.Title
+import java.sql.Timestamp
 
 /**
  * @author 杨晓辉 2019/4/8 12:00
@@ -107,17 +108,64 @@ class StudentInfo {
 
 /**
  * 试卷详细信息
- * @property totalScore Float
+ * @property totalScores Float
  * @property teacherName String
  * @property courseName String
  * @property titles List<Title>
  * @property difficulty Float
  */
 class PageInfo {
-    var totalScore: Float = 0f
-    lateinit var teacherName: String
+    var pageId = 0L
+    var totalScores: Float = 0f
+    var teacherName: String? = null
     lateinit var courseName: String
-    lateinit var titles: List<Title>
+    var titles: List<Title> = emptyList()
     lateinit var paperTitle: String
     var difficulty: Float = 0f
+    var selectScore: Float = 0f
+    var blankScore: Float = 0f
+    var answerScore: Float = 0f
+    var codeScore: Float = 0f
+    var algorithmScore: Float = 0f
+    lateinit var createTime: String
+    var knowledgeList: List<String> = emptyList()
+}
+
+/**
+ * 考生试卷信息
+ * @property id Long
+ * @property pageId Long
+ * @property classId Long
+ * @property startTime Timestamp?
+ * @property endTime Timestamp?
+ * @property addTime Timestamp?
+ * @property pageTitle String
+ */
+class PageAndClassInfo {
+    var id: Long = 0
+    var pageId: Long = 0
+    var classId: Long = 0
+    var startTime: Timestamp? = null
+    var endTime: Timestamp? = null
+    var addTime: Timestamp? = null
+    lateinit var pageTitle: String
+    lateinit var course: String
+
+}
+
+
+class StudentPageInfo {
+    var pageId = 0L
+    var totalScores: Float = 0f
+    var teacherName: String? = null
+    lateinit var courseName: String
+    lateinit var paperTitle: String
+    var difficulty: Float = 0f
+    var selectScore: Float = 0f
+    var blankScore: Float = 0f
+    var answerScore: Float = 0f
+    var codeScore: Float = 0f
+    var algorithmScore: Float = 0f
+    lateinit var createTime: String
+    var knowledgeList: List<String> = emptyList()
 }

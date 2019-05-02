@@ -8,7 +8,7 @@ import javax.persistence.*
  * 试卷表
  */
 @Entity
-@Table(name = "uek_evaluate_pages")
+@Table(name = "uek_evaluate_pages",indexes = [Index(name = "id",columnList = "id"), Index(name = "create_id",columnList = "createId")])
 class Page {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

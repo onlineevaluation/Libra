@@ -70,6 +70,7 @@ class UserServiceImpl : UserService, UserDetailsService {
      */
     override fun login(username: String, password: String): String {
         authenticationManager.authenticate(UsernamePasswordAuthenticationToken(username, password))
+                ?: throw ResultException("没有该用户", 500)
         val user = userRepository.findUserByUsername(username) ?: throw ResultException("没有该用户", 500)
         val userAndRole = userAndRoleRepository.findUserAndRoleByUserId(user.id)
         val role = roleRepository.findById(userAndRole.roleId).get()
@@ -151,7 +152,7 @@ class UserServiceImpl : UserService, UserDetailsService {
     }
 
 
-    override fun studentProfile(studentId: Long):StudentInfo {
+    override fun studentProfile(studentId: Long): StudentInfo {
         val student = studentRepository.findById(studentId).get()
         val studentInfo = StudentInfo()
         BeanUtils.copyProperties(student, studentInfo)

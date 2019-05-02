@@ -7,7 +7,7 @@ import javax.persistence.*
  * 课程 表
  */
 @Entity
-@Table(name = "uek_acdemic_course")
+@Table(name = "uek_acdemic_course", indexes = [Index(name = "id", columnList = "id")])
 class Course {
 
     @Id

@@ -7,10 +7,7 @@ import com.nuc.libra.result.Result
 import com.nuc.libra.service.PaperService
 import com.nuc.libra.util.CompilerUtils
 import com.nuc.libra.util.ResultUtils
-import com.nuc.libra.vo.ExamParam
-import com.nuc.libra.vo.PageVO
-import com.nuc.libra.vo.TitleVO
-import com.nuc.libra.vo.VerifyPageParam
+import com.nuc.libra.vo.*
 import io.swagger.annotations.ApiOperation
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -18,7 +15,6 @@ import org.springframework.amqp.core.AmqpTemplate
 import org.springframework.beans.BeanUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
-import java.util.*
 
 /**
  * @author 杨晓辉 2018/2/3 11:22
@@ -74,6 +70,7 @@ class PageController {
         }
 
         val pageVO = PageVO()
+
         /*
          * 题的类型：1单选2填空3简答4程序5算法试题
          */
@@ -88,6 +85,10 @@ class PageController {
                 }
             }
         }
+        val paper = paperService.getOnePaper(examParam.pageId)
+        val studentPageInfo = StudentPageInfo()
+        BeanUtils.copyProperties(paper, studentPageInfo)
+        pageVO.studentPageInfo = studentPageInfo
         return ResultUtils.success(200, "获取成功", pageVO)
     }
 
@@ -121,10 +122,9 @@ class PageController {
         logger.info("answer json is $json")
         val result = JSON.parseObject(json, com.nuc.libra.entity.result.Result::class.java)
                 ?: throw ResultException("解析错误", 500)
-//        paperService.verifyPage(result.result.studentId, result.result.pageId)
+        paperService.verifyPage(result.studentId, result.pageId)
         logger.info("result is  $result")
         rabbitTemplate.convertAndSend("check", result)
-
         return ResultUtils.success(message = "提交成功")
     }
 
@@ -188,5 +188,6 @@ class PageController {
 
         return ResultUtils.success(200, "编译完成", CompilerUtils.buildTargetSource(code, className))
     }
+
 
 }

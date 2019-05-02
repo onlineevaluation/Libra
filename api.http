@@ -82,3 +82,16 @@ content-type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJUMTUxNDAxMDEwMSIsInBvc2l0aW9uSWQiOjEsInVzZXJJZCI6MTU1NSwicm9sZXMiOlsidGVhY2hlciJdLCJpYXQiOjE1NTU1NTc1ODUsImV4cCI6MTU1NjE2MjM4NX0.J4xWfDxYTeBDn0zY3NwqJi5AKmXMVzZfs_qv6X0OZnY
 
 ###
+
+POST http://106.12.195.114:9000/code
+content-type: application/json
+
+{
+  "filepath":"d:/datafile/test.cpp",
+  "outpath":"d:/data/test.cpp",
+  "filename":"123.cpp",
+  "testSet":"{'datas': [{'input': '#$%1,2%$#','output': '#$%3%$#'},{'input': '#$%3,6%$#','output': '#$%9%$#'}]}",
+  "limitetime":3
+}
+
+###

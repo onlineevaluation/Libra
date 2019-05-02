@@ -8,7 +8,7 @@ import javax.persistence.*
  */
 @Entity
 @Table(
-    name = "uek_acdemic_chapter",
+    name = "uek_acdemic_knowledge",
     indexes = [Index(name = "id", columnList = "id"),
         Index(name = "course_id", columnList = "courseId"),
         Index(name = "chapter_id", columnList = "chapterId")]
@@ -18,7 +18,7 @@ class Knowledge {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0
 
-    var num: Long = 0
+    var num: Long? = 0
 
     lateinit var name: String
 
@@ -30,7 +30,7 @@ class Knowledge {
 
     var courseId: Long = 0L
 
-    var clickNum: Long = 0L
+    var clickNum: Long? = 0L
 
     var chapterId: Long = 0L
 

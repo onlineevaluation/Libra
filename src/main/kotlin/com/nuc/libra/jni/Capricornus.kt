@@ -32,10 +32,13 @@ interface Capricornus : Library {
 
 
     companion object {
-        private var path = File(ResourceUtils.getURL("classpath:").path)
-        private val resourceFile = File(path.absolutePath, "bin/dll/")
+        //        private val path = PathUtils.rootPath()
+
+        val path = ClassPathResource("Capricornus").path
+
+
         val INSTANCE =
-            Native.load("$resourceFile\\libCapricornus.so", Capricornus::class.java)
-                    ?: throw ResultException("无法加载 so 文件", 500)
+            Native.load("Capricornus", Capricornus::class.java)
+                    ?: throw ResultException("can not load .so or .dll file", 500)
     }
 }
