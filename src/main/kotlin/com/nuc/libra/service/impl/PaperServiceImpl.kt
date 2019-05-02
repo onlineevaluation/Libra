@@ -561,12 +561,16 @@ class PaperServiceImpl : PaperService {
 //        code:8
         val message = restTemplate.postForObject("http://106.12.195.114:9000/code", paramMap, String::class.java)!!
         logger.info("message is ${message.toString()}")
-        logger.info("code is ${message.substring(5, 6)}")
-        when (message.substring(5, 6)) {
+        logger.info("code is ${message.substring(6, 7)}")
+        when (message.substring(6, 7)) {
             "9" -> {
                 resultScore = score
             }
             "8" -> {
+                val str = message.substringAfter(":8 ").substringBefore("\"")
+                println("str is $str")
+                resultScore = str.toFloat() * score
+                println("result score $resultScore")
 
             }
             "7" -> {
@@ -589,6 +593,9 @@ class PaperServiceImpl : PaperService {
             }
             "1" -> {
 
+            }
+            else -> {
+                logger.info("状态码为识别")
             }
 
         }
