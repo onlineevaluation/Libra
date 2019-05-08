@@ -23,7 +23,7 @@ class PaperServiceImplTest {
      */
     @Test
     fun getRankList() {
-        val studentId = 811L
+        val studentId = 782L
 
         val list = pageService.listScore(studentId)
 

@@ -153,7 +153,22 @@ class PageAndClassInfo {
 
 }
 
-
+/**
+ * 学生试卷信息
+ * @property pageId Long
+ * @property totalScores Float
+ * @property teacherName String?
+ * @property courseName String
+ * @property paperTitle String
+ * @property difficulty Float
+ * @property selectScore Float
+ * @property blankScore Float
+ * @property answerScore Float
+ * @property codeScore Float
+ * @property algorithmScore Float
+ * @property createTime String
+ * @property knowledgeList List<String>
+ */
 class StudentPageInfo {
     var pageId = 0L
     var totalScores: Float = 0f
@@ -168,4 +183,20 @@ class StudentPageInfo {
     var algorithmScore: Float = 0f
     lateinit var createTime: String
     var knowledgeList: List<String> = emptyList()
+}
+
+/**
+ * 知识点和相关信息
+ * @property knowledgeId Long
+ * @property size Long
+ */
+class KnowledgeAndSize {
+    var knowledgeId: Long = 0
+    var size: Int = 0
+
+    override fun toString(): String {
+        return "KnowledgeAndSize(knowledgeId=$knowledgeId, size=$size)"
+    }
+
+
 }
