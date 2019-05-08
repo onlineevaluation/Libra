@@ -2,13 +2,10 @@ package com.nuc.libra.service.impl
 
 import com.nuc.libra.exception.ResultException
 import com.nuc.libra.po.Class
-import com.nuc.libra.po.CourseClass
 import com.nuc.libra.po.StudentScore
 import com.nuc.libra.repository.*
 import com.nuc.libra.service.ClassService
-import com.nuc.libra.vo.ClassInfo
-import com.nuc.libra.vo.ClassStudentCountInfo
-import com.nuc.libra.vo.StudentAndScoreInfo
+import com.nuc.libra.vo.*
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.BeanUtils
@@ -136,7 +133,7 @@ class ClassServiceImpl : ClassService {
      */
     override fun studentCount(teacherId: Long): Long {
         val classAndTeachers = courseClassRepository.findByTeacherId(teacherId)
-        return classAndTeachers.distinctBy { it.classId}.map {
+        return classAndTeachers.distinctBy { it.classId }.map {
             studentRepository.countByClassId(classId = it.classId)
         }.reduce { sum, count -> sum + count }
     }
@@ -220,6 +217,41 @@ class ClassServiceImpl : ClassService {
      */
     override fun getAllClass(): MutableList<Class> {
         return classRepository.findAll()
+    }
+
+    @Autowired
+    private lateinit var pageRepository: PagesRepository
+
+    override fun avgScoreByClassId(classId: Long, courseId: Long): List<StudentAvgInfo> {
+        val studentList = studentRepository.findStudentsByClassId(classId)
+        val pageList = pageRepository.findByCourseId(courseId)
+        val `class` = classRepository.getOne(classId)
+        val studentAvgInfoList = ArrayList<StudentAvgInfo>()
+        studentList.forEach { student ->
+            val scoreList = ArrayList<Double>()
+            pageList.forEach { page ->
+                val studentScore = studentScoreRepository.findByPagesIdAndStudentId(page.id, student.id)
+                if (studentScore != null) {
+                    scoreList.add(studentScore.score)
+                }
+            }
+            var average = scoreList.sum() / scoreList.size
+            if (average.isNaN()) {
+                average = 0.0
+            }
+            val studentInfo = StudentInfo()
+            studentInfo.`class` = `class`.name
+            studentInfo.classId = classId
+            studentInfo.name = student.name
+            studentInfo.studentNumber = student.studentNumber
+
+            studentAvgInfoList.add(StudentAvgInfo().apply {
+                this.average = average.coerceIn(0.00, 100.00)
+                this.student = studentInfo
+                this.courseId = courseId
+            })
+        }
+        return studentAvgInfoList
     }
 
 }

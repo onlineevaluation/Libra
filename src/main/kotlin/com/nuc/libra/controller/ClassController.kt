@@ -116,4 +116,15 @@ class ClassController {
 
     }
 
+    /**
+     * 获取班级中每个学生的平均成绩
+     * @param classId Long
+     * @return Result
+     */
+    @GetMapping("/average/{classId}/{courseId}")
+    fun getClassStudentAverage(@PathVariable("classId") classId: Long, @PathVariable("courseId") courseId: Long): Result {
+        val averageScore = classService.avgScoreByClassId(classId, courseId)
+        return ResultUtils.success(data = averageScore)
+    }
+
 }

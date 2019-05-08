@@ -42,4 +42,6 @@ interface StudentScoreRepository : JpaRepository<StudentScore, Long> {
      * 通过 试卷 获取 分数最高的 10名 同学
      */
     fun findTop10ScoresByPagesIdOrderByScoreDesc(pageId: Long): List<StudentScore>?
+
+//    fun findByPagesIdAndStudentId(pageId: Long, studentId: Long):
 }

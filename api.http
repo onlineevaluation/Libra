@@ -95,3 +95,9 @@ content-type: application/json
 }
 
 ###
+
+GET http://localhost:8081/class/average/1/1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNzEzMDEwMTAxIiwiY2xhc3NJZCI6MSwidXNlcklkIjo4MTEsInJvbGVzIjpbInN0dWRlbnQiXSwiaWF0IjoxNTU3MzE4MzgyLCJleHAiOjE1NTc5MjMxODJ9.Q2P0__ffkTUn15AR09ZmThWoxTnCsFsePGtHBMORLMw
+
+###

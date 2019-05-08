@@ -51,8 +51,8 @@ class CalTitleDifficulty {
             var diff = sum / answerList.size / score
 
             // 如果难度无法计算的时候，将试题难度进行随机数，保证试题有机会在之后出现
-            if (diff.equals(Double.NaN)) {
-                diff = Random.nextDouble()
+            if (diff.isNaN() || diff > 1.0 || diff <= 0.0) {
+                diff = Random.nextDouble(0.3, 0.9)
             }
             diff = String.format("%.2f", diff).toDouble()
             it.difficulty = diff

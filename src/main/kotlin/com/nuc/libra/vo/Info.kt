@@ -200,3 +200,14 @@ class KnowledgeAndSize {
 
 
 }
+
+/**
+ * 学生平均分数信息
+ * @property student StudentInfo
+ * @property average [ERROR : null type]
+ */
+class StudentAvgInfo {
+    lateinit var student: StudentInfo
+    var average: Double = 0.0
+    var courseId: Long = 0
+}

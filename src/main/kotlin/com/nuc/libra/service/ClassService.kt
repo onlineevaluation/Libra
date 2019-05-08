@@ -5,6 +5,7 @@ import com.nuc.libra.po.StudentScore
 import com.nuc.libra.vo.ClassInfo
 import com.nuc.libra.vo.ClassStudentCountInfo
 import com.nuc.libra.vo.StudentAndScoreInfo
+import com.nuc.libra.vo.StudentAvgInfo
 import org.springframework.stereotype.Service
 
 /**
@@ -62,4 +63,10 @@ interface ClassService {
      */
     fun getAllClass(): MutableList<Class>
 
+    /**
+     * 计算平均成绩
+     * @param classId Long
+     * @return Double
+     */
+    fun avgScoreByClassId(classId: Long, courseId: Long): List<StudentAvgInfo>
 }
