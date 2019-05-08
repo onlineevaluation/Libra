@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
 import kotlin.random.Random
+import kotlin.streams.toList
 
 /**
  * @author 杨晓辉 2019/4/24 20:01
@@ -28,7 +29,7 @@ class CalTitleDifficulty {
     @Scheduled(fixedDelay = 1000 * 60 * 60 * 24 * 7)
     fun calDifficultyTask() {
         val allTitles = titleRepository.findAll()
-        allTitles.forEach {
+        val list = allTitles.parallelStream().map {
             val answerList = answerRepository.findByTitleId(it.id)
             val sum = answerList.sumByDouble { it.score }
             var score = 0.0
@@ -55,9 +56,8 @@ class CalTitleDifficulty {
             }
             diff = String.format("%.2f", diff).toDouble()
             it.difficulty = diff
-
-            // update
-            titleRepository.save(it)
-        }
+            it
+        }.toList()
+        titleRepository.saveAll(list)
     }
 }

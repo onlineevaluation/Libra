@@ -25,4 +25,11 @@ interface StudentAnswerRepository : JpaRepository<StudentAnswer, Long> {
      * @return List<StudentAnswer> 返回学生答案
      */
     fun findByTitleId(titleId: Long): List<StudentAnswer>
+
+
+    /**
+     * 通过学生id获取所有的学生
+     * @return List<StudentAnswer>
+     */
+    fun findByStudentId(studentId: Long):List<StudentAnswer>
 }
