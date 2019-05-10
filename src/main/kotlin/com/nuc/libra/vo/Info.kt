@@ -4,6 +4,8 @@ import com.nuc.libra.po.Course
 import com.nuc.libra.po.Knowledge
 import com.nuc.libra.po.Title
 import java.sql.Timestamp
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 /**
  * @author 杨晓辉 2019/4/8 12:00
@@ -210,4 +212,36 @@ class StudentAvgInfo {
     lateinit var student: StudentInfo
     var average: Double = 0.0
     var courseId: Long = 0
+}
+
+/**
+ * 班级成绩分析报告
+ * @property highestScore Int
+ * @property lowestScore Int
+ * @property mostKnowledgeIds Array<Long>
+ */
+class ClassScoreInfo {
+    /**
+     * 最高分
+     */
+    var highestScore: Float = 0f
+    /**
+     * 最低分
+     */
+    var lowestScore: Float = 0f
+
+//    /**
+//     * 易错知识点
+//     */
+//    var mostKnowledgeIds: Array<Long> = emptyArray<Long>()
+
+    /**
+     * 班级平均成绩
+     */
+    var average: Float = 0f
+    /**
+     * 创建时间
+     */
+    var createdDate = Timestamp(System.currentTimeMillis())
+
 }

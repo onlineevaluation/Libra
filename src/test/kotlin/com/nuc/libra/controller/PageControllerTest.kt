@@ -66,7 +66,7 @@ class PageControllerTest {
      */
     @Test
     fun getPageInfoTest() {
-        val examParam = ExamParam(1, 1)
+        val examParam = ExamParam(1L, 1L)
         result = mockMvc.perform(
             MockMvcRequestBuilders.get("$baseUrl/exam").contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JSON.toJSONString(examParam))

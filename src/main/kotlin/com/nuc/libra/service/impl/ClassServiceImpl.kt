@@ -222,6 +222,12 @@ class ClassServiceImpl : ClassService {
     @Autowired
     private lateinit var pageRepository: PagesRepository
 
+    /**
+     * 获取学生平均成绩
+     * @param classId Long
+     * @param courseId Long
+     * @return List<StudentAvgInfo>
+     */
     override fun avgScoreByClassId(classId: Long, courseId: Long): List<StudentAvgInfo> {
         val studentList = studentRepository.findStudentsByClassId(classId)
         val pageList = pageRepository.findByCourseId(courseId)

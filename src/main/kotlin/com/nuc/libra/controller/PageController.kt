@@ -54,9 +54,16 @@ class PageController {
             val titleVO = TitleVO()
             BeanUtils.copyProperties(it, titleVO)
             var blankNumber = 0
+            if (it.category == "1") {
+                logger.info("it $it")
+                // 答案乱序
+
+            }
+
+
             if (it.category == "2") {
                 val sb = StringBuilder()
-                val titles = it.title.split("_{0,20}_".toRegex())
+                val titles = it.title.split("_{0,50}_".toRegex())
                 for (i in 0 until titles.size - 1) {
                     sb.append(titles[i])
                     sb.append("_____")

@@ -19,6 +19,13 @@ interface TitleRepository : JpaRepository<Title, Long> {
      */
     fun findByCategoryAndCourseId(category:String,courseId:Long):List<Title>
 
+    /**
+     * 通过知识点id和课程id查找
+     * @param knowledgeId Long
+     * @param courseId Long
+     * @return List<Title>
+     */
     fun findByKnowledgeIdAndCourseId(knowledgeId:Long,courseId: Long):List<Title>
+
 
 }

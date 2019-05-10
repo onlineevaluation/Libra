@@ -47,10 +47,6 @@ fun main(args: Array<String>) {
         pageFile.mkdirs()
     }
 
-    System.setProperty("jna.library.path","/libra/lib")
-    System.setProperty("jna.platform.library.path ","/libra/lib")
-    val sts = System.getProperty("java.library.path")
-    logger.info("System lib path is $sts")
 }
 
 

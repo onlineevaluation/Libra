@@ -39,7 +39,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNzEzMDEwMTAxIiwiY2xhc3NJZ
 # /page/exam
 GET http://localhost:8081/page/exam
 content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNzEzMDEwMTAxIiwiY2xhc3NJZCI6MSwidXNlcklkIjo4MTEsImlhdCI6MTU0ODI5NzUyOSwiZXhwIjoxNTQ4OTAyMzI5fQ.LLJQA6CXqofcBY8xP-PE8KESsYKJlqhXT37sG_0eAXo
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNzEzMDEwMTAxIiwiY2xhc3NJZCI6MSwidXNlcklkIjo4MTEsInJvbGVzIjpbInN0dWRlbnQiXSwiaWF0IjoxNTU3MzE4MzgyLCJleHAiOjE1NTc5MjMxODJ9.Q2P0__ffkTUn15AR09ZmThWoxTnCsFsePGtHBMORLMw
 
 {
   "classId": 1,

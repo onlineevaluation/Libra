@@ -1,7 +1,6 @@
 package com.nuc.libra.vo
 
 import io.swagger.annotations.ApiModel
-import io.swagger.annotations.ApiModelProperty
 import java.sql.Date
 import java.sql.Timestamp
 import java.util.*
@@ -33,17 +32,8 @@ data class UserParam(
  */
 @ApiModel("考试试卷信息")
 data class ExamParam(
-    @ApiModelProperty(
-        name = "classId",
-        value = "班级id",
-        required = true
-    )
+
     val classId: Long,
-    @ApiModelProperty(
-        name = "pageId",
-        value = "试卷id",
-        required = true
-    )
     val pageId: Long
 )
 
