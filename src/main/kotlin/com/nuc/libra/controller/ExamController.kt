@@ -30,7 +30,10 @@ class ExamController {
         return ResultUtils.success(data = count)
     }
 
-
+    @GetMapping("/error/{classId}/{pageId}")
+    fun getErrorInfo(@PathVariable("classId") classId: Long, @PathVariable("pageId") pageId: Long) {
+        examService.getStudentErrorInfo(classId, pageId)
+    }
 
 
 }

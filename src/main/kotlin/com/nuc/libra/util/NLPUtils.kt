@@ -1,7 +1,16 @@
 package com.nuc.libra.util
 
+import com.hankcs.hanlp.corpus.tag.Nature
+import com.hankcs.hanlp.dictionary.stopword.CoreStopWordDictionary
 import com.hankcs.hanlp.mining.word2vec.DocVectorModel
 import com.hankcs.hanlp.mining.word2vec.WordVectorModel
+import com.hankcs.hanlp.seg.common.Term
+import com.hankcs.hanlp.tokenizer.StandardTokenizer
+import java.io.File
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 /**
@@ -11,16 +20,46 @@ object NLPUtils {
 
     private var wordVectorModel: WordVectorModel
 
+    private var stopWords: ArrayList<String> = ArrayList()
+    private val rootPath = PathUtils.rootPath()
+
     /**
      * 初始化参数
      */
     init {
-        val docPath: String
-        val os = System.getProperty("os.name")
-        val rootPath = PathUtils.rootPath()
-        docPath = "$rootPath/data/polyglot-zh.txt"
+        val docPath = "$rootPath/data/polyglot-zh.txt"
         wordVectorModel = WordVectorModel(docPath)
+        initStopWord()
     }
+
+    /**
+     * 初始化停词
+     */
+    private fun initStopWord() {
+        val stream = Files.newInputStream(Paths.get("$rootPath/data/stopword.txt"))
+        stream.buffered().reader().use { line ->
+            stopWords.addAll((line.readLines()))
+        }
+        stopWords.add(" ")
+        stopWords.add("  ")
+        stopWords.add("   ")
+        stopWords.add("    ")
+        stopWords.add("     ")
+    }
+
+    /**
+     * 去停词
+     * @param termList MutableList<Term>
+     * @return MutableList<String>
+     */
+    private fun removeStopWords(termList: MutableList<Term>): MutableList<String> {
+        val wordList = termList.map { term ->
+            term.word
+        }.toMutableList()
+        wordList.removeAll(stopWords)
+        return wordList
+    }
+
 
     /**
      * 词语相似度
@@ -52,5 +91,21 @@ object NLPUtils {
         }
     }
 
-}
+    /**
+     * 词频统计
+     * @param str String
+     * @param limitFrequency 最低词频限制，低于该词频的字符不会统计，默认为 2
+     * @return TreeMap<String, Int>
+     */
+    fun wordFrequency(str: String, limitFrequency: Int = 2): Map<String, Int> {
+        val wordMap = TreeMap<String, Int>()
+        val segment = StandardTokenizer.segment(str)
+        val termList = removeStopWords(segment)
+        termList.forEach { word ->
+            wordMap[word] = wordMap.getOrDefault(word, 0) + 1
+        }
 
+        return wordMap.filter { it.value >= limitFrequency }
+    }
+
+}

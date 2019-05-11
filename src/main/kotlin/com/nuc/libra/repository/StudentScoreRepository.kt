@@ -3,11 +3,13 @@ package com.nuc.libra.repository
 import com.nuc.libra.po.Student
 import com.nuc.libra.po.StudentScore
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.stereotype.Repository
 
 /**
  * @author 杨晓辉 2018/2/12 10:29
  * 学生分数
  */
+@Repository
 interface StudentScoreRepository : JpaRepository<StudentScore, Long> {
 
     /**
