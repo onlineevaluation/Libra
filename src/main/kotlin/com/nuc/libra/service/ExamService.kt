@@ -1,6 +1,7 @@
 package com.nuc.libra.service
 
 import com.nuc.libra.vo.ClassScoreInfo
+import com.nuc.libra.vo.TitleErrorInfo
 import org.springframework.stereotype.Service
 
 /**
@@ -20,7 +21,13 @@ interface ExamService {
     /**
      * 获取学生所有测错题
      */
-    fun getStudentAllErrorTitleKnowledge(classId: Long, pageId: Long):ClassScoreInfo
+    fun getStudentAllErrorTitleKnowledge(classId: Long, pageId: Long): ClassScoreInfo
 
-    fun getStudentErrorInfo(classId: Long, pageId: Long)
+    /**
+     * 获取学生错误详细
+     * @param classId Long
+     * @param pageId Long
+     * @return TitleErrorInfo
+     */
+    fun getStudentErrorInfo(classId: Long, pageId: Long): TitleErrorInfo
 }

@@ -30,10 +30,29 @@ class ExamController {
         return ResultUtils.success(data = count)
     }
 
+
+    /**
+     * 获取该班级的学生错误信息
+     * @param classId  classId: Long 班级id
+     * @param pageId  pageId: Long 试卷id
+     * @return Result
+     */
     @GetMapping("/error/{classId}/{pageId}")
-    fun getErrorInfo(@PathVariable("classId") classId: Long, @PathVariable("pageId") pageId: Long) {
-        examService.getStudentErrorInfo(classId, pageId)
+    fun getErrorInfo(@PathVariable("classId") classId: Long, @PathVariable("pageId") pageId: Long): Result {
+        val studentErrorInfo = examService.getStudentErrorInfo(classId, pageId)
+        return ResultUtils.success(data = studentErrorInfo)
     }
 
 
+    /**
+     * 获取试题概况
+     * @param classId ") classId: Long
+     * @param pageId ") pageId: Long
+     * @return Result
+     */
+    @GetMapping("/class/{classId}/{pageId}")
+    fun getClassErrorInfo(@PathVariable("classId") classId: Long, @PathVariable("pageId") pageId: Long): Result {
+        val studentAllErrorTitleKnowledge = examService.getStudentAllErrorTitleKnowledge(classId, pageId)
+        return ResultUtils.success(data = studentAllErrorTitleKnowledge)
+    }
 }

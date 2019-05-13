@@ -245,3 +245,56 @@ class ClassScoreInfo {
     var createdDate = Timestamp(System.currentTimeMillis())
 
 }
+
+/**
+ * 试卷答案信息
+ * @property ans String
+ * @property id Long
+ * @property errorRate Float
+ */
+class AnswerInfo {
+    lateinit var ans: String
+    var id: Long = 0L
+    var errorRate = 0f
+    override fun toString(): String {
+        return "AnswerInfo(ans='$ans', id=$id, errorRate=$errorRate)"
+    }
+}
+
+/**
+ * 错误答案信息
+ * @property title String
+ * @property titleId Long
+ * @property frequency Map<String, Int>
+ */
+class ErrorInfo {
+    lateinit var title: String
+    var titleId: Long = 0L
+    var frequency: Map<String, Int> = emptyMap()
+
+    override fun toString(): String {
+        return "ErrorInfo(title='$title', titleId=$titleId, frequency=$frequency)"
+    }
+}
+
+
+/**
+ * 错误试题教师端详细信息
+ * @property choiceErrorList List<ErrorInfo>
+ * @property answerErrorWordFrequency List<ErrorInfo>
+ * @property blankErrorWordFrequency List<ErrorInfo>
+ */
+class TitleErrorInfo {
+
+    var choiceErrorList: List<ErrorInfo> = emptyList()
+
+    var answerErrorWordFrequency: List<ErrorInfo> = emptyList()
+
+    var blankErrorWordFrequency: List<ErrorInfo> = emptyList()
+
+    override fun toString(): String {
+        return "TitleErrorInfo(choiceErrorList=$choiceErrorList, answerErrorWordFrequency=$answerErrorWordFrequency, blankErrorWordFrequency=$blankErrorWordFrequency)"
+    }
+
+
+}
