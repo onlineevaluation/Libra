@@ -1,5 +1,6 @@
 package com.nuc.libra.service.impl
 
+import com.nuc.libra.LibraApplication
 import com.nuc.libra.repository.*
 import com.nuc.libra.service.ExamService
 import com.nuc.libra.util.NLPUtils
@@ -7,6 +8,8 @@ import com.nuc.libra.vo.AnswerInfo
 import com.nuc.libra.vo.ClassScoreInfo
 import com.nuc.libra.vo.ErrorInfo
 import com.nuc.libra.vo.TitleErrorInfo
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import kotlin.streams.toList
@@ -16,6 +19,7 @@ import kotlin.streams.toList
  */
 @Service
 class ExamServiceImpl : ExamService {
+    private val logger: Logger = LoggerFactory.getLogger(LibraApplication::class.java)
 
     @Autowired
     private lateinit var studentRepository: StudentRepository
@@ -93,13 +97,13 @@ class ExamServiceImpl : ExamService {
         val algorithmAnswerList = ArrayList<AnswerInfo>()
         val page = pagesRepository.findById(pageId).get()
         val pageAndTitleList = pagesAndTitleRepository.findByPagesId(page.id)
-        pageAndTitleList.parallelStream().forEach { pageAndTitle ->
+        pageAndTitleList.forEach { pageAndTitle ->
             val title = titleRepository.findById(pageAndTitle.titleId).get()
-            var blankString: String = ""
+            var blankString = ""
             var answerString = ""
             var ansCount = 0
             var errorCount = 0
-            studentList.parallelStream().forEach { student ->
+            studentList.forEach { student ->
                 val studentAns =
                     studentAnswerRepository.findByStudentIdAndTitleIdAndPagesId(student.id, title.id, pageId)
                             ?: return@forEach
@@ -115,18 +119,18 @@ class ExamServiceImpl : ExamService {
                     }
                     // 填空题
                     "2" -> {
+
                         if (page.blankScore * 0.6 > studentAns.score) {
                             blankString += studentAns.answer + " "
                             errorCount++
                         }
 
+
                     }
                     // 简单题
                     "3" -> {
-                        if (page.answerScore * 0.6 > studentAns.score) {
-                            answerString += studentAns.answer + " "
-                            errorCount++
-                        }
+                        answerString += studentAns.answer + " "
+                        errorCount++
                     }
                     // 算法题
                     "4" -> {
@@ -197,10 +201,11 @@ class ExamServiceImpl : ExamService {
                     "${title.title}\n  A:${title.sectionA} \n B:${title.sectionB} \n" +
                             " C:${title.sectionC} \n D:${title.sectionD}"
             }
-        }
+        }.toList()
         // 简答题词频
-        val answerWordFrequency = answerAnswerList.parallelStream().map {
+        val answerWordFrequency = answerAnswerList.map {
             val wordFrequency = NLPUtils.wordFrequency(it.ans)
+
             return@map ErrorInfo().apply {
                 this.frequency = wordFrequency
                 this.titleId = it.id
@@ -208,7 +213,7 @@ class ExamServiceImpl : ExamService {
             }
         }.toList()
         // 填空题词频
-        val blankWordFrequency = blankAnswerList.parallelStream().map {
+        val blankWordFrequency = blankAnswerList.map {
             val wordFrequency = NLPUtils.wordFrequency(it.ans)
             return@map ErrorInfo().apply {
                 this.frequency = wordFrequency
@@ -228,7 +233,6 @@ class ExamServiceImpl : ExamService {
         titleErrorInfo.choiceErrorList = choiceErrorList
         titleErrorInfo.blankErrorWordFrequency = blankWordFrequency
         titleErrorInfo.answerErrorWordFrequency = answerWordFrequency
-
         return titleErrorInfo
 
     }

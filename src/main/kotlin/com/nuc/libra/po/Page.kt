@@ -18,7 +18,7 @@ class Page {
     @Column(columnDefinition = "DATETIME")
     var createTime: Timestamp? = null
     var totalScores: Float = 0f
-    lateinit var paperTitle: String
+    lateinit var name: String
     var choiceScore: Float = 0.0f
     var blankScore: Float = 0.0f
     var answerScore: Float = 0.0f
@@ -27,7 +27,7 @@ class Page {
     var createId: Long = 0L
 
     override fun toString(): String {
-        return "Page(id=$id, status=$status, courseId=$courseId, createTime=$createTime, totalscores=$totalScores, paperTitle='$paperTitle', choiceScore=$choiceScore, blankScore=$blankScore, answerScore=$answerScore, codeScore=$codeScore, algorithmScore=$algorithmScore, createId=$createId)"
+        return "Page(id=$id, status=$status, courseId=$courseId, createTime=$createTime, totalscores=$totalScores, name='$name', choiceScore=$choiceScore, blankScore=$blankScore, answerScore=$answerScore, codeScore=$codeScore, algorithmScore=$algorithmScore, createId=$createId)"
     }
 
 

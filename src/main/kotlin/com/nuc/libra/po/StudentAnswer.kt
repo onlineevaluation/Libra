@@ -7,7 +7,13 @@ import javax.persistence.*
  * 学生答案表
  */
 @Entity
-@Table(name = "uek_evaluate_answer")
+@Table(
+    name = "uek_evaluate_answer",
+    indexes = [Index(name = "id", columnList = "id"),
+        Index(name = "student_id", columnList = "studentId"),
+        Index(name = "title_id", columnList = "titleId"),
+        Index(name = "pagesId", columnList = "pagesId")]
+)
 class StudentAnswer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

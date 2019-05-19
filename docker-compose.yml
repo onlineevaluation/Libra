@@ -1,0 +1,11 @@
+version: "1"
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8080"
+    volumes:
+      - /libra:/app/

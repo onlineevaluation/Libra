@@ -80,7 +80,7 @@ class PaperServiceImpl : PaperService {
             val page = pagesRepository.findById(it.pagesId).get()
             val pageAndClassInfo = PageAndClassInfo()
             BeanUtils.copyProperties(it, pageAndClassInfo)
-            pageAndClassInfo.pageTitle = page.paperTitle
+            pageAndClassInfo.pageTitle = page.name
             pageAndClassInfo.pageId = it.pagesId
             pageAndClassInfo.course = courseRepository.getOne(page.courseId).name
             return@map pageAndClassInfo
@@ -312,7 +312,7 @@ class PaperServiceImpl : PaperService {
             val studentScoreParam = StudentScoreParam()
             BeanUtils.copyProperties(list[i], studentScoreParam)
             val page = pagesRepository.findById(list[i].pagesId).get()
-            studentScoreParam.pageTitle = page.paperTitle
+            studentScoreParam.pageTitle = page.name
             studentScoreParam.classRank = String.format("%.2f", (classRank.toDouble() / classmate.size) * 100)
             studentScoreParam.gradeRank = String.format("%.2f", (gradeRank.toDouble() / studentScores.size) * 100)
             studentScoreList.add(studentScoreParam)
@@ -345,7 +345,7 @@ class PaperServiceImpl : PaperService {
             throw ResultException("该学生没有参加该考试", 500)
         }
         val page = pagesRepository.findById(pageId).get()
-        pageDetails.pageTitle = page.paperTitle
+        pageDetails.pageTitle = page.name
         logger.info("page is $page")
         pageDetails.course = courseRepository.findById(page.courseId).get().name
 
@@ -677,7 +677,7 @@ class PaperServiceImpl : PaperService {
             this.difficulty = diff
             this.courseName = courseRepository.findById(page.courseId).get().name
             this.teacherName = teacherRepository.findById(page.createId).get().name
-            this.paperTitle = page.paperTitle
+            this.paperTitle = page.name
             this.totalScores = page.totalScores
             this.selectScore = page.choiceScore
             this.blankScore = page.blankScore
