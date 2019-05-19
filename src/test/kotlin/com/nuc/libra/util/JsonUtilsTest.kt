@@ -1,6 +1,7 @@
 package com.nuc.libra.util
 
 import com.alibaba.fastjson.JSON
+import com.nuc.libra.vo.Result
 import org.junit.Test
 
 /**
@@ -32,7 +33,7 @@ class JsonUtilsTest {
                     "  ]\n" +
                     " }"
 
-        val ob = JSON.parseObject(json, com.nuc.libra.entity.result.Result::class.java)
+        val ob = JSON.parseObject(json, Result::class.java)
         println(ob)
 
 

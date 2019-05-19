@@ -127,7 +127,7 @@ class PageController {
     @PostMapping("/addAns")
     fun addAns(@RequestBody json: String): Result {
         logger.info("answer json is $json")
-        val result = JSON.parseObject(json, com.nuc.libra.entity.result.Result::class.java)
+        val result = JSON.parseObject(json, com.nuc.libra.vo.Result::class.java)
                 ?: throw ResultException("解析错误", 500)
         paperService.verifyPage(result.studentId, result.pageId)
         logger.info("result is  $result")

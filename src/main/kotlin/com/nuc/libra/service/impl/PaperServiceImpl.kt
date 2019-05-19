@@ -1,6 +1,6 @@
 package com.nuc.libra.service.impl
 
-import com.nuc.libra.entity.result.Result
+import com.nuc.libra.vo.Result
 import com.nuc.libra.exception.ResultException
 import com.nuc.libra.po.*
 import com.nuc.libra.po.StudentAnswer

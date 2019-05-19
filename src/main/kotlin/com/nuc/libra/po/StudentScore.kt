@@ -32,7 +32,7 @@ class StudentScore : Comparable<StudentScore> {
     var status: String? = null
     var time: Timestamp? = null
     var employeeId: Long? = 0
-    var dotime: Date? = null
+    var dotime: Long = 0L
 
     override fun compareTo(other: StudentScore): Int {
         return when {
@@ -41,7 +41,6 @@ class StudentScore : Comparable<StudentScore> {
             else -> -1
         }
     }
-
 
     override fun toString(): String {
         return "StudentScore(id=$id, studentId=$studentId, pagesId=$pagesId, objectivesScore=$objectivesScore, subjectivityScore=$subjectivityScore, score=$score, status=$status, time=$time, employeeId=$employeeId, dotime=$dotime)"

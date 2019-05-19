@@ -1,4 +1,4 @@
-package com.nuc.libra.entity.result
+package com.nuc.libra.vo
 
 import java.io.Serializable
 
@@ -13,12 +13,10 @@ class Result : Serializable {
     var studentId: Long = 0L
     var pageId: Long = 0L
     var answer = ArrayList<Answer>()
+    var doTime: Long = 0L
 
-    /**
-     * toString
-     */
     override fun toString(): String {
-        return "Result(studentId=$studentId, pageId=$pageId, ans=$answer)"
+        return "Result(studentId=$studentId, pageId=$pageId, answer=$answer, doTime=$doTime)"
     }
 
 
