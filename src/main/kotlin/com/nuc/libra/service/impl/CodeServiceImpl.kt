@@ -1,7 +1,5 @@
 package com.nuc.libra.service.impl
 
-import com.nuc.libra.jni.Capricornus
-import com.nuc.libra.jni.GoString
 import com.nuc.libra.repository.AlgorithmRepository
 import com.nuc.libra.repository.StudentScoreRepository
 import com.nuc.libra.service.CodeService
@@ -42,46 +40,6 @@ class CodeServiceImpl : CodeService {
         codePath.writeText(code.codeString, charset = Charsets.UTF_8)
         //获取数据库答案
         val codeData = algorithmRepository.findById(code.id).get()
-        val judgeCode = Capricornus.INSTANCE.judgeCode(
-            GoString.ByValue(inputPath),
-            GoString.ByValue(outputPath),
-            GoString.ByValue(fileName),
-            GoString.ByValue(codeData.testSet),
-            codeData.limitTime
-        )
-
-        println(judgeCode)
-        println("code is ${judgeCode.substring(5,6)}")
-        // 判断 judge code
-        when(judgeCode.substring(5,6)) {
-            "9"-> {
-
-            }
-            "8"->{
-
-            }
-            "7"->{
-
-            }
-            "6"->{
-
-            }
-            "5"->{
-
-            }
-            "4"->{
-
-            }
-            "3"->{
-
-            }
-            "2"->{
-
-            }
-            "1"->{
-
-            }
-        }
         return ""
     }
 

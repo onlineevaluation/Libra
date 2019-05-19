@@ -11,7 +11,6 @@ spring:
     password: 1234
     type: com.alibaba.druid.pool.DruidDataSource
 
-
     initialSize: 10   #初始化连接个数
     minIdle: 10       #最小空闲连接个数
     maxActive: 500    #最大连接个数
@@ -39,6 +38,9 @@ spring:
       ddl-auto: update
   main:
     allow-bean-definition-overriding: true
+  aop:
+    auto: true
+    proxy-target-class: true
 
 
 server:

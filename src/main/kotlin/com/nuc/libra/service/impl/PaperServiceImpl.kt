@@ -745,6 +745,7 @@ class PaperServiceImpl : PaperService {
             pageInfo.courseName = courseRepository.findById(page.courseId).get().name
             pageInfo.createTime = page.createTime.toString()
             pageInfo.pageId = page.id
+            pageInfo.paperTitle = page.name
             return@map pageInfo
         }
 
@@ -793,6 +794,7 @@ class PaperServiceImpl : PaperService {
         val page = pagesRepository.findById(paperId).get()
         val pageInfo = PageInfo()
         BeanUtils.copyProperties(page, pageInfo)
+        pageInfo.paperTitle = page.name
         pageInfo.difficulty = calDifficulty(page)
         pageInfo.teacherName = teacherRepository.findById(page.createId).get().name
         pageInfo.courseName = courseRepository.findById(page.courseId).get().name

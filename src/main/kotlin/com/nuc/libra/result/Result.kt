@@ -10,4 +10,10 @@ class Result {
     var code: Int = 200
 
     var message: String = "请求成功"
+
+    override fun toString(): String {
+        return "Result(data=$data, code=$code, message='$message')"
+    }
+
+
 }

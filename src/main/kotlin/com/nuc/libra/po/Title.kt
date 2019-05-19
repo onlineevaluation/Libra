@@ -9,10 +9,10 @@ import javax.persistence.*
 @Entity
 @Table(
     name = "uek_evaluate_titles",
-    indexes = [Index(name = "id", columnList = "id"), Index(name = "knowledge_id", columnList = "knowledgeId"), Index(
-        name = "course_id",
-        columnList = "courseId"
-    )
+    indexes = [Index(name = "id", columnList = "id"),
+        Index(name = "knowledge_id", columnList = "knowledgeId"),
+        Index(name = "course_id", columnList = "courseId"),
+        Index(name = "category", columnList = "category")
     ]
 )
 class Title {
