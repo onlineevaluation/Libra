@@ -23,16 +23,6 @@ class Result : Serializable {
 }
 
 /**
- * 前端数据 json 对应对象
- */
-class Json : Serializable {
-    var result: Result = Result()
-    override fun toString(): String {
-        return "Json(result=$result)"
-    }
-}
-
-/**
  * 答案获取类
  */
 class Answer : Serializable {

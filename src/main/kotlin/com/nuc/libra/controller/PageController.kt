@@ -47,55 +47,9 @@ class PageController {
      * 通过 `pageId` `class id`获取考试试题
      * @param examParam 试卷信息
      */
-    @GetMapping("/exam")
-    fun getPage(examParam: ExamParam): Result {
-        val titleList = paperService.getOnePage(examParam.classId, examParam.pageId)
-        val titleVOList = titleList.map {
-            val titleVO = TitleVO()
-            BeanUtils.copyProperties(it, titleVO)
-            var blankNumber = 0
-            if (it.category == "1") {
-                logger.info("it $it")
-                // 答案乱序
-
-            }
-
-
-            if (it.category == "2") {
-                val sb = StringBuilder()
-                val titles = it.title.split("_{0,50}_".toRegex())
-                for (i in 0 until titles.size - 1) {
-                    sb.append(titles[i])
-                    sb.append("_____")
-                }
-                sb.append(titles.last())
-                it.title = sb.toString().trim()
-                blankNumber = titles.size - 1
-            }
-            titleVO.blankNum = blankNumber
-            titleVO
-        }
-
-        val pageVO = PageVO()
-
-        /*
-         * 题的类型：1单选2填空3简答4程序5算法试题
-         */
-        titleVOList.forEach {
-            when (it.category) {
-                "1" -> pageVO.signChoice.add(it)
-                "2" -> pageVO.blank.add(it)
-                "3" -> pageVO.ansQuestion.add(it)
-                "4" -> pageVO.codeQuestion.add(it)
-                "5" -> pageVO.algorithm.add(it)
-                else -> {
-                }
-            }
-        }
-        val paper = paperService.getOnePaper(examParam.pageId)
-        val studentPageInfo = StudentPageInfo()
-        BeanUtils.copyProperties(paper, studentPageInfo)
-        pageVO.studentPageInfo = studentPageInfo
+    @GetMapping("/exam/{classAndPageId}")
+    fun getPage(@PathVariable(name = "classAndPageId") classAndPageId: Long): Result {
+        val pageVO = paperService.getOnePage(classAndPageId)
         return ResultUtils.success(200, "获取成功", pageVO)
     }
 
@@ -108,6 +62,7 @@ class PageController {
      * let result = {
      *  studentId: 1,
      *  pageId: 1,
+     *  doTime:100
      *  answer: [{
      *      id: '1',
      *      ans: 'A'
@@ -126,11 +81,9 @@ class PageController {
      */
     @PostMapping("/addAns")
     fun addAns(@RequestBody json: String): Result {
-        logger.info("answer json is $json")
         val result = JSON.parseObject(json, com.nuc.libra.vo.Result::class.java)
                 ?: throw ResultException("解析错误", 500)
         paperService.verifyPage(result.studentId, result.pageId)
-        logger.info("result is  $result")
         rabbitTemplate.convertAndSend("check", result)
         return ResultUtils.success(message = "提交成功")
     }

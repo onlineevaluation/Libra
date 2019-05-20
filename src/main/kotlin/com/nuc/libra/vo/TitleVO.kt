@@ -7,38 +7,9 @@ package com.nuc.libra.vo
  */
 class TitleVO {
 
-    private val singChoiceFlag = "1"
-    private val blankFlag = "2"
-    private val ansQuestionFlag = "3"
-    private val codeQuestionFlag = "4"
-    private val algorithmFlag = "5"
-
     var id: Long = 0
     var title: String = ""
     var category: String = ""
-        set(value) {
-            field = value
-            when (value) {
-                singChoiceFlag -> {
-                    this.score = 5.0
-                }
-                blankFlag -> {
-                    this.score = 5.0
-                }
-                ansQuestionFlag -> {
-                    this.score = 10.0
-                }
-
-                codeQuestionFlag -> {
-                    //todo(代码试题，慢慢研究)
-                    this.score = 0.0
-                }
-                algorithmFlag -> {
-                    this.score = 10.0
-                }
-            }
-        }
-
     var difficulty: String? = null
     var score: Double = 0.0
     var completeTime: Long = 0

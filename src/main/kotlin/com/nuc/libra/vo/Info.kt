@@ -176,10 +176,12 @@ class PageAndClassInfo {
  * @property algorithmScore Float
  * @property createTime String
  * @property knowledgeList List<String>
+ * @property needTime Int 答题所需要的时间
  */
 class StudentPageInfo {
     var pageId = 0L
     var totalScores: Float = 0f
+    var needTime = 0
     var teacherName: String? = null
     lateinit var courseName: String
     lateinit var paperTitle: String

@@ -1,6 +1,5 @@
 package com.nuc.libra.po
 
-import java.sql.Date
 import java.sql.Timestamp
 import javax.persistence.*
 
@@ -32,6 +31,9 @@ class StudentScore : Comparable<StudentScore> {
     var status: String? = null
     var time: Timestamp? = null
     var employeeId: Long? = 0
+    /**
+     * 学生完成该试题的时候需要
+     */
     var dotime: Long = 0L
 
     override fun compareTo(other: StudentScore): Int {

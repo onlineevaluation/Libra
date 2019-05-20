@@ -17,13 +17,11 @@ interface PaperService {
     fun listClassPage(classId: Long): List<PageAndClassInfo>
 
     /**
-     *
-     * 通过 pageId 和 classId 获取 title list
-     * @param pageId pageId
-     * @param classId 班级id
-     * @return titleList
+     * 通过classAndPagesId获取试卷详情
+     * @param classAndPagesId Long
+     * @return List<Title>
      */
-    fun getOnePage(classId: Long, pageId: Long): List<Title>
+    fun getOnePage(classAndPagesId: Long): PageVO
 
     /**
      * 试卷提交验证接口

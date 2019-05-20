@@ -93,7 +93,7 @@ class RecommendServiceImpl : RecommendService {
                 }
 
             }.toList()
-            videoRankAllList.addAll(videoRankList);
+            videoRankAllList.addAll(videoRankList)
         }
         videoRankAllList.sortedBy { it.rankScore }
 

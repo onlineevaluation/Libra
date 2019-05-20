@@ -1,6 +1,5 @@
 package com.nuc.libra.service.impl
 
-import com.nuc.libra.vo.Result
 import com.nuc.libra.exception.ResultException
 import com.nuc.libra.po.*
 import com.nuc.libra.po.StudentAnswer
@@ -18,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
 import java.io.File
-import java.sql.Date
 import java.sql.Timestamp
 import javax.transaction.Transactional
 
@@ -85,33 +83,61 @@ class PaperServiceImpl : PaperService {
             pageAndClassInfo.course = courseRepository.getOne(page.courseId).name
             return@map pageAndClassInfo
         }
-
-
     }
 
-    /**
-     * 获取指定考试的试题
-     * @param pageId 试卷id
-     * @param classId 班级id
-     * @return 返回试卷试题
-     */
     @Transactional
-    override fun getOnePage(classId: Long, pageId: Long): List<Title> {
-        val classAndPages = classAndPagesRepository.findByPagesIdAndClassId(pageId, classId).toList()
-        if (classAndPages.isEmpty()) {
-            throw ResultException("没有该考试", 500)
-        }
+    override fun getOnePage(classAndPagesId: Long): PageVO {
+        // 获取当前的考试
+        val classAndPages = classAndPagesRepository.findById(classAndPagesId).get()
         val nowTime = Timestamp(System.currentTimeMillis())
-        logger.info("now $nowTime   before ${classAndPages[0].endTime}  start ${classAndPages[0].startTime}")
-        if (nowTime.after(classAndPages[0].endTime) || nowTime.before(classAndPages[0].startTime)) {
+        if (nowTime.after(classAndPages.endTime) || nowTime.before(classAndPages.startTime)) {
             throw ResultException("该时间段内没有该考试", 500)
         }
-        val pagesAndTitleList = pagesAndTitleRepository.findByPagesId(pageId)
-        return pagesAndTitleList.map {
-            titleRepository.findById(it.titleId).get()
+        // 获取当前试卷的考试试题
+        val pagesAndTitleList = pagesAndTitleRepository.findByPagesId(classAndPages.pagesId)
+        val titleVOList = pagesAndTitleList.map {
+            val title = titleRepository.findById(it.titleId).get()
+            val titleVO = TitleVO()
+            BeanUtils.copyProperties(title, titleVO)
+            var blankNumber = 0
+            if (title.category == "2") {
+                val sb = StringBuilder()
+                val titles = title.title.split("_{0,50}_".toRegex())
+                for (i in 0 until titles.size - 1) {
+                    sb.append(titles[i])
+                    sb.append("_____")
+                }
+                sb.append(titles.last())
+                title.title = sb.toString().trim()
+                blankNumber = titles.size - 1
+            }
+            titleVO.blankNum = blankNumber
+            titleVO
         }
-
+        val pageVO = PageVO()
+        /*
+         * 题的类型：1单选2填空3简答4程序5算法试题
+         */
+        titleVOList.forEach {
+            when (it.category) {
+                "1" -> pageVO.signChoice.add(it)
+                "2" -> pageVO.blank.add(it)
+                "3" -> pageVO.ansQuestion.add(it)
+                "4" -> pageVO.codeQuestion.add(it)
+                "5" -> pageVO.algorithm.add(it)
+                else -> {
+                }
+            }
+        }
+        val paper = getOnePaper(classAndPages.pagesId)
+        val studentPageInfo = StudentPageInfo()
+        BeanUtils.copyProperties(paper, studentPageInfo)
+        studentPageInfo.needTime = classAndPages.needTime
+        studentPageInfo.selectScore = paper.selectScore
+        pageVO.studentPageInfo = studentPageInfo
+        return pageVO
     }
+
 
     /**
      *
@@ -237,8 +263,7 @@ class PaperServiceImpl : PaperService {
         studentScore.status = "1"
         studentScore.score = sumScore
         studentScore.time = Timestamp(System.currentTimeMillis())
-        studentScore.dotime = Date(System.currentTimeMillis())
-        logger.info("student score is ${studentScore.score}")
+        studentScore.dotime = result.doTime
         studentScoreRepository.save(studentScore)
     }
 
@@ -560,7 +585,7 @@ class PaperServiceImpl : PaperService {
         logger.info("post code to gooooooog")
 //        code:8
         val message = restTemplate.postForObject("http://106.12.195.114:9000/code", paramMap, String::class.java)!!
-        logger.info("message is ${message.toString()}")
+        logger.info("message is $message")
         logger.info("code is ${message.substring(6, 7)}")
         when (message.substring(6, 7)) {
             "9" -> {
@@ -794,6 +819,7 @@ class PaperServiceImpl : PaperService {
         val page = pagesRepository.findById(paperId).get()
         val pageInfo = PageInfo()
         BeanUtils.copyProperties(page, pageInfo)
+        pageInfo.selectScore = page.choiceScore
         pageInfo.paperTitle = page.name
         pageInfo.difficulty = calDifficulty(page)
         pageInfo.teacherName = teacherRepository.findById(page.createId).get().name
