@@ -206,5 +206,6 @@ data class PageClassParam(
     val teacherId: Long,
     val startTime: Long,
     val endTime: Long,
-    val pageId: Long
+    val pageId: Long,
+    val needTime: Long
 )

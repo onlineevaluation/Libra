@@ -86,5 +86,10 @@ interface PaperService {
      */
     fun savePageAndClass(pageClassParam: PageClassParam)
 
+    /**
+     * 这是什么方法？？？？？？？😑
+     * @param pageId Long
+     * @return String
+     */
     fun getCreateName(pageId: Long): String
 }

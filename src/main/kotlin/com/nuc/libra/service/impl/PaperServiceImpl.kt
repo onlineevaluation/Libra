@@ -7,6 +7,7 @@ import com.nuc.libra.repository.*
 import com.nuc.libra.service.PaperService
 import com.nuc.libra.util.NLPUtils
 import com.nuc.libra.util.PathUtils
+import com.nuc.libra.util.TimeUtils
 import com.nuc.libra.vo.*
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -432,6 +433,9 @@ class PaperServiceImpl : PaperService {
         }
         pageDetails.pageId = pageId
         pageDetails.score = studentScore.score
+        // 将毫秒转换为时分秒
+        val formatTime = TimeUtils.formatTime(studentScore.dotime)
+        pageDetails.doTime = formatTime
         return pageDetails
     }
 

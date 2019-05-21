@@ -25,11 +25,8 @@ class ClassAndPages {
     var startTime: Timestamp? = null
     @Column(columnDefinition = "DATETIME")
     var endTime: Timestamp? = null
-    var invigilator: Long? = 0
-    var comment: String? = null
     @Column(columnDefinition = "TIMESTAMP")
     var addTime: Timestamp? = null
     var employeeId: Long? = 0
-
     var needTime = 0
 }
