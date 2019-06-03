@@ -29,7 +29,7 @@ class CalTitleDifficulty {
     @Scheduled(fixedDelay = 1000 * 60 * 60 * 24 * 7)
     fun calDifficultyTask() {
         val allTitles = titleRepository.findAll()
-        val list = allTitles.parallelStream().map {
+        allTitles.forEach {
             val answerList = answerRepository.findByTitleId(it.id)
             val sum = answerList.sumByDouble { it.score }
             var score = 0.0
@@ -56,8 +56,8 @@ class CalTitleDifficulty {
             }
             diff = String.format("%.2f", diff).toDouble()
             it.difficulty = diff
-            it
-        }.toList()
-        titleRepository.saveAll(list)
+            titleRepository.save(it)
+        }
+//        titleRepository.saveAll(list)
     }
 }

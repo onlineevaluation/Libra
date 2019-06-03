@@ -3,6 +3,7 @@ package com.nuc.libra.controller
 import com.nuc.libra.result.Result
 import com.nuc.libra.service.UserService
 import com.nuc.libra.util.ResultUtils
+import com.nuc.libra.vo.UpdateStudentParam
 import com.nuc.libra.vo.UserParam
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
@@ -59,6 +60,11 @@ class UserController {
         return ResultUtils.success(data = studentProfile)
     }
 
+    @PutMapping("/profile/student")
+    fun updateStudentProfile(@RequestBody updateStudentPram: UpdateStudentParam): Result {
+        userService.updateStudentProfile(updateStudentPram)
+        return ResultUtils.success()
+    }
 
 
 }

@@ -673,11 +673,12 @@ class PaperServiceImpl : PaperService {
     override fun artificial(artificialPaperParam: ArtificialPaperParam): PageInfo {
         val page = Page()
         BeanUtils.copyProperties(artificialPaperParam, page)
+        logger.info("ids ===> ${artificialPaperParam.titleIds}")
+        page.name = artificialPaperParam.paperTitle
         page.status = "1"
         page.totalScores = artificialPaperParam.totalScore
         page.createId = artificialPaperParam.teacherId
         page.createTime = Timestamp(System.currentTimeMillis())
-        logger.info(page.toString())
         val newPage = pagesRepository.saveAndFlush(page)
         val pageTitlesList = artificialPaperParam.titleIds.map { titleId ->
             PagesAndTitle().apply {

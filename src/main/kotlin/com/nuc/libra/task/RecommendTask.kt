@@ -33,11 +33,6 @@ class RecommendTask {
                 }
             }.toMutableList()
         }
-
-        list.forEach { it ->
-            println("it $it")
-        }
-
     }
 
 }

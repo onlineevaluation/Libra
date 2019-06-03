@@ -7,6 +7,7 @@ import com.nuc.libra.repository.*
 import com.nuc.libra.security.JwtTokenProvider
 import com.nuc.libra.service.UserService
 import com.nuc.libra.vo.StudentInfo
+import com.nuc.libra.vo.UpdateStudentParam
 import com.nuc.libra.vo.UserProfileInfo
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -18,6 +19,7 @@ import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 /**
  * @author 杨晓辉 2018/2/1 15:46
@@ -103,7 +105,6 @@ class UserServiceImpl : UserService, UserDetailsService {
                 ?: throw UsernameNotFoundException("UserParam '$username' not found")
         // 获取 user id
         val u = userRepository.findUserByUsername(username) ?: throw ResultException("没有该用户", 500)
-
         // 权限查询
         val userAndRole = userAndRoleRepository.findUserAndRoleByUserId(u.id)
         val role = roleRepository.findById(userAndRole.roleId).get()
@@ -157,11 +158,29 @@ class UserServiceImpl : UserService, UserDetailsService {
         val studentInfo = StudentInfo()
         BeanUtils.copyProperties(student, studentInfo)
         studentInfo.`class` = classRepository.findById(student.classId).get().name
+        studentInfo.sex = when {
+            student.gender == 1L -> "男"
+            student.gender == 0L -> "女"
+            else -> "未填写"
+        }
         return studentInfo
     }
 
     override fun teacherProfile(teacherId: Long) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    @Transactional
+    override fun updateStudentProfile(updateStudentParam: UpdateStudentParam) {
+        val student = studentRepository.findById(updateStudentParam.studentId).get()
+        student.qq = updateStudentParam.qq
+        student.email = updateStudentParam.email
+        student.gender = when (updateStudentParam.sex) {
+            "1" -> 1
+            "0" -> 0
+            else -> null
+        }
+        studentRepository.saveAndFlush(student)
     }
 }
 

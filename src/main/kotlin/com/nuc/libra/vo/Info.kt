@@ -112,6 +112,9 @@ class StudentInfo {
     lateinit var studentNumber: String
     lateinit var `class`: String
     var classId: Long = 0L
+    var sex: String? = null
+    var qq: String? = null
+    var email: String? = null
 }
 
 /**

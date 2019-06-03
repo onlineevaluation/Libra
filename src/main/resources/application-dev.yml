@@ -6,7 +6,7 @@ spring:
     password: guest
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://106.12.195.114:3306/eva?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8&useSSL=false&autoReconnect=true&failOverReadOnly=false
+    url: jdbc:mysql://106.12.195.114:3306/eva
     username: root
     password: 1234
     type: com.alibaba.druid.pool.DruidDataSource

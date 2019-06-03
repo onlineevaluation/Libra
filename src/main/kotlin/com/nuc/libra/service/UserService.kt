@@ -3,6 +3,7 @@ package com.nuc.libra.service
 import com.nuc.libra.exception.ResultException
 import com.nuc.libra.po.User
 import com.nuc.libra.vo.StudentInfo
+import com.nuc.libra.vo.UpdateStudentParam
 import com.nuc.libra.vo.UserProfileInfo
 
 
@@ -45,4 +46,6 @@ interface UserService {
      */
     fun teacherProfile(teacherId: Long)
 
+
+    fun updateStudentProfile(updateStudentParam: UpdateStudentParam)
 }

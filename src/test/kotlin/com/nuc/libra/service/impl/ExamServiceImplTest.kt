@@ -26,9 +26,6 @@ class ExamServiceImplTest {
         examService.getStudentAllErrorTitleKnowledge(1, 2)
     }
 
-    @Test
-    fun classErrorTitle() {
-        examService.getStudentErrorInfo(1, 1)
-    }
+
 
 }

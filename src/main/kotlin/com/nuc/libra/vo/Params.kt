@@ -209,3 +209,11 @@ data class PageClassParam(
     val pageId: Long,
     val needTime: Long
 )
+
+
+data class UpdateStudentParam(
+    val studentId: Long,
+    val qq: String?,
+    val sex: String?,
+    val email: String?
+)

@@ -15,7 +15,6 @@ import org.springframework.test.context.junit4.SpringRunner
 @SpringBootTest
 class RecommendServiceImplTest {
 
-
     @Autowired
     private lateinit var recommendService: RecommendService
 
@@ -26,10 +25,6 @@ class RecommendServiceImplTest {
         rankList.forEach {
             println(it)
         }
-
-
-
-
     }
 
 }

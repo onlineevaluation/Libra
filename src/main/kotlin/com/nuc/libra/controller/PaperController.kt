@@ -75,6 +75,5 @@ class PaperController {
     fun sendPageAndClass(@RequestBody pageClassParam: PageClassParam): Result {
         paperService.savePageAndClass(pageClassParam)
         return ResultUtils.success()
-
     }
 }
