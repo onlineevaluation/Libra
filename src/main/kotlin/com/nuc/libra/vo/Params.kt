@@ -210,7 +210,14 @@ data class PageClassParam(
     val needTime: Long
 )
 
-
+/**
+ *
+ * @property studentId Long
+ * @property qq String?
+ * @property sex String?
+ * @property email String?
+ * @constructor
+ */
 data class UpdateStudentParam(
     val studentId: Long,
     val qq: String?,

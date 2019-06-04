@@ -28,5 +28,5 @@ class ClassAndPages {
     @Column(columnDefinition = "TIMESTAMP")
     var addTime: Timestamp? = null
     var employeeId: Long? = 0
-    var needTime = 0
+    var needTime = 0L
 }

@@ -133,7 +133,7 @@ class PaperServiceImpl : PaperService {
         val paper = getOnePaper(classAndPages.pagesId)
         val studentPageInfo = StudentPageInfo()
         BeanUtils.copyProperties(paper, studentPageInfo)
-        studentPageInfo.needTime = classAndPages.needTime
+        studentPageInfo.needTime = classAndPages.needTime.toInt()
         studentPageInfo.selectScore = paper.selectScore
         pageVO.studentPageInfo = studentPageInfo
         return pageVO
@@ -839,6 +839,10 @@ class PaperServiceImpl : PaperService {
     }
 
 
+    /**
+     * 保存班级和试卷的对应关系
+     * @param pageClassParam PageClassParam
+     */
     @Transactional
     override fun savePageAndClass(pageClassParam: PageClassParam) {
         val pageClassList = pageClassParam.classIds.map {
@@ -849,12 +853,18 @@ class PaperServiceImpl : PaperService {
             classAndPages.classId = it
             classAndPages.pagesId = pageClassParam.pageId
             classAndPages.employeeId = pageClassParam.teacherId
+            classAndPages.needTime = pageClassParam.needTime
             return@map classAndPages
         }
 
         classAndPagesRepository.saveAll(pageClassList)
     }
 
+    /**
+     * 获得试卷的创建者
+     * @param pageId Long
+     * @return String
+     */
     override fun getCreateName(pageId: Long): String {
         val page = pagesRepository.findById(pageId).get()
         val teacher = teacherRepository.findById(page.createId).get()
