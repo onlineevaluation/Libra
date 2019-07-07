@@ -1,5 +1,6 @@
 package com.nuc.libra.po
 
+import java.sql.Timestamp
 import javax.persistence.*
 
 /**
@@ -15,7 +16,7 @@ class ResourceDirctory {
 
     var name: String? = null
     var pid: Long = 0
-    var addtime: String? = null
+    var addtime: Long  =0L
     var url: String? = null
     var type: Long = 0
     var size: String? = null

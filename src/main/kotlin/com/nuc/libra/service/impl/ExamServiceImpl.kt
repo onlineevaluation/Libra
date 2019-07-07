@@ -120,10 +120,10 @@ class ExamServiceImpl : ExamService {
                     // 填空题
                     "2" -> {
 
-                        if (page.blankScore * 0.6 > studentAns.score) {
+
                             blankString += studentAns.answer + " "
                             errorCount++
-                        }
+
 
 
                     }
@@ -211,7 +211,7 @@ class ExamServiceImpl : ExamService {
                 this.titleId = it.id
                 this.title = titleRepository.findById(it.id).get().title
             }
-        }.toList()
+        }
         // 填空题词频
         val blankWordFrequency = blankAnswerList.map {
             val wordFrequency = NLPUtils.wordFrequency(it.ans)
@@ -220,7 +220,7 @@ class ExamServiceImpl : ExamService {
                 this.titleId = it.id
                 this.title = titleRepository.findById(it.id).get().title
             }
-        }.toList()
+        }
         // 算法题
 
         // 完成所有的映射

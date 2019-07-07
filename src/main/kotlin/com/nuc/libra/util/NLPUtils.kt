@@ -1,16 +1,15 @@
 package com.nuc.libra.util
 
-import com.hankcs.hanlp.corpus.tag.Nature
-import com.hankcs.hanlp.dictionary.stopword.CoreStopWordDictionary
 import com.hankcs.hanlp.mining.word2vec.DocVectorModel
 import com.hankcs.hanlp.mining.word2vec.WordVectorModel
 import com.hankcs.hanlp.seg.common.Term
 import com.hankcs.hanlp.tokenizer.StandardTokenizer
-import java.io.File
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.*
 import kotlin.collections.ArrayList
+
+// hanlp
 
 
 /**
@@ -109,3 +108,5 @@ object NLPUtils {
     }
 
 }
+
+

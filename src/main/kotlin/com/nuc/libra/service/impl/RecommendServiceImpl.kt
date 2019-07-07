@@ -17,7 +17,6 @@ import kotlin.streams.toList
 @Service
 class RecommendServiceImpl : RecommendService {
 
-
     private val logger: Logger = LoggerFactory.getLogger(this.javaClass)
 
     @Autowired
@@ -45,7 +44,15 @@ class RecommendServiceImpl : RecommendService {
      */
     override fun getResourceByStudentId(studentId: Long): List<ResourceDirctory> {
         val classId = studentRepository.getOne(studentId).classId
-        val knowledegeAndsizeMap = answerRepository.findByStudentId(studentId).map { studentAnswer ->
+        val answerByStudentIds = answerRepository.findByStudentId(studentId)
+        val knowledegeAndsizeMap = answerByStudentIds.subList(
+            0,
+            if (answerByStudentIds.size >= 50) {
+                50
+            } else {
+                answerByStudentIds.size
+            }
+        ).map { studentAnswer ->
             titleRepository.getOne(studentAnswer.titleId)
         }.groupBy {
             it.knowledgeId
@@ -64,7 +71,7 @@ class RecommendServiceImpl : RecommendService {
         val sdf = SimpleDateFormat("yyyy-MM-dd")
         val videoRankAllList = ArrayList<VideoRank>()
         // 推荐资源信息 排名 = 相关评论（热度）* 0.4 + 播放量 * 0.6 * 发布时间(一周以内)(进行提权 * 1.2)
-        knowledgeList.parallelStream().forEach { knowledgeAndSize ->
+        knowledgeList.forEach { knowledgeAndSize ->
 
             val resourceList =
                 resourceDirctoryRepository.findByKnowledgeIdAndType(
@@ -73,9 +80,9 @@ class RecommendServiceImpl : RecommendService {
                 )
 
             val videoRankList = resourceList.map {
-                val date = sdf.parse(it.addtime).time
+
                 var weight = 1.0f
-                if (date >= (nowTime - weekTime)) {
+                if (it.addtime >= (nowTime - weekTime)) {
                     weight = 1.2f
                 }
 
@@ -84,12 +91,12 @@ class RecommendServiceImpl : RecommendService {
 
                 // 计算排名
                 val rankScore: Float = commentCount * 0.4f + it.playTimes * 0.6f * weight
-                val resourceClass = resourceClassRepository.findByResourceIdAndClassId(it.id, classId)
+//                val resourceClass = resourceClassRepository.findByResourceIdAndClassId(it.id, classId)
                 VideoRank().apply {
                     this.rankScore = rankScore
                     this.videoId = it.id
-                    this.startTime = resourceClass.startTime
-                    this.endTime = resourceClass.endTime
+//                    this.startTime = resourceClass.startTime
+//                    this.endTime = resourceClass.endTime
                 }
 
             }.toList()

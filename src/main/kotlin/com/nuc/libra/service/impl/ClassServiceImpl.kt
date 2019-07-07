@@ -236,6 +236,8 @@ class ClassServiceImpl : ClassService {
         studentList.forEach { student ->
             val scoreList = ArrayList<Double>()
             pageList.forEach { page ->
+
+                logger.info("student id =${student.id} page id = ${page.id} ")
                 val studentScore = studentScoreRepository.findByPagesIdAndStudentId(page.id, student.id)
                 if (studentScore != null) {
                     scoreList.add(studentScore.score)

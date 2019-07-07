@@ -1,5 +1,6 @@
 package com.nuc.libra.controller
 
+import com.nuc.libra.po.ResourceDirctory
 import com.nuc.libra.result.Result
 import com.nuc.libra.service.RecommendService
 import com.nuc.libra.util.ResultUtils
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class RecommendController {
 
-
     @Autowired
     private lateinit var recommendService: RecommendService
 
@@ -25,6 +25,10 @@ class RecommendController {
     @GetMapping("/recommend/resource/{studentId}")
     fun recommendResource(@PathVariable("studentId") studentId: Long): Result {
         val resource = recommendService.getResourceByStudentId(studentId)
+        if (resource.isEmpty()) {
+            val list = emptyList<ResourceDirctory>()
+            return ResultUtils.success(data = list, message = "暂时没有数据可进行推荐")
+        }
         return ResultUtils.success(message = "推荐数据获取成功", data = resource)
     }
 

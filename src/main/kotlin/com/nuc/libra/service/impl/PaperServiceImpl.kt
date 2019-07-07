@@ -191,6 +191,7 @@ class PaperServiceImpl : PaperService {
                         checkQuestion(studentAns.ans, standardAnswer.answer, page.answerScore.toDouble())
                     ansList.add(studentAnswer)
                 }
+                // 代码题
                 "4" -> {
 
                 }
@@ -511,8 +512,7 @@ class PaperServiceImpl : PaperService {
                 standardAnswerSb.append(ans)
             }
             similar = NLPUtils.docSimilar(studentAnswerSb.toString(), standardAnswerSb.toString())
-            // x 代表着未知 所以下面的步骤只有天知道！
-            // 我猜是计算平均分
+            // 计算每空分数
             val x = 1.0 / blankNumber
             blankScore = (similar / x) * (score / blankNumber)
             return blankScore
@@ -588,7 +588,7 @@ class PaperServiceImpl : PaperService {
 
         logger.info("post code to gooooooog")
 //        code:8
-        val message = restTemplate.postForObject("http://106.12.195.114:9000/code", paramMap, String::class.java)!!
+        val message = restTemplate.postForObject("http://localhost:8100/code", paramMap, String::class.java)!!
         logger.info("message is $message")
         logger.info("code is ${message.substring(6, 7)}")
         when (message.substring(6, 7)) {
@@ -624,7 +624,7 @@ class PaperServiceImpl : PaperService {
 
             }
             else -> {
-                logger.info("状态码为识别")
+                logger.info("状态码未识别")
             }
 
         }
@@ -652,6 +652,8 @@ class PaperServiceImpl : PaperService {
         val titleKnow = knowledgeList.map { knowledge ->
             titleRepository.findByKnowledgeIdAndCourseId(knowledge.id, courseId)
         }
+
+        println("titleKnow = ${titleKnow}")
 
         // 通过试题类型和课程查找试题
         val titleCategory = typeIds.map {
@@ -681,6 +683,7 @@ class PaperServiceImpl : PaperService {
         page.createTime = Timestamp(System.currentTimeMillis())
         val newPage = pagesRepository.saveAndFlush(page)
         val pageTitlesList = artificialPaperParam.titleIds.map { titleId ->
+            logger.info("title id $titleId")
             PagesAndTitle().apply {
                 this.pagesId = newPage.id
                 this.titleId = titleId
